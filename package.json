@@ -6,13 +6,18 @@
   "author": "Extendi <info@extendi.it>",
   "license": "MIT",
   "private": false,
-  "dependencies": {
+  "scripts": {
+    "build:development": "yarn run webpack --mode development"
+  },
+  "devDependencies": {
     "@types/react": "^16.4.6",
     "@types/react-dom": "^16.0.6",
     "awesome-typescript-loader": "^5.2.0",
     "source-map-loader": "^0.2.3",
+    "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.9.2",
     "typescript": "^2.9.2",
-    "webpack": "^4.16.1"
+    "webpack": "^4.16.1",
+    "webpack-cli": "^3.1.0"
   }
 }
