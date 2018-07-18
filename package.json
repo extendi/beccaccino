@@ -7,7 +7,8 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build:development": "yarn run webpack --mode development"
+    "build:development": "yarn run webpack --mode development",
+    "build:production": "yarn run webpack --mode production"
   },
   "devDependencies": {
     "@types/react": "^16.4.6",
