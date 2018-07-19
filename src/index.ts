@@ -1,1 +1,1 @@
-export { default as ReduxHttpClient } from './configureClient';
+export { default as ReduxHttpClient } from './ReduxHttpClient';
