@@ -6,11 +6,12 @@ const bindParamsToURL = (url : string, params: any) => url; // TODO DO THE REAL 
 export default class Endpoint {
   static bindAction(bindRequest: BindRequest): BindedAction {
     return ({ urlParams = {}, requestPayload = {} } : { urlParams: any, requestPayload: any}) => ({
-      type: bindRequest.actioName,
+      type: bindRequest.actionName,
       signature: bindRequest.signature,
       requestDetails: {
         urlParams,
         requestPayload,
+        endpointName: bindRequest.config.name,
       },
       execAsync: requestHandler({
         requestConfiguration: {
