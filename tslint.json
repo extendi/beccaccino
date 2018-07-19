@@ -1,4 +1,4 @@
 {
   "extends": "tslint-config-airbnb",
-  "prefer-array-literal" : 0,
+  "prefer-array-literal" : 0
 }
