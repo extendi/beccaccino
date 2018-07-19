@@ -4,6 +4,7 @@ import {
   REDUX_HTTP_CLIENT_REQUEST,
   REDUX_HTTP_CLIENT_ERROR,
   REDUX_HTTP_CLIENT_RESPONSE,
+  BindedActionResultPayload,
 } from 'redux-http';
 import { Middleware } from 'redux';
 
@@ -22,22 +23,23 @@ const httpClientMiddleware : Middleware = _ => next => (action : BindedActionPay
     type: REDUX_HTTP_CLIENT_REQUEST,
     requestDetails: action.requestDetails,
   });
-
   return action.execAsync
   .then((result) => {
-    next({
+    const successPayloadToDispatch : BindedActionResultPayload = {
       type: REDUX_HTTP_CLIENT_RESPONSE,
       requestDetails: action.requestDetails,
       response: result,
-    });
+    };
+    next(successPayloadToDispatch);
     Promise.resolve(result);
   })
   .catch((errors) => {
-    next({
+    const errorPayloadToDispatch : BindedActionResultPayload = {
       type: REDUX_HTTP_CLIENT_ERROR,
       requestDetails: action.requestDetails,
       response: errors,
-    });
+    };
+    next(errorPayloadToDispatch);
     Promise.resolve(errors);
   });
 };
