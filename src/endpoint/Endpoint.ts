@@ -1,5 +1,5 @@
-import { BindRequest, BindedAction } from 'endpoint';
-import requestHandler from 'endpoint/requestHandler';
+import { BindRequest, BindedAction }from '@lib/endpoint';
+import requestHandler from '@lib/endpoint/requestHandler';
 
 const bindParamsToURL = (url : string, params: any) => url; // TODO DO THE REAL STUFF
 

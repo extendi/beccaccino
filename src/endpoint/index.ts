@@ -1,5 +1,5 @@
-import { AxiosResponse, AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
-import { BindedActionPayload } from 'redux-http';
+import { AxiosResponse, AxiosError, AxiosInstance, AxiosRequestConfig }from 'axios';
+import { BindedActionPayload }from '@lib/redux-http';
 export type ResponseTransform = (input : AxiosResponse) => any;
 export type ErrorTransform = (input : AxiosError) => any;
 
@@ -41,4 +41,4 @@ export type EndpointResponse = {
 
 export type BindedAction = (params : any) => BindedActionPayload;
 
-export { default as Endpoint } from 'endpoint/Endpoint';
+export { default as Endpoint }from '@lib/endpoint/Endpoint';

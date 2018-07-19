@@ -2,7 +2,7 @@ import {
   REDUX_HTTP_CLIENT_ERROR,
   REDUX_HTTP_CLIENT_RESPONSE,
   BindedActionResultPayload,
-} from 'redux-http';
+}from '@lib/redux-http';
 
 const initialState = {
   requests: {},

@@ -13,7 +13,12 @@
         "jsx": "react",
         "rootDir": "./",
         "baseUrl": "./src",
-        "allowJs": true
+        "allowJs": true,
+        "paths": {
+          "@lib/*": [
+              "*"
+          ]
+      }
     },
     "include": [
         "./src/**/*"

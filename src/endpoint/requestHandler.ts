@@ -1,5 +1,5 @@
-import { AxiosRequestConfig, AxiosInstance } from 'axios';
-import { ErrorTransform, ResponseTransform, EndpointResponse } from 'Endpoint';
+import { AxiosRequestConfig, AxiosInstance }from 'axios';
+import { ErrorTransform, ResponseTransform, EndpointResponse }from '@lib/Endpoint';
 
 const defaulTransformFunction = (x : any) : any => x;
 const defaultErrorTransformFunction = (x : any) : any => x;

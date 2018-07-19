@@ -1,4 +1,4 @@
-import { EndpointResponse } from 'endpoint';
+import { EndpointResponse }from '@lib/endpoint';
 
 export const REDUX_HTTP_CLIENT_REQUEST = '@@redux_http_client/request';
 export const REDUX_HTTP_CLIENT_ERROR = '@@redux_http_client/error';
@@ -25,4 +25,4 @@ export type BindedActionResultPayload = {
   response: EndpointResponse,
 };
 
-export { default as reduxHttpMiddleware } from 'redux-http/middleware';
+export { default as reduxHttpMiddleware }from '@lib/redux-http/middleware';

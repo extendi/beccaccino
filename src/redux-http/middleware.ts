@@ -5,8 +5,8 @@ import {
   REDUX_HTTP_CLIENT_ERROR,
   REDUX_HTTP_CLIENT_RESPONSE,
   BindedActionResultPayload,
-} from 'redux-http';
-import { Middleware } from 'redux';
+}from '@lib/redux-http';
+import { Middleware }from '@lib/redux';
 
 const shouldHandleAction = (action: BindedActionPayload) : Boolean => {
   return action.signature === REDUX_HTTP_ACTION_SIGNATURE &&

@@ -1,6 +1,6 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { EndpointConfig, Endpoint, BindedAction } from 'endpoint';
-import { REDUX_HTTP_ACTION_SIGNATURE } from 'redux-http';
+import axios, { AxiosInstance, AxiosRequestConfig }from 'axios';
+import { EndpointConfig, Endpoint, BindedAction }from '@lib/endpoint';
+import { REDUX_HTTP_ACTION_SIGNATURE }from '@lib/redux-http';
 
 export type EndpointMap = {
   [key : string]: BindedAction,
