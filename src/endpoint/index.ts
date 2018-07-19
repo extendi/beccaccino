@@ -29,7 +29,7 @@ export type EndpointConfig = {
 
 export type BindRequest = {
   config : EndpointConfig,
-  actioName : string,
+  actionName : string,
   axiosInstance: AxiosInstance,
   signature: Symbol,
 };

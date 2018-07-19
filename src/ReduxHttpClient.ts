@@ -23,7 +23,7 @@ class ReduxHttpClient {
     this.endpoints.forEach((endpoint) => {
       this.bindedEndpoints[endpoint.name] = Endpoint.bindAction({
         config: endpoint,
-        actioName: 'lol',
+        actionName: 'lol',
         axiosInstance: this.axiosInstance,
         signature: REDUX_HTTP_ACTION_SIGNATURE,
       });
