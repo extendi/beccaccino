@@ -34,6 +34,11 @@ export type BindRequest = {
   signature: Symbol,
 };
 
+export type EndpointResponse = {
+  rawResponse: AxiosResponse | AxiosError,
+  data: any,
+};
+
 export type BindedAction = (params : any) => BindedActionPayload;
 
 export { default as Endpoint } from 'endpoint/Endpoint';
