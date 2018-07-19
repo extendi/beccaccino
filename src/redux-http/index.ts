@@ -24,3 +24,5 @@ export type BindedActionResultPayload = {
   requestDetails: BindedRequestDetails,
   response: EndpointResponse,
 };
+
+export { default as reduxHttpMiddleware } from 'redux-http/middleware';
