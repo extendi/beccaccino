@@ -1,16 +1,21 @@
-import ReduxHttpClient from 'ReduxHttpClient';
 import { AxiosResponse, AxiosRequestConfig, AxiosInstance } from 'axios';
 import { ErrorTransform, ResponseTransform } from 'Endpoint';
 
 const defaulTransformFunction = (x : any) : any => x;
 const defaultErrorTransformFunction = (x : any) : any => x;
 
-export default function requestHandler(
+type RequestHandlerParams = {
   requestConfiguration: AxiosRequestConfig,
-  errorTransformer: ErrorTransform = defaultErrorTransformFunction,
-  responseTransformer: ResponseTransform = defaulTransformFunction,
-  axiosInstance : AxiosInstance = ReduxHttpClient.getClient().getAxiosIntance(),
-) : Promise<AxiosResponse> {
+  errorTransformer: ErrorTransform,
+  responseTransformer: ResponseTransform,
+  axiosInstance : AxiosInstance,
+};
+export default function requestHandler({
+  requestConfiguration,
+  errorTransformer = defaultErrorTransformFunction,
+  axiosInstance,
+  responseTransformer = defaulTransformFunction,
+}: RequestHandlerParams) : Promise<AxiosResponse> {
   return axiosInstance.request(requestConfiguration)
   .then(response => responseTransformer(response))
   .catch(error => errorTransformer(error));
