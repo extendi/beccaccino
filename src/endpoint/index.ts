@@ -31,6 +31,7 @@ export type BindRequest = {
   config : EndpointConfig,
   actioName : string,
   axiosInstance: AxiosInstance,
+  signature: Symbol,
 };
 
 export type BindedAction = (params : any) => BindedActionPayload;
