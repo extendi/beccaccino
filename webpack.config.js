@@ -1,4 +1,5 @@
 const path = require('path');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const libraryName = 'redux-http-client';
 
@@ -27,11 +28,12 @@ module.exports = {
   entry: path.join(__dirname, './src/index.ts'),
   devtool: "source-map",
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".json"]
+    extensions: [".ts", ".tsx", ".js", ".json"],
+    plugins: [new TsconfigPathsPlugin({ configFile: "tsconfig.json" })]
   },
   module: {
       rules: [
-          { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+          { test: /\.tsx?$/, loader: "ts-loader"},
           { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
       ]
   },
