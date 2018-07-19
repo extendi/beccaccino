@@ -24,7 +24,7 @@ const reactDOMExternals = {
   amd: 'react-dom',
 };
 
-module.exports = {
+module.exports = [{
   entry: path.join(__dirname, './src/index.ts'),
   devtool: "source-map",
   resolve: {
@@ -43,10 +43,37 @@ module.exports = {
     library: libraryName,
     libraryTarget: 'umd',
     umdNamedDefine: true,
+    globalObject: 'this',
   },
   externals: {
     react: reactExternals,
     'react-dom': reactDOMExternals,
     'prop-types': propTypesExternals,
   },
-};
+},
+{
+  entry: path.join(__dirname, './src/index.ts'),
+  devtool: "source-map",
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".json"],
+    plugins: [new TsconfigPathsPlugin({ configFile: "tsconfig.json" })]
+  },
+  module: {
+      rules: [
+          { test: /\.tsx?$/, loader: "ts-loader"},
+          { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+      ]
+  },
+  target: "node",
+  output: {
+    path: path.join(__dirname, './dist'),
+    filename: `${libraryName}-node.js`,
+    library: libraryName,
+    libraryTarget: 'commonjs2',
+  },
+  externals: {
+    react: reactExternals,
+    'react-dom': reactDOMExternals,
+    'prop-types': propTypesExternals,
+  },
+}];
