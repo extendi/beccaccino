@@ -1,5 +1,5 @@
 import { AxiosResponse, AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
-
+import { BindedActionPayload } from 'redux-http';
 export type ResponseTransform = (input : AxiosResponse) => any;
 export type ErrorTransform = (input : AxiosError) => any;
 
@@ -33,10 +33,6 @@ export type BindRequest = {
   axiosInstance: AxiosInstance,
 };
 
-export type BindedAction = (params : any) => {
-  type: string,
-  signature: Symbol,
-  execAsync: Promise<AxiosResponse>,
-};
+export type BindedAction = (params : any) => BindedActionPayload;
 
 export { default as Endpoint } from 'endpoint/Endpoint';
