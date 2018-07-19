@@ -1,5 +1,5 @@
-import { AxiosResponse, AxiosRequestConfig, AxiosInstance } from 'axios';
-import { ErrorTransform, ResponseTransform } from 'Endpoint';
+import { AxiosRequestConfig, AxiosInstance } from 'axios';
+import { ErrorTransform, ResponseTransform, EndpointResponse } from 'Endpoint';
 
 const defaulTransformFunction = (x : any) : any => x;
 const defaultErrorTransformFunction = (x : any) : any => x;
@@ -15,8 +15,8 @@ export default function requestHandler({
   errorTransformer = defaultErrorTransformFunction,
   axiosInstance,
   responseTransformer = defaulTransformFunction,
-}: RequestHandlerParams) : Promise<AxiosResponse> {
+}: RequestHandlerParams) : Promise<EndpointResponse> {
   return axiosInstance.request(requestConfiguration)
-  .then(response => responseTransformer(response))
-  .catch(error => errorTransformer(error));
+  .then(response => ({ rawResponse: response, data: responseTransformer(response.data) }))
+  .catch(error => ({ rawResponse: error, data: errorTransformer(error) }));
 }
