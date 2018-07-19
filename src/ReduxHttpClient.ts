@@ -4,7 +4,7 @@ import { REDUX_HTTP_ACTION_SIGNATURE } from 'redux-http';
 
 export type EndpointMap = {
   [key : string]: BindedAction,
-}
+};
 
 class ReduxHttpClient {
   private readonly axiosInstance : AxiosInstance;
@@ -34,7 +34,10 @@ class ReduxHttpClient {
 const reduxHttpClientInitializer = (() => {
   let clientInstance : ReduxHttpClient = null;
   return  {
-    configure: (configuration : AxiosRequestConfig , endpoints : Array<EndpointConfig>) :EndpointMap => {
+    configure: (
+      configuration : AxiosRequestConfig ,
+      endpoints : Array<EndpointConfig>,
+      ) :EndpointMap => {
       if (clientInstance) throw Error('Redux http client instance already configured');
       clientInstance = new ReduxHttpClient(configuration, endpoints);
       return clientInstance.bindedEndpoints;
