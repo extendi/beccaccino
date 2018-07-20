@@ -6,8 +6,8 @@ const defaultErrorTransformFunction = (x: any): any => x;
 
 type RequestHandlerParams = {
   requestConfiguration: AxiosRequestConfig,
-  errorTransformer: ErrorTransform,
-  responseTransformer: ResponseTransform,
+  errorTransformer?: ErrorTransform,
+  responseTransformer?: ResponseTransform,
   axiosInstance: AxiosInstance,
 };
 export default function requestHandler({
