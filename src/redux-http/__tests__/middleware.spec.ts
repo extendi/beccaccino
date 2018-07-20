@@ -102,13 +102,13 @@ describe('Http Client Middleware', () => {
 
     reduxHttpMiddleware(null)(nextSpyMock)(action);
     action.execAsync.then((result) => {
-      expect(nextSpyMock).toHaveReturnedTimes(2);
+      expect(nextSpyMock).toHaveBeenCalledTimes(2);
       expect(nextSpyMock).lastCalledWith({
         type: REDUX_HTTP_CLIENT_RESPONSE,
         requestDetails,
         response: result,
       });
-    });
+    }).catch(errors => errors);
   });
   it('dispatches a REDUX_HTTP_CLIENT_ERROR when execAsync promise fails', () => {
     const requestDetails = {
@@ -126,8 +126,8 @@ describe('Http Client Middleware', () => {
     };
 
     reduxHttpMiddleware(null)(nextSpyMock)(action);
-    action.execAsync.catch((errors) => {
-      expect(nextSpyMock).toHaveReturnedTimes(2);
+    action.execAsync.then(response => response).catch((errors) => {
+      expect(nextSpyMock).toHaveBeenCalledTimes(2);
       expect(nextSpyMock).lastCalledWith({
         type: REDUX_HTTP_CLIENT_ERROR,
         requestDetails,
