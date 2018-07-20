@@ -1,4 +1,4 @@
-import { EndpointResponse }from '@lib/endpoint';
+import { EndpointResponse } from '@lib/endpoint';
 
 export const REDUX_HTTP_CLIENT_REQUEST = '@@redux_http_client/request';
 export const REDUX_HTTP_CLIENT_ERROR = '@@redux_http_client/error';
@@ -8,7 +8,7 @@ export const REDUX_HTTP_ACTION_SIGNATURE = Symbol('REDUX:HTTP_CLIENT_ACTION');
 
 export type BindedRequestDetails = {
   urlParams: any,
-  requestPayload : any,
+  requestPayload: any,
   endpointName: string,
 };
 
@@ -25,4 +25,5 @@ export type BindedActionResultPayload = {
   response: EndpointResponse,
 };
 
-export { default as reduxHttpMiddleware }from '@lib/redux-http/middleware';
+export { default as reduxHttpMiddleware } from '@lib/redux-http/middleware';
+export { default as reduxHttpReducer } from '@lib/redux-http/reducer';
