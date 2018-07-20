@@ -9,7 +9,7 @@ const initialState = {
 };
 
 export default function reduxHttpReducer(
-  state = initialState,
+  state: any = initialState,
   action: BindedActionResultPayload,
 ): any {
   switch (action.type) {
