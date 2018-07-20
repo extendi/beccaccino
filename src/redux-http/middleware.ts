@@ -6,7 +6,7 @@ import {
   REDUX_HTTP_CLIENT_RESPONSE,
   BindedActionResultPayload,
 }from '@lib/redux-http';
-import { Middleware }from '@lib/redux';
+import { Middleware }from 'redux';
 
 const shouldHandleAction = (action: BindedActionPayload) : Boolean => {
   return action.signature === REDUX_HTTP_ACTION_SIGNATURE &&
