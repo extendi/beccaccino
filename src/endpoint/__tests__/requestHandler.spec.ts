@@ -46,6 +46,7 @@ describe('requestHandler', () => {
       expect(res).resolves.toEqual({
         rawResponse: { data: 'asd' },
         data: 'asd',
+        success: true,
       });
     });
     it('and calls responseTransformer', () => {
@@ -83,6 +84,7 @@ describe('requestHandler', () => {
       expect(res).resolves.toEqual({
         rawResponse: 'the error',
         data: 'the error',
+        success: false,
       });
     });
     it('and calls errorTransformer', () => {

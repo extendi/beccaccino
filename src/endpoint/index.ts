@@ -37,6 +37,7 @@ export type BindRequest = {
 export type EndpointResponse = {
   rawResponse: AxiosResponse | AxiosError,
   data: any,
+  success: boolean,
 };
 
 export type BindedAction = (params: any) => BindedActionPayload;

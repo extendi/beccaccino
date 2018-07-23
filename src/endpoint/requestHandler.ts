@@ -17,6 +17,13 @@ export default function requestHandler({
   responseTransformer = defaulTransformFunction,
 }: RequestHandlerParams): Promise<EndpointResponse> {
   return axiosInstance.request(requestConfiguration)
-    .then(response => ({ rawResponse: response, data: responseTransformer(response.data) }))
-    .catch(error => ({ rawResponse: error, data: errorTransformer(error) }));
+    .then(response => ({
+      rawResponse: response,
+      data: responseTransformer(response.data),
+      success: true,
+    })).catch(error => ({
+      rawResponse: error,
+      data: errorTransformer(error),
+      success: false,
+    }));
 }
