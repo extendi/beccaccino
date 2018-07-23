@@ -10,6 +10,8 @@ const initialState = {
   requestsMetadata: {},
 };
 
+export const REDUX_HTTP_CLIENT_REDUCER_NAME = 'redux_http_client_reducer';
+
 export default function reduxHttpReducer(
   state: any = initialState,
   action: BindedActionResultPayload,

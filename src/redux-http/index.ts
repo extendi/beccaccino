@@ -26,5 +26,19 @@ export type BindedActionResultPayload = {
   response: EndpointResponse,
 };
 
+export type SelectorInput = {
+  state: any,
+  endpointName: string,
+  limit?: number,
+  responseMapper?: (meta: any, response: any) => any,
+};
+
+export type SelectorOutput = {
+  result: any,
+  metadata: any,
+};
+
 export { default as reduxHttpMiddleware } from '@lib/redux-http/middleware';
 export { default as reduxHttpReducer } from '@lib/redux-http/reducer';
+export { REDUX_HTTP_CLIENT_REDUCER_NAME } from '@lib/redux-http/reducer';
+export * from '@lib/redux-http/selectors';
