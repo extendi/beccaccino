@@ -38,7 +38,7 @@ describe('Endpoint.bindAction', () => {
     it('builds a request handler', () => {
       const action = Endpoint.bindAction({
         config: {
-          path: 'http://api.example.com/foos',
+          path: 'http://api.example.com/foos/:id',
           method: 'get',
           name: 'getFoo',
         },
@@ -47,12 +47,12 @@ describe('Endpoint.bindAction', () => {
         signature: REDUX_HTTP_ACTION_SIGNATURE
       });
 
-      action({});
+      action({ urlParams: { id: 42 }, requestPayload: { foo: 'bar' } });
       expect(requestHandler.mock.calls[0][0]).toMatchObject({
         requestConfiguration: {
           method: 'get',
-          url: 'http://api.example.com/foos',
-          data: {},
+          url: 'http://api.example.com/foos/42',
+          data: { foo: 'bar' },
         },
       });
     });

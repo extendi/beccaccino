@@ -1,7 +1,8 @@
 import { BindRequest, BindedAction }from '@lib/endpoint';
 import requestHandler from '@lib/endpoint/requestHandler';
+import { compile as compilePath } from 'path-to-regexp';
 
-const bindParamsToURL = (url : string, params: any) => url; // TODO DO THE REAL STUFF
+const bindParamsToURL = (url : string, params: any) => compilePath(url)(params);
 
 export default class Endpoint {
   static bindAction(bindRequest: BindRequest): BindedAction {

@@ -33,6 +33,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "invariant": "^2.2.4",
+    "path-to-regexp": "^2.2.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-redux": "^5.0.7",
@@ -42,7 +43,7 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
-    "moduleNameMapper" : {
+    "moduleNameMapper": {
       "^@lib/(.*)$": "<rootDir>/src/$1"
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
