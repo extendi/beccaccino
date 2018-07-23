@@ -1,17 +1,48 @@
 import {
   REDUX_HTTP_CLIENT_RESPONSE,
   REDUX_HTTP_CLIENT_ERROR,
+  REDUX_HTTP_CLIENT_REQUEST,
   reduxHttpReducer,
 } from '@lib/redux-http';
 
+const initialState = {
+  requests: {},
+  requestsMetadata: {},
+};
+
 describe('Redux Http reducer', () => {
-  it('handles REDUX_HTTP_CLIENT_RESPONSE', () => {
+  it('handles REDUX_HTTP_CLIENT_REQUEST', () => {
     const requestDetails = {
-      urlParmas: {
+      urlParams: {
         foo: 'bar'
       },
       requestPayload: 'some payload here!',
       endpointName: 'getSomething',
+      requestId: 'some kickass uuid',
+    };
+    const action = {
+      type: REDUX_HTTP_CLIENT_REQUEST,
+      requestDetails,
+    };
+    const nextState = reduxHttpReducer(initialState, action);
+    expect(nextState).toEqual({
+      requests: {},
+      requestsMetadata: {
+        [requestDetails.requestId]: {
+          isLoading: true,
+          success: undefined,
+        },
+      },
+    });
+  });
+  it('handles REDUX_HTTP_CLIENT_RESPONSE', () => {
+    const requestDetails = {
+      urlParams: {
+        foo: 'bar'
+      },
+      requestPayload: 'some payload here!',
+      endpointName: 'getSomething',
+      requestId: 'some kickass uuid',
     };
     const action = {
       type: REDUX_HTTP_CLIENT_RESPONSE,
@@ -19,10 +50,11 @@ describe('Redux Http reducer', () => {
       response: {
         rawResponse: 'the raw result',
         data: 'the response',
+        success: true,
       },
     };
     const nextState = reduxHttpReducer(
-      { requests: {} },
+      { requests: {}, requestsMetadata: {} },
       action,
     );
     expect(nextState).toEqual({
@@ -35,15 +67,22 @@ describe('Redux Http reducer', () => {
           },
         ],
       },
+      requestsMetadata: {
+        [requestDetails.requestId]: {
+          isLoading: false,
+          success: true,
+        },
+      },
     });
   });
   it('handles REDUX_HTTP_CLIENT_ERROR', () => {
     const requestDetails = {
-      urlParmas: {
+      urlParams: {
         foo: 'bar'
       },
       requestPayload: 'some payload here!',
       endpointName: 'getSomething',
+      requestId: 'some kickass uuid',
     };
     const action = {
       type: REDUX_HTTP_CLIENT_ERROR,
@@ -51,6 +90,7 @@ describe('Redux Http reducer', () => {
       response: {
         rawResponse: 'the raw error',
         data: 'the error',
+        success: false,
       },
     };
     const nextState = reduxHttpReducer(
@@ -67,11 +107,18 @@ describe('Redux Http reducer', () => {
           },
         ],
       },
+      requestsMetadata: {
+        [requestDetails.requestId]: {
+          isLoading: false,
+          success: false,
+        },
+      },
+
     });
   });
   it('returns the input state for other action types', () => {
     const requestDetails = {
-      urlParmas: {
+      urlParams: {
         foo: 'bar'
       },
       requestPayload: 'some payload here!',
@@ -89,6 +136,9 @@ describe('Redux Http reducer', () => {
       { requests: {}, someKey: 'some value' },
       action,
     );
-    expect(nextState).toEqual({ requests: {}, someKey: 'some value' });
+    expect(nextState).toEqual({
+      requests: {},
+      someKey: 'some value'
+    });
   })
 });
