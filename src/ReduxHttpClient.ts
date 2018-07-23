@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { EndpointConfig, Endpoint, BindedAction } from '@lib/endpoint';
-import { REDUX_HTTP_ACTION_SIGNATURE } from '@lib/redux-http';
+import { REDUX_HTTP_ACTION_SIGNATURE, REDUX_HTTP_CLIENT_REQUEST } from '@lib/redux-http';
 
 export type EndpointMap = {
   [key: string]: BindedAction,
@@ -23,7 +23,7 @@ class ReduxHttpClient {
     this.endpoints.forEach((endpoint) => {
       this.bindedEndpoints[endpoint.name] = Endpoint.bindAction({
         config: endpoint,
-        actionName: 'lol',
+        actionName: REDUX_HTTP_CLIENT_REQUEST,
         axiosInstance: this.axiosInstance,
         signature: REDUX_HTTP_ACTION_SIGNATURE,
       });
