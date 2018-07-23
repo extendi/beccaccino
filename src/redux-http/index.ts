@@ -10,6 +10,7 @@ export type BindedRequestDetails = {
   urlParams: any,
   requestPayload: any,
   endpointName: string,
+  requestId: string,
 };
 
 export type BindedActionPayload = {

@@ -1,6 +1,7 @@
-import { BindRequest, BindedAction }from '@lib/endpoint';
+import { BindRequest, BindedAction } from '@lib/endpoint';
 import requestHandler from '@lib/endpoint/requestHandler';
 import { compile as compilePath } from 'path-to-regexp';
+import { v4 as uuid } from 'uuid';
 
 const bindParamsToURL = (url : string, params: any) => compilePath(url)(params);
 
@@ -13,6 +14,7 @@ export default class Endpoint {
         urlParams,
         requestPayload,
         endpointName: bindRequest.config.name,
+        requestId: uuid(),
       },
       execAsync: requestHandler({
         requestConfiguration: {

@@ -75,6 +75,7 @@ describe('Endpoint.bindAction', () => {
           urlParams: {},
           requestPayload: {},
           endpointName: 'getFoo',
+          requestId: expect.any(String),
         },
         execAsync: expect.any(Object),
       });
@@ -98,6 +99,7 @@ describe('Endpoint.bindAction', () => {
           urlParams,
           requestPayload: {},
           endpointName: 'getFoo',
+          requestId: expect.any(String),
         },
         execAsync: expect.any(Object),
       });
@@ -121,43 +123,10 @@ describe('Endpoint.bindAction', () => {
           urlParams: {},
           requestPayload,
           endpointName: 'getFoo',
+          requestId: expect.any(String),
         },
         execAsync: expect.any(Object),
       });
     });
-
-    // it('builds a requests a BindedActionPayload with request payload', () => {
-    //   const action = Endpoint.bindAction({
-    //     config: {
-    //       path: 'http://api.example.com/foos',
-    //       method: 'get',
-    //       name: 'getFoo',
-    //     },
-    //     actionName: REDUX_HTTP_CLIENT_REQUEST,
-    //     axiosInstance: axios.create({}),
-    //     signature: REDUX_HTTP_ACTION_SIGNATURE
-    //   });
-
-    //   const requestPayload = { foo: 'bar' };
-
-    //   expect(action({ requestPayload })).toEqual({
-    //     type: REDUX_HTTP_CLIENT_REQUEST,
-    //     signature: REDUX_HTTP_ACTION_SIGNATURE,
-    //     requestDetails: {
-    //       urlParams: {},
-    //       requestPayload,
-    //       endpointName: 'getFoo',
-    //     },
-    //     execAsync: requestHandler({
-    //       requestConfiguration: {
-    //         method: 'get',
-    //         url: 'http://api.example.com/foos',
-    //         data: requestPayload,
-    //       },
-    //       axiosInstance,
-    //     }),
-    //   });
-
-    // });
   });
 });
