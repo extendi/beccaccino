@@ -26,12 +26,17 @@ export type BindedActionResultPayload = {
   response: EndpointResponse,
 };
 
+export type BaseSelectorMapper = {
+  responseMapper?: (meta: any, response: any) => any,
+};
+
 export type SelectorInput = {
   state: any,
   endpointName: string,
   limit?: number,
-  responseMapper?: (meta: any, response: any) => any,
 };
+
+export type BaseSelectorInput = BaseSelectorMapper & SelectorInput;
 
 export type SelectorOutput = {
   result: any,
