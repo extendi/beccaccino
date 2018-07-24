@@ -14,7 +14,7 @@ export const reduxHttpClientSelector = (input: BaseSelectorInput): Array<Selecto
 
   const mapperToApply = input.responseMapper || defaultMapper;
   const responseSlice = input.state[REDUX_HTTP_CLIENT_REDUCER_NAME].requests[input.endpointName] &&
-    input.state[REDUX_HTTP_CLIENT_REDUCER_NAME].requests[input.endpointName].slice(input.limit > 0 ? 0 : input.limit, input.limit > 0 ? input.limit : undefined); // We will refactor later
+    input.state[REDUX_HTTP_CLIENT_REDUCER_NAME].requests[input.endpointName].slice(...(input.limit > 0 ? [0, input.limit] : [input.limit, undefined])); // We will refactor later
   if (!responseSlice) return null;
   const metadataForEndpoint = input.state[REDUX_HTTP_CLIENT_REDUCER_NAME].requestsMetadata || {};
   return responseSlice.map(
