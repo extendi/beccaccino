@@ -1,6 +1,6 @@
-import { SelectorInput, SelectorOutput, REDUX_HTTP_CLIENT_REDUCER_NAME } from '@lib/redux-http';
+import { SelectorInput, BaseSelectorInput, SelectorOutput, REDUX_HTTP_CLIENT_REDUCER_NAME } from '@lib/redux-http';
 
-export const reduxHttpClientSelector = (input: SelectorInput): Array<SelectorOutput | any> => {
+export const reduxHttpClientSelector = (input: BaseSelectorInput): Array<SelectorOutput | any> => {
   const defaultMapper = (metadata: any, r: any): SelectorOutput => ({
     metadata,
     result: r,
