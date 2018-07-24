@@ -1,0 +1,15 @@
+branches:
+  only:
+    - master
+
+language: node_js
+node_js:
+  - "node"
+
+notifications:
+  email:
+    recipients:
+      - campagni@extendi.it
+      - dimonaco@extendi.it
+    on_success: always
+    on_failure: always
