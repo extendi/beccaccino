@@ -45,3 +45,8 @@ export const resultSelector = (input: SelectorInput): Array<any> => reduxHttpCli
   ...input,
   responseMapper: (_, r: any) => r,
 });
+
+export const errorSelector = (input: SelectorInput): Array<any> => reduxHttpClientSelector({
+  ...input,
+  responseMapper: (meta: any, r: any) => ({ error: !meta.success, response: r }),
+});

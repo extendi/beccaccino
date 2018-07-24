@@ -1,4 +1,10 @@
-import { REDUX_HTTP_CLIENT_REDUCER_NAME, reduxHttpClientSelector, takeLatest, resultSelector } from '@lib/redux-http';
+import {
+  REDUX_HTTP_CLIENT_REDUCER_NAME,
+  reduxHttpClientSelector,
+  takeLatest,
+  resultSelector,
+  errorSelector,
+} from '@lib/redux-http';
 
 const baseState = {
   [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
@@ -214,5 +220,28 @@ describe('takeLatest decorator', () => {
     const secondResult = configuredSelector.select(enrichedState);
     expect(firstResult).toBeUndefined();
     expect(secondResult).toEqual([{ data: ['test2'] }]);
+  });
+});
+
+describe('errorSelector', () => {
+  it('Returns all the errors of endpoint calls', () => {
+    const errors = errorSelector({
+      state: {
+        ...baseState,
+        [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
+          ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME],
+          requestsMetadata: {
+            request1: {
+              isLoading: false,
+              success: true,
+            },
+          },
+        },
+      },
+      endpointName: 'testEndpoint',
+    });
+    expect(errors).toEqual([
+      { error: false, response: { data: ['test'] } },
+    ]);
   });
 });
