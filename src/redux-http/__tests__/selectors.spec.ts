@@ -1,5 +1,4 @@
-import { REDUX_HTTP_CLIENT_REDUCER_NAME, reduxHttpClientSelector, takeLatest } from '@lib/redux-http';
-import { resultSelector } from '../selectors';
+import { REDUX_HTTP_CLIENT_REDUCER_NAME, reduxHttpClientSelector, takeLatest, resultSelector } from '@lib/redux-http';
 
 const baseState = {
   [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
@@ -166,4 +165,54 @@ describe('resultSelector', () => {
       { data: ['test'] },
     ]);
   });
-})
+});
+
+describe('takeLatest decorator', () => {
+  it('Returns undefined if the requests are the same across different calls of selector', () => {
+    const configuredSelector = takeLatest(
+      resultSelector, { limit: -1, endpointName: 'testEndpoint' },
+    );
+    const firstResult = configuredSelector.select(baseState);
+    const secondResult = configuredSelector.select(baseState);
+    expect(firstResult).toEqual(secondResult);
+  });
+
+  it('Returns the new request added after the firstr call of selector', () => {
+    const configuredSelector = takeLatest(
+      resultSelector, { limit: -1, endpointName: 'testEndpoint' },
+    );
+    const firstResult = configuredSelector.select(baseState);
+    const enrichedState = {
+      ...baseState,
+      [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
+        ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME],
+        requests: {
+          ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME].requests,
+          testEndpoint: [
+            ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME].requests.testEndpoint,
+            {
+              requestDetails: {
+                requestId: 'request2',
+              },
+              rawResponse: {},
+              response: { data: ['test2'] },
+            },
+          ],
+        },
+        requestsMetadata: {
+          request1: {
+            isLoading: false,
+            success: true,
+          },
+          request2: {
+            isLoading: true,
+            success: false,
+          },
+        },
+      },
+    };
+    const secondResult = configuredSelector.select(enrichedState);
+    expect(firstResult).toBeUndefined();
+    expect(secondResult).toEqual([{ data: ['test2'] }]);
+  });
+});
