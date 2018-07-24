@@ -1,4 +1,5 @@
-import { REDUX_HTTP_CLIENT_REDUCER_NAME, reduxHttpClientSelector } from '@lib/redux-http';
+import { REDUX_HTTP_CLIENT_REDUCER_NAME, reduxHttpClientSelector, takeLatest } from '@lib/redux-http';
+import { resultSelector } from '../selectors';
 
 const baseState = {
   [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
@@ -154,3 +155,15 @@ describe('state selectors', () => {
     }]);
   });
 });
+
+describe('resultSelector', () => {
+  it('Returns all the results of endpoint', () => {
+    const result = resultSelector({
+      endpointName: 'testEndpoint',
+      state: baseState,
+    });
+    expect(result).toEqual([
+      { data: ['test'] },
+    ]);
+  });
+})
