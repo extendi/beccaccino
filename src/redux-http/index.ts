@@ -26,22 +26,22 @@ export type BindedActionResultPayload = {
   response: EndpointResponse,
 };
 
-export type BaseSelectorMapper = {
-  responseMapper?: (meta: any, response: any) => any,
-};
-
 export type SelectorInput = {
   state: any,
   endpointName: string,
-  limit?: number,
 };
 
-export type BaseSelectorInput = BaseSelectorMapper & SelectorInput;
+export type BaseSelectorInput = SelectorInput & {
+  responseMapper?: (meta: any, response: any) => any,
+  limit?: number,
+};
 
 export type SelectorOutput = {
   result: any,
   metadata: any,
 };
+
+export type Selector = (input: SelectorInput) => Array<SelectorOutput | any>;
 
 export { default as reduxHttpMiddleware } from '@lib/redux-http/middleware';
 export { default as reduxHttpReducer } from '@lib/redux-http/reducer';

@@ -1,4 +1,10 @@
-import { SelectorInput, BaseSelectorInput, SelectorOutput, REDUX_HTTP_CLIENT_REDUCER_NAME } from '@lib/redux-http';
+import {
+  SelectorInput,
+  BaseSelectorInput,
+  SelectorOutput,
+  Selector,
+  REDUX_HTTP_CLIENT_REDUCER_NAME
+} from '@lib/redux-http';
 
 export const reduxHttpClientSelector = (input: BaseSelectorInput): Array<SelectorOutput | any> => {
   const defaultMapper = (metadata: any, r: any): SelectorOutput => ({
@@ -16,3 +22,19 @@ export const reduxHttpClientSelector = (input: BaseSelectorInput): Array<Selecto
 
   );
 };
+
+export const takeLatest = (selector: Selector, selectorInput: SelectorInput) => {
+  let counter: number = undefined;
+
+  return {
+    select: (state: any) => {
+      const stateSlice = state[REDUX_HTTP_CLIENT_REDUCER_NAME].requests[selectorInput.endpointName];
+      const currentCounter = stateSlice && stateSlice.length;
+      if (!counter) counter = currentCounter;
+
+      if (currentCounter && currentCounter > counter) return selector(selectorInput);
+
+      return undefined;
+    }
+  }
+}
