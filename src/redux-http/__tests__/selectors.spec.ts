@@ -1,7 +1,7 @@
 import {
   REDUX_HTTP_CLIENT_REDUCER_NAME,
   reduxHttpClientSelector,
-  takeLatest,
+  takeNext,
   resultSelector,
   errorSelector,
 } from '@lib/redux-http';
@@ -173,9 +173,9 @@ describe('resultSelector', () => {
   });
 });
 
-describe('takeLatest decorator', () => {
+describe('takeNext decorator', () => {
   it('Returns undefined if the requests are the same across different calls of selector', () => {
-    const configuredSelector = takeLatest(
+    const configuredSelector = takeNext(
       resultSelector, { limit: -1, endpointName: 'testEndpoint' },
     );
     const firstResult = configuredSelector.select(baseState);
@@ -184,7 +184,7 @@ describe('takeLatest decorator', () => {
   });
 
   it('Returns the new request added after the firstr call of selector', () => {
-    const configuredSelector = takeLatest(
+    const configuredSelector = takeNext(
       resultSelector, { limit: -1, endpointName: 'testEndpoint' },
     );
     const firstResult = configuredSelector.select(baseState);

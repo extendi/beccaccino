@@ -23,7 +23,7 @@ export const reduxHttpClientSelector = (input: BaseSelectorInput): Array<Selecto
   );
 };
 
-export const takeLatest = (selector: Selector, selectorInput: SelectorInput) => {
+export const takeNext = (selector: Selector, selectorInput: SelectorInput) => {
   let counter: number = undefined;
 
   return {
