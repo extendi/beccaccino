@@ -86,6 +86,7 @@ describe('Http Client Middleware', () => {
     });
   });
   it('dispatches a REDUX_HTTP_CLIENT_RESPONSE when execAsync promise resolves', () => {
+    expect.assertions(2);
     const requestDetails = {
       urlParmas: {
         foo: 'bar'
