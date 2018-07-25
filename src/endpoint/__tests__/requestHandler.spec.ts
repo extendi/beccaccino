@@ -78,7 +78,9 @@ describe('requestHandler', () => {
   describe('fails', () => {
     it('with rawResponse and data', () => {
       axiosInstance.request = jest.fn()
-        .mockImplementation((conf) => Promise.reject('the error'));
+        .mockImplementation((conf) => Promise.reject({
+          response: { data: 'error' }
+        }));
       const res = requestHandler({
         requestConfiguration: {
           url: 'http://example.com',
@@ -90,13 +92,15 @@ describe('requestHandler', () => {
         axiosInstance,
       });
       expect(res).resolves.toEqual({
-        rawResponse: 'the error',
-        data: 'the error',
+        rawResponse: { data: 'error' },
+        data: 'error',
         success: false,
       });
     });
     it('and calls errorTransformer', () => {
-      const stubbedPromise = Promise.reject('the error');
+      const stubbedPromise = Promise.reject({
+        response: { data: 'error' }
+      });
       const errorTransformer = jest.fn();
       axiosInstance.request = jest.fn()
         .mockImplementation((conf) => stubbedPromise);
@@ -111,7 +115,9 @@ describe('requestHandler', () => {
       });
       stubbedPromise.then(response => response).catch((error) => {
         expect(errorTransformer).toHaveBeenCalledTimes(1);
-        expect(errorTransformer).toHaveBeenCalledWith('the error');
+        expect(errorTransformer).toHaveBeenCalledWith(
+          'error',
+        );
       });
     })
   });
