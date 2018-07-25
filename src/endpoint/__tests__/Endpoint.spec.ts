@@ -55,6 +55,7 @@ describe('Endpoint.bindAction', () => {
           data: { foo: 'bar' },
         },
       });
+      expect(requestHandler.mock.calls[0][0].requestConfiguration.cancelToken).toBeInstanceOf(axios.CancelToken);
     });
 
     it('builds a BindedActionPayload', () => {
@@ -76,6 +77,7 @@ describe('Endpoint.bindAction', () => {
           requestPayload: {},
           endpointName: 'getFoo',
           requestId: expect.any(String),
+          cancelRequest: expect.any(Function),
         },
         execAsync: expect.any(Object),
       });
@@ -100,6 +102,7 @@ describe('Endpoint.bindAction', () => {
           requestPayload: {},
           endpointName: 'getFoo',
           requestId: expect.any(String),
+          cancelRequest: expect.any(Function),
         },
         execAsync: expect.any(Object),
       });
@@ -124,6 +127,7 @@ describe('Endpoint.bindAction', () => {
           requestPayload,
           endpointName: 'getFoo',
           requestId: expect.any(String),
+          cancelRequest: expect.any(Function),
         },
         execAsync: expect.any(Object),
       });

@@ -5,6 +5,7 @@ import {
   resultSelector,
   errorSelector,
   loadingSelector,
+  cancelTokenSelector,
 } from '@lib/redux-http';
 
 const baseState = {
@@ -153,7 +154,7 @@ describe('state selectors', () => {
         },
       },
       endpointName: 'testEndpoint',
-      responseMapper: (meta: any, response: any) => ({ foo: response.data, bar: meta.isLoading }),
+      responseMapper: (meta: any, result: any) => ({ foo: result.response.data, bar: meta.isLoading }),
     });
     expect(result).toEqual([{
       foo: ['test'],
@@ -248,7 +249,7 @@ describe('errorSelector', () => {
 });
 
 describe('loadingSelector', () => {
-  it('Return all the loading endpoint calls', () => {
+  it('Returns all the loading endpoint calls', () => {
     const loading = loadingSelector({
       state: {
         ...baseState,
@@ -282,5 +283,35 @@ describe('loadingSelector', () => {
       endpointName: 'testEndpoint',
     });
     expect(loading).toEqual([true, false]);
+  });
+});
+
+describe('cancelTokenSelector', () => {
+  it('Returns the cancel token', () => {
+    const cancelCallback = () => 'cancelRequest';
+    const params = {
+      state: {
+        ...baseState,
+        [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
+          ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME],
+          requests: {
+            ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME].requests,
+            testEndpoint: [
+              {
+                ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME].requests.testEndpoint[0],
+                requestDetails: {
+                  cancelRequest: cancelCallback,
+                },
+              },
+            ],
+          },
+        }
+      },
+      limit: 1,
+      endpointName: 'testEndpoint',
+    };
+    const cancelToken = cancelTokenSelector(params);
+
+    expect(cancelToken).toEqual([cancelCallback]);
   });
 });

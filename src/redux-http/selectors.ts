@@ -10,16 +10,18 @@ import {
 export const reduxHttpClientSelector = (input: BaseSelectorInput): Array<SelectorOutput | any> => {
   const defaultMapper = (metadata: any, r: any): SelectorOutput => ({
     metadata,
-    result: r,
+    result: r.response,
   });
 
   const mapperToApply = input.responseMapper || defaultMapper;
   const stateSlice = input.state[REDUX_HTTP_CLIENT_REDUCER_NAME].requests[input.endpointName];
   const responseSlice =  stateSlice && stateSlice.slice(...(input.limit > 0 ? [0, input.limit] : [input.limit, undefined]));
+
   if (!responseSlice) return null;
+
   const metadataForEndpoint = input.state[REDUX_HTTP_CLIENT_REDUCER_NAME].requestsMetadata || {};
   return responseSlice.map(
-    (r: any) => mapperToApply(metadataForEndpoint[r.requestDetails.requestId], r.response),
+    (r: any) => mapperToApply(metadataForEndpoint[r.requestDetails.requestId], r),
 
   );
 };
@@ -44,15 +46,20 @@ export const takeNext = (selector: Selector, conf: SelectorInputConf) => {
 
 export const resultSelector = (input: SelectorInput): Array<any> => reduxHttpClientSelector({
   ...input,
-  responseMapper: (_, r: any) => r,
+  responseMapper: (_, r: any) => r.response,
 });
 
 export const errorSelector = (input: SelectorInput): Array<any> => reduxHttpClientSelector({
   ...input,
-  responseMapper: (meta: any, r: any) => ({ error: !meta.success, response: r }),
+  responseMapper: (meta: any, r: any) => ({ error: !meta.success, response: r.response }),
 });
 
 export const loadingSelector = (input: SelectorInput): Array<boolean> => reduxHttpClientSelector({
    ...input,
   responseMapper: (meta: any, _) => meta.isLoading,
+});
+
+export const cancelTokenSelector = (input: SelectorInput): Array<boolean> => reduxHttpClientSelector({
+  ...input,
+  responseMapper: (_, r: any) => r.requestDetails.cancelRequest,
 });
