@@ -3,6 +3,8 @@ import requestHandler from '@lib/endpoint/requestHandler';
 
 const axiosInstance = axios.create();
 
+const axiosCancelToken = axios.CancelToken.source();
+
 describe('requestHandler', () => {
   it('handle the requests through axios request', () => {
     axiosInstance.request = jest.fn()
@@ -10,7 +12,8 @@ describe('requestHandler', () => {
     requestHandler({
       requestConfiguration: {
         url: 'http://example.com',
-        method: 'get'
+        method: 'get',
+        cancelToken: axiosCancelToken.token,
       },
       axiosInstance,
     });
@@ -18,6 +21,7 @@ describe('requestHandler', () => {
     expect(axiosInstance.request).toHaveBeenCalledWith({
       url: 'http://example.com',
       method: 'get',
+      cancelToken: axiosCancelToken.token,
     });
   });
   it('returns a Promise', () => {
@@ -26,7 +30,8 @@ describe('requestHandler', () => {
     const res = requestHandler({
       requestConfiguration: {
         url: 'http://example.com',
-        method: 'get'
+        method: 'get',
+        cancelToken: axiosCancelToken.token,
       },
       axiosInstance,
     });
@@ -39,7 +44,8 @@ describe('requestHandler', () => {
       const res = requestHandler({
         requestConfiguration: {
           url: 'http://example.com',
-          method: 'get'
+          method: 'get',
+          cancelToken: axiosCancelToken.token,
         },
         axiosInstance,
       });
@@ -57,7 +63,8 @@ describe('requestHandler', () => {
       requestHandler({
         requestConfiguration: {
           url: 'http://example.com',
-          method: 'get'
+          method: 'get',
+          cancelToken: axiosCancelToken.token,
         },
         responseTransformer,
         axiosInstance,
@@ -75,7 +82,8 @@ describe('requestHandler', () => {
       const res = requestHandler({
         requestConfiguration: {
           url: 'http://example.com',
-          method: 'get'
+          method: 'get',
+          cancelToken: axiosCancelToken.token,
         },
         errorTransformer: e => e,
         responseTransformer: r => r,
@@ -95,7 +103,8 @@ describe('requestHandler', () => {
       requestHandler({
         requestConfiguration: {
           url: 'http://example.com',
-          method: 'get'
+          method: 'get',
+          cancelToken: axiosCancelToken.token,
         },
         errorTransformer,
         axiosInstance,
