@@ -42,6 +42,7 @@
     "moduleNameMapper": {
       "^@lib/(.*)$": "<rootDir>/src/$1"
     },
+    "testEnvironment": "node",
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
       "ts",
