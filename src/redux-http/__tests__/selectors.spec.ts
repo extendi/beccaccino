@@ -4,6 +4,7 @@ import {
   takeNext,
   resultSelector,
   errorSelector,
+  loadingSelector,
 } from '@lib/redux-http';
 
 const baseState = {
@@ -243,5 +244,43 @@ describe('errorSelector', () => {
     expect(errors).toEqual([
       { error: false, response: { data: ['test'] } },
     ]);
+  });
+});
+
+describe('loadingSelector', () => {
+  it('Return all the loading endpoint calls', () => {
+    const loading = loadingSelector({
+      state: {
+        ...baseState,
+        [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
+          ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME],
+          requests: {
+            ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME].requests,
+            testEndpoint: [
+              ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME].requests.testEndpoint,
+              {
+                requestDetails: {
+                  requestId: 'request2',
+                },
+                rawResponse: {},
+                response: { data: ['test2'] },
+              },
+            ],
+          },
+          requestsMetadata: {
+            request1: {
+              isLoading: true,
+              success: false,
+            },
+            request2: {
+              isLoading: false,
+              success: true
+            }
+          },
+        },
+      },
+      endpointName: 'testEndpoint',
+    });
+    expect(loading).toEqual([true, false]);
   });
 });

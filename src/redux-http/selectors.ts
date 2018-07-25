@@ -51,3 +51,8 @@ export const errorSelector = (input: SelectorInput): Array<any> => reduxHttpClie
   ...input,
   responseMapper: (meta: any, r: any) => ({ error: !meta.success, response: r }),
 });
+
+export const loadingSelector = (input: SelectorInput): Array<boolean> => reduxHttpClientSelector({
+   ...input,
+  responseMapper: (meta: any, _) => meta.isLoading,
+});
