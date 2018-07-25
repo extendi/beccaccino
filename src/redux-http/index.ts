@@ -26,10 +26,13 @@ export type BindedActionResultPayload = {
   response: EndpointResponse,
 };
 
-export type SelectorInput = {
-  state?: any,
+export type SelectorInputConf = {
   endpointName: string,
   limit?: number,
+}
+
+export type SelectorInput = SelectorInputConf & {
+  state: any,
 };
 
 export type BaseSelectorInput = SelectorInput & {

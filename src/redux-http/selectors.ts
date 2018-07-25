@@ -2,6 +2,7 @@ import {
   SelectorInput,
   BaseSelectorInput,
   SelectorOutput,
+  SelectorInputConf,
   Selector,
   REDUX_HTTP_CLIENT_REDUCER_NAME
 } from '@lib/redux-http';
@@ -23,17 +24,17 @@ export const reduxHttpClientSelector = (input: BaseSelectorInput): Array<Selecto
   );
 };
 
-export const takeNext = (selector: Selector, selectorInput: SelectorInput) => {
+export const takeNext = (selector: Selector, conf: SelectorInputConf) => {
   let counter: number = undefined;
 
   return {
     select: (state: any) => {
-      const stateSlice = state[REDUX_HTTP_CLIENT_REDUCER_NAME].requests[selectorInput.endpointName];
+      const stateSlice = state[REDUX_HTTP_CLIENT_REDUCER_NAME].requests[conf.endpointName];
       const currentCounter = stateSlice && stateSlice.length;
       if (!counter) counter = currentCounter;
 
       if (currentCounter && currentCounter > counter) {
-        return selector({ ...selectorInput, state });
+        return selector({ ...conf, state });
       }
 
       return undefined;
