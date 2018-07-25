@@ -10,7 +10,7 @@
   "scripts": {
     "build:development": "yarn run webpack --mode development",
     "build:production": "yarn run webpack --mode production",
-    "test": "yarn run jest --coverage"
+    "test": "yarn run jest --coverage --coverageReporters=text-lcov | ./node_modules/coveralls/bin/coveralls.js"
   },
   "typings": "./index.d.ts",
   "devDependencies": {
