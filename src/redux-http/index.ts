@@ -11,6 +11,7 @@ export type BindedRequestDetails = {
   requestPayload: any,
   endpointName: string,
   requestId: string,
+  cancelFunction: Function,
 };
 
 export type BindedActionPayload = {
