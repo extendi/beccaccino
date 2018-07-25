@@ -32,10 +32,10 @@ module.exports = [{
     plugins: [new TsconfigPathsPlugin({ configFile: "tsconfig.json" })]
   },
   module: {
-      rules: [
-          { test: /\.tsx?$/, loader: "ts-loader"},
-          { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
-      ]
+    rules: [
+      { test: /\.tsx?$/, loader: "ts-loader" },
+      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+    ]
   },
   output: {
     path: path.join(__dirname, './dist'),
@@ -59,10 +59,10 @@ module.exports = [{
     plugins: [new TsconfigPathsPlugin({ configFile: "tsconfig.json" })]
   },
   module: {
-      rules: [
-          { test: /\.tsx?$/, loader: "ts-loader"},
-          { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
-      ]
+    rules: [
+      { test: /\.tsx?$/, loader: "ts-loader" },
+      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+    ]
   },
   target: "node",
   output: {
