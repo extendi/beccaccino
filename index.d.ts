@@ -1,1 +1,2 @@
-export * from '.src/Endpoint.d.ts';
+export * from './src/endpoint';
+export * from './src/redux-http';
