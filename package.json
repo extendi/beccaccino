@@ -1,16 +1,26 @@
 {
-  "name": "redux-http-client",
+  "name": "beccaccino",
   "version": "0.1.0",
-  "description": "Pluggable http client using redux for request/response storage",
-  "main": "dist/redux-http-client-node.js",
-  "browser": "dist/redux-http-client-node.js",
+  "description": "Easy, reliable and fast http client for redux, framework agnostic, :zap: like a beccaccino",
+  "main": "dist/beccaccino-node.js",
+  "browser": "dist/beccacino.js",
   "author": "Extendi <info@extendi.it>",
   "license": "MIT",
   "private": false,
   "scripts": {
     "build:development": "yarn run webpack --mode development",
     "build:production": "yarn run webpack --mode production",
-    "test": "yarn run jest --coverage --coverageReporters=text-lcov | ./node_modules/coveralls/bin/coveralls.js"
+    "test": "yarn run jest --coverage --coverageReporters=text-lcov"
+  },
+  "files": [
+    "./dist"
+  ],
+  "keywords": [
+    "redux", "axios", "http", "client", "request", "react", "vue", "angular"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/extendi/beccaccino"
   },
   "typings": "./index.d.ts",
   "devDependencies": {

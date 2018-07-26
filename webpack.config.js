@@ -1,7 +1,7 @@
 const path = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
-const libraryName = 'redux-http-client';
+const libraryName = 'beccaccino';
 
 const propTypesExternals = {
   root: 'PropTypes',
