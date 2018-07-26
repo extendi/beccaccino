@@ -9,6 +9,16 @@ node_js:
 after_script:
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 
+before_deploy: "yarn build:production"
+
+deploy:
+  provider: npm
+  email: info@extendi.it
+  skip_cleanup: true
+  api_key: $NPM_TOKEN
+  on:
+    tags: true
+
 notifications:
   email:
     recipients:
