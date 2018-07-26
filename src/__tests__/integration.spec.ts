@@ -1,8 +1,8 @@
 import {
-  ReduxHttpClient,
-  reduxHttpMiddleware,
-  reduxHttpReducer,
-  REDUX_HTTP_CLIENT_REDUCER_NAME,
+  Beccaccino,
+  beccaccinoMiddleware,
+  beccaccinoReducer,
+  BECCACCINO_REDUCER_NAME,
 } from '@lib/index';
 
 import {
@@ -13,13 +13,13 @@ import {
 
 const store = createStore(
   combineReducers({
-    [REDUX_HTTP_CLIENT_REDUCER_NAME]: reduxHttpReducer,
+    [BECCACCINO_REDUCER_NAME]: beccaccinoReducer,
   }),
   {},
-  applyMiddleware(reduxHttpMiddleware),
+  applyMiddleware(beccaccinoMiddleware),
 );
 
-const client = ReduxHttpClient.configure(
+const client = Beccaccino.configure(
   {
     baseURL: 'http://www.mocky.io/v2',
     headers: {
@@ -35,7 +35,7 @@ const client = ReduxHttpClient.configure(
 describe('Integration tests with redux', () => {
   it('store default state in redux http reducer', () => {
     expect(store.getState()).toEqual({
-      [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
+      [BECCACCINO_REDUCER_NAME]: {
         requests: {},
         requestsMetadata: {},
       },
@@ -51,7 +51,7 @@ describe('when http action is dispatched the middleware', () => {
     await action.execAsync;
     const state = store.getState();
     expect(state).toMatchObject({
-      [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
+      [BECCACCINO_REDUCER_NAME]: {
         requests: {
           getRequest: [
             {
@@ -85,7 +85,7 @@ describe('when http action is dispatched the middleware', () => {
     await action.execAsync;
     const state = store.getState();
     expect(state).toMatchObject({
-      [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
+      [BECCACCINO_REDUCER_NAME]: {
         requests: {
           getRequest: [
             {

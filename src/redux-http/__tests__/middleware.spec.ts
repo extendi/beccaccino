@@ -1,5 +1,5 @@
 import {
-  reduxHttpMiddleware,
+  beccaccinoMiddleware,
   REDUX_HTTP_ACTION_SIGNATURE,
   REDUX_HTTP_CLIENT_REQUEST,
   REDUX_HTTP_CLIENT_RESPONSE,
@@ -20,7 +20,7 @@ describe('Http Client Middleware', () => {
       execAsync: new Promise((resolve, reject) => resolve('asd')),
     };
 
-    const result = reduxHttpMiddleware(null)(nextSpyMock)(action);
+    const result = beccaccinoMiddleware(null)(nextSpyMock)(action);
     expect(result).toBeUndefined();
     expect(nextSpyMock).toHaveReturnedTimes(1);
     expect(nextSpyMock).toHaveBeenCalledWith(action);
@@ -33,7 +33,7 @@ describe('Http Client Middleware', () => {
       execAsync: new Promise((resolve, reject) => resolve('asd') || reject('foo')),
     }
 
-    const result = reduxHttpMiddleware(null)(nextSpyMock)(action);
+    const result = beccaccinoMiddleware(null)(nextSpyMock)(action);
     expect(result).toBeUndefined();
     expect(nextSpyMock).toHaveReturnedTimes(1);
     expect(nextSpyMock).toHaveBeenCalledWith(action);
@@ -45,7 +45,7 @@ describe('Http Client Middleware', () => {
       signature: REDUX_HTTP_ACTION_SIGNATURE,
     }
 
-    const result = reduxHttpMiddleware(null)(nextSpyMock)(action);
+    const result = beccaccinoMiddleware(null)(nextSpyMock)(action);
     expect(result).toBeUndefined();
     expect(nextSpyMock).toHaveReturnedTimes(1);
     expect(nextSpyMock).toHaveBeenCalledWith(action);
@@ -58,7 +58,7 @@ describe('Http Client Middleware', () => {
       execAsync: 'asd asd',
     }
 
-    const result = reduxHttpMiddleware(null)(nextSpyMock)(action);
+    const result = beccaccinoMiddleware(null)(nextSpyMock)(action);
     expect(result).toBeUndefined();
     expect(nextSpyMock).toHaveReturnedTimes(1);
     expect(nextSpyMock).toHaveBeenCalledWith(action);
@@ -78,7 +78,7 @@ describe('Http Client Middleware', () => {
       execAsync: new Promise((resolve, reject) => resolve('asd')),
     };
 
-    reduxHttpMiddleware(null)(nextSpyMock)(action);
+    beccaccinoMiddleware(null)(nextSpyMock)(action);
     expect(nextSpyMock).toHaveReturnedTimes(1);
     expect(nextSpyMock).toHaveBeenCalledWith({
       type: REDUX_HTTP_CLIENT_REQUEST,
@@ -101,7 +101,7 @@ describe('Http Client Middleware', () => {
       execAsync: Promise.resolve('the result'),
     };
 
-    reduxHttpMiddleware(null)(nextSpyMock)(action);
+    beccaccinoMiddleware(null)(nextSpyMock)(action);
     action.execAsync.then((result) => {
       expect(nextSpyMock).toHaveBeenCalledTimes(2);
       expect(nextSpyMock).lastCalledWith({
@@ -126,7 +126,7 @@ describe('Http Client Middleware', () => {
       execAsync: Promise.reject('the error'),
     };
 
-    reduxHttpMiddleware(null)(nextSpyMock)(action);
+    beccaccinoMiddleware(null)(nextSpyMock)(action);
     action.execAsync.then(response => response).catch((errors) => {
       expect(nextSpyMock).toHaveBeenCalledTimes(2);
       expect(nextSpyMock).lastCalledWith({

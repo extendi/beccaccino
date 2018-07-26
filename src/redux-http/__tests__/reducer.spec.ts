@@ -2,7 +2,7 @@ import {
   REDUX_HTTP_CLIENT_RESPONSE,
   REDUX_HTTP_CLIENT_ERROR,
   REDUX_HTTP_CLIENT_REQUEST,
-  reduxHttpReducer,
+  beccaccinoReducer,
 } from '@lib/redux-http';
 
 const initialState = {
@@ -24,7 +24,7 @@ describe('Redux Http reducer', () => {
       type: REDUX_HTTP_CLIENT_REQUEST,
       requestDetails,
     };
-    const nextState = reduxHttpReducer(initialState, action);
+    const nextState = beccaccinoReducer(initialState, action);
     expect(nextState).toEqual({
       requests: {},
       requestsMetadata: {
@@ -53,7 +53,7 @@ describe('Redux Http reducer', () => {
         success: true,
       },
     };
-    const nextState = reduxHttpReducer(
+    const nextState = beccaccinoReducer(
       { requests: {}, requestsMetadata: {} },
       action,
     );
@@ -93,7 +93,7 @@ describe('Redux Http reducer', () => {
         success: false,
       },
     };
-    const nextState = reduxHttpReducer(
+    const nextState = beccaccinoReducer(
       undefined,
       action,
     );
@@ -132,7 +132,7 @@ describe('Redux Http reducer', () => {
         data: 'the error',
       },
     };
-    const nextState = reduxHttpReducer(
+    const nextState = beccaccinoReducer(
       { requests: {}, someKey: 'some value' },
       action,
     );

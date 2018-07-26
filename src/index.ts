@@ -1,2 +1,2 @@
-export { default as ReduxHttpClient } from '@lib/ReduxHttpClient';
+export { default as Beccaccino } from '@lib/Beccaccino';
 export * from '@lib/redux-http';

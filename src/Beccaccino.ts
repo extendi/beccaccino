@@ -31,7 +31,7 @@ class ReduxHttpClient {
   }
 }
 
-const reduxHttpClientInitializer = (() => {
+const beccaccino = (() => {
   let clientInstance: ReduxHttpClient = null;
   return {
     configure: (
@@ -49,4 +49,4 @@ const reduxHttpClientInitializer = (() => {
   };
 })();
 
-export default reduxHttpClientInitializer;
+export default beccaccino;

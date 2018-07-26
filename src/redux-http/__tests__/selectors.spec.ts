@@ -1,6 +1,6 @@
 import {
-  REDUX_HTTP_CLIENT_REDUCER_NAME,
-  reduxHttpClientSelector,
+  BECCACCINO_REDUCER_NAME,
+  beccaccinoSelector,
   takeNext,
   resultSelector,
   errorSelector,
@@ -9,7 +9,7 @@ import {
 } from '@lib/redux-http';
 
 const baseState = {
-  [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
+  [BECCACCINO_REDUCER_NAME]: {
     requests: {
       testEndpoint: [
         {
@@ -25,9 +25,9 @@ const baseState = {
 };
 
 describe('state selectors', () => {
-  describe('reduxHttpClientSelector', () => {
+  describe('beccaccinoSelector', () => {
     it('Returns undefined if endpoint is not defined or without requests', () => {
-      const result = reduxHttpClientSelector({
+      const result = beccaccinoSelector({
         state: {
           ...baseState, requestsMetadata: {
             missingEndpoint: {
@@ -42,11 +42,11 @@ describe('state selectors', () => {
     });
   });
   it('Returns the request and metadata for an existing endpoint', () => {
-    const result = reduxHttpClientSelector({
+    const result = beccaccinoSelector({
       state: {
         ...baseState,
-        [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
-          ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME],
+        [BECCACCINO_REDUCER_NAME]: {
+          ...baseState[BECCACCINO_REDUCER_NAME],
           requestsMetadata: {
             request1: {
               isLoading: false,
@@ -66,15 +66,15 @@ describe('state selectors', () => {
     }]);
   });
   it('Returns the request and metadata for an existing endpoint with limit of 2', () => {
-    const result = reduxHttpClientSelector({
+    const result = beccaccinoSelector({
       state: {
         ...baseState,
-        [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
-          ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME],
+        [BECCACCINO_REDUCER_NAME]: {
+          ...baseState[BECCACCINO_REDUCER_NAME],
           requests: {
-            ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME].requests,
+            ...baseState[BECCACCINO_REDUCER_NAME].requests,
             testEndpoint: [
-              ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME].requests.testEndpoint,
+              ...baseState[BECCACCINO_REDUCER_NAME].requests.testEndpoint,
               {
                 requestDetails: {
                   requestId: 'request2',
@@ -129,7 +129,7 @@ describe('state selectors', () => {
   });
 
   it('Returns the request and undefined metadata for an existing endpoint', () => {
-    const result = reduxHttpClientSelector({
+    const result = beccaccinoSelector({
       state: baseState,
       endpointName: 'testEndpoint',
     });
@@ -140,11 +140,11 @@ describe('state selectors', () => {
   });
 
   it('Applies the map with custom function', () => {
-    const result = reduxHttpClientSelector({
+    const result = beccaccinoSelector({
       state: {
         ...baseState,
-        [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
-          ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME],
+        [BECCACCINO_REDUCER_NAME]: {
+          ...baseState[BECCACCINO_REDUCER_NAME],
           requestsMetadata: {
             request1: {
               isLoading: false,
@@ -192,12 +192,12 @@ describe('takeNext decorator', () => {
     const firstResult = configuredSelector.select(baseState);
     const enrichedState = {
       ...baseState,
-      [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
-        ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME],
+      [BECCACCINO_REDUCER_NAME]: {
+        ...baseState[BECCACCINO_REDUCER_NAME],
         requests: {
-          ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME].requests,
+          ...baseState[BECCACCINO_REDUCER_NAME].requests,
           testEndpoint: [
-            ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME].requests.testEndpoint,
+            ...baseState[BECCACCINO_REDUCER_NAME].requests.testEndpoint,
             {
               requestDetails: {
                 requestId: 'request2',
@@ -230,8 +230,8 @@ describe('errorSelector', () => {
     const errors = errorSelector({
       state: {
         ...baseState,
-        [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
-          ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME],
+        [BECCACCINO_REDUCER_NAME]: {
+          ...baseState[BECCACCINO_REDUCER_NAME],
           requestsMetadata: {
             request1: {
               isLoading: false,
@@ -253,12 +253,12 @@ describe('loadingSelector', () => {
     const loading = loadingSelector({
       state: {
         ...baseState,
-        [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
-          ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME],
+        [BECCACCINO_REDUCER_NAME]: {
+          ...baseState[BECCACCINO_REDUCER_NAME],
           requests: {
-            ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME].requests,
+            ...baseState[BECCACCINO_REDUCER_NAME].requests,
             testEndpoint: [
-              ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME].requests.testEndpoint,
+              ...baseState[BECCACCINO_REDUCER_NAME].requests.testEndpoint,
               {
                 requestDetails: {
                   requestId: 'request2',
@@ -292,13 +292,13 @@ describe('cancelTokenSelector', () => {
     const params = {
       state: {
         ...baseState,
-        [REDUX_HTTP_CLIENT_REDUCER_NAME]: {
-          ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME],
+        [BECCACCINO_REDUCER_NAME]: {
+          ...baseState[BECCACCINO_REDUCER_NAME],
           requests: {
-            ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME].requests,
+            ...baseState[BECCACCINO_REDUCER_NAME].requests,
             testEndpoint: [
               {
-                ...baseState[REDUX_HTTP_CLIENT_REDUCER_NAME].requests.testEndpoint[0],
+                ...baseState[BECCACCINO_REDUCER_NAME].requests.testEndpoint[0],
                 requestDetails: {
                   cancelRequest: cancelCallback,
                 },

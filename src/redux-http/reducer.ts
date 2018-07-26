@@ -10,9 +10,9 @@ const initialState = {
   requestsMetadata: {},
 };
 
-export const REDUX_HTTP_CLIENT_REDUCER_NAME = 'redux_http_client_reducer';
+export const BECCACCINO_REDUCER_NAME = 'beccaccino_reducer';
 
-export default function reduxHttpReducer(
+export default function beccaccinoReducer(
   state: any = initialState,
   action: BindedActionResultPayload,
 ): any {

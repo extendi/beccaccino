@@ -1,10 +1,10 @@
 import { EndpointResponse } from '@lib/endpoint';
 
-export const REDUX_HTTP_CLIENT_REQUEST = '@@redux_http_client/request';
-export const REDUX_HTTP_CLIENT_ERROR = '@@redux_http_client/error';
-export const REDUX_HTTP_CLIENT_RESPONSE = '@@redux_http_client/response';
+export const REDUX_HTTP_CLIENT_REQUEST = '@@beccaccino/request';
+export const REDUX_HTTP_CLIENT_ERROR = '@@beccaccino/error';
+export const REDUX_HTTP_CLIENT_RESPONSE = '@@beccaccino/response';
 
-export const REDUX_HTTP_ACTION_SIGNATURE = Symbol('REDUX:HTTP_CLIENT_ACTION');
+export const REDUX_HTTP_ACTION_SIGNATURE = Symbol('REDUX:BECCACCINO_ACTION');
 
 export type BindedRequestDetails = {
   urlParams: any,
@@ -47,7 +47,7 @@ export type SelectorOutput = {
 
 export type Selector = (input: SelectorInput) => Array<SelectorOutput | any>;
 
-export { default as reduxHttpMiddleware } from '@lib/redux-http/middleware';
-export { default as reduxHttpReducer } from '@lib/redux-http/reducer';
-export { REDUX_HTTP_CLIENT_REDUCER_NAME } from '@lib/redux-http/reducer';
+export { default as beccaccinoMiddleware } from '@lib/redux-http/middleware';
+export { default as beccaccinoReducer } from '@lib/redux-http/reducer';
+export { BECCACCINO_REDUCER_NAME } from '@lib/redux-http/reducer';
 export * from '@lib/redux-http/selectors';
