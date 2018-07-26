@@ -1,16 +1,17 @@
 const path = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const prodConfig = require('./webpack.config.production');
 
 const libraryName = 'beccaccino';
 
 const reduxExternals = {
-  root: 'redux',
+  root: 'Redux',
   commonjs2: 'redux',
   commonjs: 'redux',
   amd: 'redux',
 };
 
-module.exports = [{
+const common = {
   entry: path.join(__dirname, './src/index.ts'),
   devtool: "source-map",
   resolve: {
@@ -23,6 +24,13 @@ module.exports = [{
       { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
     ]
   },
+  externals: {
+    redux: reduxExternals,
+  },
+};
+
+const developmentConfig = [{
+  ...common,
   output: {
     path: path.join(__dirname, './dist'),
     filename: `${libraryName}.js`,
@@ -31,23 +39,9 @@ module.exports = [{
     umdNamedDefine: true,
     globalObject: 'this',
   },
-  externals: {
-    redux: reduxExternals,
-  },
 },
 {
-  entry: path.join(__dirname, './src/index.ts'),
-  devtool: "source-map",
-  resolve: {
-    extensions: [".ts", ".tsx", ".js", ".json"],
-    plugins: [new TsconfigPathsPlugin({ configFile: "tsconfig.json" })]
-  },
-  module: {
-    rules: [
-      { test: /\.tsx?$/, loader: "ts-loader" },
-      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
-    ]
-  },
+  ...common,
   target: "node",
   output: {
     path: path.join(__dirname, './dist'),
@@ -55,7 +49,20 @@ module.exports = [{
     library: libraryName,
     libraryTarget: 'commonjs2',
   },
-  externals: {
-    redux: reduxExternals,
-  },
 }];
+
+module.exports = (env) => {
+  if (env && env.production) {
+    return [
+      {
+        ...developmentConfig[0],
+        ...prodConfig,
+      },
+      {
+        ...developmentConfig[1],
+        ...prodConfig,
+      },
+    ];
+  }
+  return developmentConfig;
+};

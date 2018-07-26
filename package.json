@@ -8,15 +8,22 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build:development": "yarn run webpack --mode development",
-    "build:production": "yarn run webpack --mode production",
+    "build:development": "NODE_ENV=development yarn run webpack --progress --mode development",
+    "build:production": "NODE_ENV=production yarn run webpack --progress --env.production",
     "test": "yarn run jest --coverage --coverageReporters=text-lcov"
   },
   "files": [
     "./dist"
   ],
   "keywords": [
-    "redux", "axios", "http", "client", "request", "react", "vue", "angular"
+    "redux",
+    "axios",
+    "http",
+    "client",
+    "request",
+    "react",
+    "vue",
+    "angular"
   ],
   "repository": {
     "type": "git",
@@ -37,12 +44,12 @@
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.9.2",
     "typescript": "^2.9.2",
+    "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack": "^4.16.2",
     "webpack-cli": "^3.1.0"
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "invariant": "^2.2.4",
     "path-to-regexp": "^2.2.1",
     "uuid": "^3.3.2"
   },
