@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Easy, reliable and fast http client for redux, framework agnostic, :zap: like a beccaccino",
   "main": "dist/beccaccino-node.js",
-  "browser": "dist/beccacino.js",
+  "browser": "dist/beccaccino.js",
   "author": "Extendi <info@extendi.it>",
   "license": "MIT",
   "private": false,
@@ -13,8 +13,8 @@
     "test": "yarn run jest --coverage --coverageReporters=text-lcov"
   },
   "files": [
-    "./dist",
-    "./index.d.ts"
+    "dist",
+    "index.d.ts"
   ],
   "keywords": [
     "redux",
