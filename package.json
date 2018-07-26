@@ -13,7 +13,8 @@
     "test": "yarn run jest --coverage --coverageReporters=text-lcov"
   },
   "files": [
-    "./dist"
+    "./dist",
+    "./index.d.ts"
   ],
   "keywords": [
     "redux",
