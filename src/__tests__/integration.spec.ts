@@ -44,7 +44,7 @@ describe('Integration tests with redux', () => {
 });
 
 describe('when http action is dispatched the middleware', () => {
-  it('store first request result', async () => {
+  it('store first request result', async (done) => {
     expect.assertions(1);
     const action = client.getRequest({ urlParams: { id: '5b589b113000002f27fe5005' } });
     store.dispatch(action);
@@ -77,8 +77,9 @@ describe('when http action is dispatched the middleware', () => {
         },
       },
     });
+    done();
   });
-  it('store the second request result', async () => {
+  it('store the second request result', async (done) => {
     expect.assertions(1);
     const action = client.getRequest({ urlParams: { id: '5b589ccf3000000923fe500c' } });
     store.dispatch(action);
@@ -122,5 +123,6 @@ describe('when http action is dispatched the middleware', () => {
         },
       },
     });
+    done();
   });
 });
