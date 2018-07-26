@@ -1,6 +1,7 @@
 branches:
   only:
     - master
+    - /^v([1-9]\d*|0)\.([1-9]\d*|0)\.([1-9]\d*|0)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/
 
 language: node_js
 node_js:
