@@ -3,25 +3,11 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const libraryName = 'beccaccino';
 
-const propTypesExternals = {
-  root: 'PropTypes',
-  commonjs2: 'prop-types',
-  commonjs: 'prop-types',
-  amd: 'prop-types',
-};
-
-const reactExternals = {
-  root: 'React',
-  commonjs2: 'react',
-  commonjs: 'react',
-  amd: 'react',
-};
-
-const reactDOMExternals = {
-  root: 'ReactDOM',
-  commonjs2: 'react-dom',
-  commonjs: 'react-dom',
-  amd: 'react-dom',
+const reduxExternals = {
+  root: 'redux',
+  commonjs2: 'redux',
+  commonjs: 'redux',
+  amd: 'redux',
 };
 
 module.exports = [{
@@ -46,9 +32,7 @@ module.exports = [{
     globalObject: 'this',
   },
   externals: {
-    react: reactExternals,
-    'react-dom': reactDOMExternals,
-    'prop-types': propTypesExternals,
+    redux: reduxExternals,
   },
 },
 {
@@ -72,8 +56,6 @@ module.exports = [{
     libraryTarget: 'commonjs2',
   },
   externals: {
-    react: reactExternals,
-    'react-dom': reactDOMExternals,
-    'prop-types': propTypesExternals,
+    redux: reduxExternals,
   },
 }];
