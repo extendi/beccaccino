@@ -6,6 +6,8 @@ import {
   REDUX_HTTP_CLIENT_RESPONSE,
   BindedActionResultPayload,
 } from '@lib/redux-http';
+import Beccaccino from '@lib/Beccaccino';
+
 import { Middleware } from 'redux';
 
 const shouldHandleAction = (action: BindedActionPayload): Boolean => {
@@ -23,6 +25,15 @@ const beccaccinoMiddleware: Middleware = _ => next => (action: BindedActionPaylo
     type: REDUX_HTTP_CLIENT_REQUEST,
     requestDetails: action.requestDetails,
   });
+  const beccaccinoInstance = Beccaccino.getClientInstance();
+
+  beccaccinoInstance.metadata = {
+    ...beccaccinoInstance.metadata,
+    [action.requestDetails.endpointName]: {
+      ...beccaccinoInstance.metadata[action.requestDetails.endpointName],
+      lastDispatchedRequestId: action.requestDetails.requestId,
+    },
+  };
 
   action.execAsync
     .then((result) => {

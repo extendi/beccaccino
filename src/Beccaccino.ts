@@ -6,11 +6,18 @@ export type EndpointMap = {
   [key: string]: BindedAction,
 };
 
+export type MetadataMap = {
+  [key: string]: {
+    lastDispatchedRequestId: string,
+  },
+};
+
 class ReduxHttpClient {
   private readonly axiosInstance: AxiosInstance;
   private readonly axiosConfiguration: AxiosRequestConfig;
   private readonly endpoints: Array<EndpointConfig>;
   public readonly bindedEndpoints: EndpointMap = {};
+  public metadata: MetadataMap = {};
 
   constructor(axiosConfiguration: AxiosRequestConfig, endpoints: Array<EndpointConfig>) {
     this.axiosConfiguration = axiosConfiguration;
@@ -46,7 +53,12 @@ const beccaccino = (() => {
       if (!clientInstance) throw Error('Redux http client instance not configured');
       return clientInstance.bindedEndpoints;
     },
+    getClientInstance: () => {
+      if (!clientInstance) throw Error('Redux http client instance not configured');
+      return clientInstance;
+    },
   };
 })();
+
 
 export default beccaccino;

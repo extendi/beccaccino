@@ -5,6 +5,9 @@ import {
   REDUX_HTTP_CLIENT_RESPONSE,
   REDUX_HTTP_CLIENT_ERROR,
 } from '@lib/redux-http';
+import Beccaccino from '@lib/Beccaccino';
+
+Beccaccino.configure({}, []);
 
 const nextSpyMock = jest.fn();
 
@@ -136,4 +139,22 @@ describe('Http Client Middleware', () => {
       });
     });
   });
+  it('stores the last request id into metadata of beccaccino instance', () => {
+    const requestDetails = {
+      urlParmas: {
+        foo: 'bar'
+      },
+      requestPayload: 'some payload here!',
+      endpointName: 'getSomething',
+      requestId: 'last',
+    }
+    const action = {
+      type: REDUX_HTTP_CLIENT_REQUEST,
+      signature: REDUX_HTTP_ACTION_SIGNATURE,
+      requestDetails,
+      execAsync: Promise.resolve('the payload'),
+    };
+    beccaccinoMiddleware(null)(nextSpyMock)(action);
+    expect(Beccaccino.getClientInstance().metadata['getSomething'].lastDispatchedRequestId).toEqual('last');
+  })
 });
