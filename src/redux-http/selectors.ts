@@ -15,7 +15,7 @@ export const beccaccinoSelector = (input: BaseSelectorInput): Array<SelectorOutp
 
   const mapperToApply = input.responseMapper || defaultMapper;
   const stateSlice = input.state[BECCACCINO_REDUCER_NAME].requests[input.endpointName];
-  const responseSlice =  stateSlice && stateSlice.slice(...(input.limit > 0 ? [0, input.limit] : [input.limit, undefined]));
+  const responseSlice = stateSlice && stateSlice.slice(...(input.limit > 0 ? [0, input.limit] : [input.limit, undefined]));
 
   if (!responseSlice) return null;
 
@@ -28,17 +28,23 @@ export const beccaccinoSelector = (input: BaseSelectorInput): Array<SelectorOutp
 
 export const takeNext = (selector: Selector, conf: SelectorInputConf) => {
   let counter: number = undefined;
+  let times: number = 0;
 
   return {
     select: (state: any) => {
       const stateSlice = state[BECCACCINO_REDUCER_NAME].requests[conf.endpointName];
       const currentCounter = stateSlice && stateSlice.length;
-      if (!counter) counter = currentCounter;
+      times += 1;
 
-      if (currentCounter && currentCounter > counter) {
-        return selector({ ...conf, state });
+      if (!currentCounter) return undefined;
+      if (!counter) {
+        counter = currentCounter;
+        if (times > 1) return selector({ ...conf, state });
       }
 
+      if (currentCounter > counter) {
+        return selector({ ...conf, state });
+      }
       return undefined;
     },
   };
@@ -55,7 +61,7 @@ export const errorSelector = (input: SelectorInput): Array<any> => beccaccinoSel
 });
 
 export const loadingSelector = (input: SelectorInput): Array<boolean> => beccaccinoSelector({
-   ...input,
+  ...input,
   responseMapper: (meta: any, _) => meta.isLoading,
 });
 
