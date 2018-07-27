@@ -6,6 +6,10 @@
 [![GitHub issues](https://img.shields.io/github/issues/extendi/beccaccino.svg)](https://GitHub.com/extendi/beccaccino/issues/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/extendi/beccaccino/graphs/commit-activity)
 
+<p align="center">
+  <img width="468px" src="https://s3.eu-west-2.amazonaws.com/npm-extendi/beccaccino_logo.svg" />
+</p>
+
 ``Beccaccino`` is an easy, reliable, framework agnostic http client for redux that is ~~blazing~~ beccaccino fast!
 
 ``Beccaccino`` is meant to be used both with Node.js and web applications (React, Vue, ...) 
