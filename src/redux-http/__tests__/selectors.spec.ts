@@ -7,6 +7,9 @@ import {
   loadingSelector,
   cancelTokenSelector,
 } from '@lib/redux-http';
+import Beccaccino from '@lib/Beccaccino';
+
+Beccaccino.configure({}, []);
 
 const baseState = {
   [BECCACCINO_REDUCER_NAME]: {
@@ -23,6 +26,9 @@ const baseState = {
     },
   },
 };
+Beccaccino.getClientInstance().metadata['testEndpoint'] = {
+  lastDispatchedRequestId: 'request1',
+}
 
 describe('state selectors', () => {
   describe('beccaccinoSelector', () => {
@@ -219,6 +225,7 @@ describe('takeNext decorator', () => {
         },
       },
     };
+    Beccaccino.getClientInstance().metadata['testEndpoint'].lastDispatchedRequestId = 'request2';
     const secondResult = configuredSelector.select(enrichedState);
     expect(firstResult).toBeUndefined();
     expect(secondResult).toEqual([{ data: ['test2'] }]);

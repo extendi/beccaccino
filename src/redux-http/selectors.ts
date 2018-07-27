@@ -6,6 +6,12 @@ import {
   Selector,
   BECCACCINO_REDUCER_NAME
 } from '@lib/redux-http';
+import Beccaccino from '@lib/Beccaccino';
+
+const requestsOrUndefined = (selector: Selector, selectorInput: SelectorInput) => {
+  const selectorResult = selector(selectorInput);
+  return selectorResult.length === 0 ? undefined : selectorResult;
+};
 
 export const beccaccinoSelector = (input: BaseSelectorInput): Array<SelectorOutput | any> => {
   const defaultMapper = (metadata: any, r: any): SelectorOutput => ({
@@ -27,25 +33,29 @@ export const beccaccinoSelector = (input: BaseSelectorInput): Array<SelectorOutp
 };
 
 export const takeNext = (selector: Selector, conf: SelectorInputConf) => {
-  let counter: number = undefined;
-  let times: number = 0;
+  const lastRequestId = Beccaccino.getClientInstance()
+    .metadata[conf.endpointName].lastDispatchedRequestId;
 
   return {
     select: (state: any) => {
+      if (!lastRequestId) requestsOrUndefined(selector, { ...conf, state });
+
       const stateSlice = state[BECCACCINO_REDUCER_NAME].requests[conf.endpointName];
-      const currentCounter = stateSlice && stateSlice.length;
-      times += 1;
-
-      if (!currentCounter) return undefined;
-      if (!counter) {
-        counter = currentCounter;
-        if (times > 1) return selector({ ...conf, state });
-      }
-
-      if (currentCounter > counter) {
-        return selector({ ...conf, state });
-      }
-      return undefined;
+      const lastRequestIndex = stateSlice.findIndex(
+        (x: any) => x.requestDetails.requestId === lastRequestId,
+      );
+      const requests = stateSlice.slice(lastRequestIndex + 1);
+      const selectorStateInput = {
+        ...state,
+        [BECCACCINO_REDUCER_NAME]: {
+          ...state[BECCACCINO_REDUCER_NAME],
+          requests: {
+            ...state[BECCACCINO_REDUCER_NAME].requests,
+            [conf.endpointName]: requests,
+          },
+        },
+      };
+      return requestsOrUndefined(selector, { ...conf, state: selectorStateInput });
     },
   };
 };
