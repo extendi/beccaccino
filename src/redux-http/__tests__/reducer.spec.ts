@@ -6,7 +6,7 @@ import {
 } from '@lib/redux-http';
 
 const initialState = {
-  requests: {},
+  results: {},
   requestsMetadata: {},
 };
 
@@ -26,7 +26,7 @@ describe('Redux Http reducer', () => {
     };
     const nextState = beccaccinoReducer(initialState, action);
     expect(nextState).toEqual({
-      requests: {},
+      results: {},
       requestsMetadata: {
         [requestDetails.requestId]: {
           isLoading: true,
@@ -54,11 +54,11 @@ describe('Redux Http reducer', () => {
       },
     };
     const nextState = beccaccinoReducer(
-      { requests: {}, requestsMetadata: {} },
+      { results: {}, requestsMetadata: {} },
       action,
     );
     expect(nextState).toEqual({
-      requests: {
+      results: {
         getSomething: [
           {
             requestDetails,
@@ -98,7 +98,7 @@ describe('Redux Http reducer', () => {
       action,
     );
     expect(nextState).toEqual({
-      requests: {
+      results: {
         getSomething: [
           {
             requestDetails,
@@ -133,11 +133,11 @@ describe('Redux Http reducer', () => {
       },
     };
     const nextState = beccaccinoReducer(
-      { requests: {}, someKey: 'some value' },
+      { results: {}, someKey: 'some value' },
       action,
     );
     expect(nextState).toEqual({
-      requests: {},
+      results: {},
       someKey: 'some value'
     });
   })

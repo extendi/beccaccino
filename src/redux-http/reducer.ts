@@ -6,7 +6,7 @@ import {
 } from '@lib/redux-http';
 
 const initialState = {
-  requests: {},
+  results: {},
   requestsMetadata: {},
 };
 
@@ -32,10 +32,10 @@ export default function beccaccinoReducer(
     case REDUX_HTTP_CLIENT_ERROR:
       return {
         ...state,
-        requests: {
-          ...state.requests,
+        results: {
+          ...state.results,
           [action.requestDetails.endpointName]: [
-            ...(state.requests[action.requestDetails.endpointName] || []),
+            ...(state.results[action.requestDetails.endpointName] || []),
             {
               requestDetails: action.requestDetails,
               rawResponse: action.response.rawResponse,

@@ -13,7 +13,7 @@ Beccaccino.configure({}, []);
 
 const baseState = {
   [BECCACCINO_REDUCER_NAME]: {
-    requests: {
+    results: {
       testEndpoint: [
         {
           requestDetails: {
@@ -77,10 +77,10 @@ describe('state selectors', () => {
         ...baseState,
         [BECCACCINO_REDUCER_NAME]: {
           ...baseState[BECCACCINO_REDUCER_NAME],
-          requests: {
-            ...baseState[BECCACCINO_REDUCER_NAME].requests,
+          results: {
+            ...baseState[BECCACCINO_REDUCER_NAME].results,
             testEndpoint: [
-              ...baseState[BECCACCINO_REDUCER_NAME].requests.testEndpoint,
+              ...baseState[BECCACCINO_REDUCER_NAME].results.testEndpoint,
               {
                 requestDetails: {
                   requestId: 'request2',
@@ -208,10 +208,10 @@ describe('takeNext decorator', () => {
       ...baseState,
       [BECCACCINO_REDUCER_NAME]: {
         ...baseState[BECCACCINO_REDUCER_NAME],
-        requests: {
-          ...baseState[BECCACCINO_REDUCER_NAME].requests,
+        results: {
+          ...baseState[BECCACCINO_REDUCER_NAME].results,
           testEndpoint: [
-            ...baseState[BECCACCINO_REDUCER_NAME].requests.testEndpoint,
+            ...baseState[BECCACCINO_REDUCER_NAME].results.testEndpoint,
             {
               requestDetails: {
                 requestId: 'request2',
@@ -270,10 +270,10 @@ describe('loadingSelector', () => {
         ...baseState,
         [BECCACCINO_REDUCER_NAME]: {
           ...baseState[BECCACCINO_REDUCER_NAME],
-          requests: {
-            ...baseState[BECCACCINO_REDUCER_NAME].requests,
+          results: {
+            ...baseState[BECCACCINO_REDUCER_NAME].results,
             testEndpoint: [
-              ...baseState[BECCACCINO_REDUCER_NAME].requests.testEndpoint,
+              ...baseState[BECCACCINO_REDUCER_NAME].results.testEndpoint,
               {
                 requestDetails: {
                   requestId: 'request2',
@@ -309,11 +309,11 @@ describe('cancelTokenSelector', () => {
         ...baseState,
         [BECCACCINO_REDUCER_NAME]: {
           ...baseState[BECCACCINO_REDUCER_NAME],
-          requests: {
-            ...baseState[BECCACCINO_REDUCER_NAME].requests,
+          results: {
+            ...baseState[BECCACCINO_REDUCER_NAME].results,
             testEndpoint: [
               {
-                ...baseState[BECCACCINO_REDUCER_NAME].requests.testEndpoint[0],
+                ...baseState[BECCACCINO_REDUCER_NAME].results.testEndpoint[0],
                 requestDetails: {
                   cancelRequest: cancelCallback,
                 },

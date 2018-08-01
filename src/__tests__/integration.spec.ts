@@ -36,7 +36,7 @@ describe('Integration tests with redux', () => {
   it('store default state in redux http reducer', () => {
     expect(store.getState()).toEqual({
       [BECCACCINO_REDUCER_NAME]: {
-        requests: {},
+        results: {},
         requestsMetadata: {},
       },
     });
@@ -52,7 +52,7 @@ describe('when http action is dispatched the middleware', () => {
     const state = store.getState();
     expect(state).toMatchObject({
       [BECCACCINO_REDUCER_NAME]: {
-        requests: {
+        results: {
           getRequest: [
             {
               requestDetails: {
@@ -87,7 +87,7 @@ describe('when http action is dispatched the middleware', () => {
     const state = store.getState();
     expect(state).toMatchObject({
       [BECCACCINO_REDUCER_NAME]: {
-        requests: {
+        results: {
           getRequest: [
             {
               requestDetails: {

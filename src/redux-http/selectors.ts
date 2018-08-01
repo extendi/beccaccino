@@ -20,7 +20,7 @@ export const beccaccinoSelector = (input: BaseSelectorInput): Array<SelectorOutp
   });
 
   const mapperToApply = input.responseMapper || defaultMapper;
-  const stateSlice = input.state[BECCACCINO_REDUCER_NAME].requests[input.endpointName];
+  const stateSlice = input.state[BECCACCINO_REDUCER_NAME].results[input.endpointName];
   const responseSlice = stateSlice && stateSlice.slice(...(input.limit > 0 ? [0, input.limit] : [input.limit, undefined]));
 
   if (!responseSlice) return null;
@@ -39,7 +39,7 @@ export const takeNext = (selector: Selector, conf: SelectorInputConf) => {
     select: (state: any) => {
       if (!lastRequestId) return requestsOrUndefined(selector, { ...conf, state });
 
-      const stateSlice = state[BECCACCINO_REDUCER_NAME].requests[conf.endpointName];
+      const stateSlice = state[BECCACCINO_REDUCER_NAME].results[conf.endpointName];
       const lastRequestIndex = stateSlice.findIndex(
         (x: any) => x.requestDetails.requestId === lastRequestId,
       );
@@ -48,8 +48,8 @@ export const takeNext = (selector: Selector, conf: SelectorInputConf) => {
         ...state,
         [BECCACCINO_REDUCER_NAME]: {
           ...state[BECCACCINO_REDUCER_NAME],
-          requests: {
-            ...state[BECCACCINO_REDUCER_NAME].requests,
+          results: {
+            ...state[BECCACCINO_REDUCER_NAME].results,
             [conf.endpointName]: requests,
           },
         },
