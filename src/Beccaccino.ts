@@ -57,6 +57,25 @@ const beccaccino = (() => {
       if (!clientInstance) throw Error('Redux http client instance not configured');
       return clientInstance;
     },
+    getLastDispatchedRequestId: ({ endpoint }: { endpoint: string }) => {
+      if (!clientInstance) return undefined;
+
+      const metadata = clientInstance.metadata;
+      if (!metadata) return undefined;
+
+      return metadata[endpoint].lastDispatchedRequestId;
+    },
+    setLastDispatchedRequestId: ({ endpoint, id }: { endpoint: string, id: string }) => {
+      if (!clientInstance) throw Error('Redux http client instance not configured');
+
+      clientInstance.metadata = {
+        ...clientInstance.metadata,
+        [endpoint]: {
+          ...clientInstance.metadata[endpoint],
+          lastDispatchedRequestId: id,
+        },
+      };
+    }
   };
 })();
 

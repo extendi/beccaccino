@@ -33,8 +33,7 @@ export const beccaccinoSelector = (input: BaseSelectorInput): Array<SelectorOutp
 };
 
 export const takeNext = (selector: Selector, conf: SelectorInputConf) => {
-  const lastRequestId = Beccaccino.getClientInstance()
-    .metadata[conf.endpointName].lastDispatchedRequestId;
+  let lastRequestId = Beccaccino.getLastDispatchedRequestId({ endpoint: conf.endpointName });
 
   return {
     select: (state: any) => {

@@ -18,4 +18,26 @@ describe('Beccaccino', () => {
     expect(typeof endpoints.getPippo).toEqual('function');
     expect(typeof endpoints.getPluto).toEqual('function');
   });
+
+  describe('lastDispatchedRequestId', () => {
+    it('set lastDispatchedRequestId', () => {
+      Beccaccino.setLastDispatchedRequestId({
+        endpoint: 'getSomething',
+        id: 'some-request-id'
+      });
+      const metadata = Beccaccino.getClientInstance().metadata['getSomething'];
+
+      expect(metadata).toEqual({ lastDispatchedRequestId: 'some-request-id' });
+    });
+    it('get lastDispatchedRequestId', () => {
+      const client = Beccaccino.getClientInstance();
+      client.metadata['getSomethingElse'] = { lastDispatchedRequestId: 'some-other-id' };
+
+      const lastReqId = Beccaccino.getLastDispatchedRequestId({
+        endpoint: 'getSomethingElse'
+      });
+
+      expect(lastReqId).toEqual('some-other-id');
+    });
+  });
 });

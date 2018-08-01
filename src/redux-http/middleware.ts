@@ -25,15 +25,11 @@ const beccaccinoMiddleware: Middleware = _ => next => (action: BindedActionPaylo
     type: REDUX_HTTP_CLIENT_REQUEST,
     requestDetails: action.requestDetails,
   });
-  const beccaccinoInstance = Beccaccino.getClientInstance();
 
-  beccaccinoInstance.metadata = {
-    ...beccaccinoInstance.metadata,
-    [action.requestDetails.endpointName]: {
-      ...beccaccinoInstance.metadata[action.requestDetails.endpointName],
-      lastDispatchedRequestId: action.requestDetails.requestId,
-    },
-  };
+  Beccaccino.setLastDispatchedRequestId({
+    endpoint: action.requestDetails.endpointName,
+    id: action.requestDetails.requestId,
+  });
 
   action.execAsync
     .then((result) => {
