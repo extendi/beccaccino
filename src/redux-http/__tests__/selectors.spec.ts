@@ -182,6 +182,14 @@ describe('resultSelector', () => {
 });
 
 describe('takeNext decorator', () => {
+  it('Returns undefined if there are no requests made for the endpoint', () => {
+    const configuredSelector = takeNext(
+      resultSelector, { limit: -1, endpointName: 'testEndpoint2' },
+    );
+    const firstResult = configuredSelector.select(baseState);
+
+    expect(firstResult).toBeNull();
+  })
   it('Returns undefined if the requests are the same across different calls of selector', () => {
     const configuredSelector = takeNext(
       resultSelector, { limit: -1, endpointName: 'testEndpoint' },

@@ -10,7 +10,7 @@ import Beccaccino from '@lib/Beccaccino';
 
 const requestsOrUndefined = (selector: Selector, selectorInput: SelectorInput) => {
   const selectorResult = selector(selectorInput);
-  return selectorResult.length === 0 ? undefined : selectorResult;
+  return selectorResult && selectorResult.length === 0 ? undefined : selectorResult;
 };
 
 export const beccaccinoSelector = (input: BaseSelectorInput): Array<SelectorOutput | any> => {
@@ -33,11 +33,11 @@ export const beccaccinoSelector = (input: BaseSelectorInput): Array<SelectorOutp
 };
 
 export const takeNext = (selector: Selector, conf: SelectorInputConf) => {
-  let lastRequestId = Beccaccino.getLastDispatchedRequestId({ endpoint: conf.endpointName });
+  const lastRequestId = Beccaccino.getLastDispatchedRequestId({ endpoint: conf.endpointName });
 
   return {
     select: (state: any) => {
-      if (!lastRequestId) requestsOrUndefined(selector, { ...conf, state });
+      if (!lastRequestId) return requestsOrUndefined(selector, { ...conf, state });
 
       const stateSlice = state[BECCACCINO_REDUCER_NAME].requests[conf.endpointName];
       const lastRequestIndex = stateSlice.findIndex(

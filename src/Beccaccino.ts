@@ -61,7 +61,7 @@ const beccaccino = (() => {
       if (!clientInstance) return undefined;
 
       const metadata = clientInstance.metadata;
-      if (!metadata) return undefined;
+      if (!metadata || !metadata[endpoint]) return undefined;
 
       return metadata[endpoint].lastDispatchedRequestId;
     },
@@ -75,9 +75,8 @@ const beccaccino = (() => {
           lastDispatchedRequestId: id,
         },
       };
-    }
+    },
   };
 })();
-
 
 export default beccaccino;
