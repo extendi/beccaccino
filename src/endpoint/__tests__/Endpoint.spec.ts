@@ -35,7 +35,7 @@ describe('Endpoint.bindAction', () => {
   });
 
   describe('BindedAction', () => {
-    it('builds a request handler', () => {
+    it('builds a request handler with get request', () => {
       const action = Endpoint.bindAction({
         config: {
           path: 'http://api.example.com/foos/:id',
@@ -53,6 +53,28 @@ describe('Endpoint.bindAction', () => {
           method: 'get',
           url: 'http://api.example.com/foos/42',
           params: { foo: 'bar' },
+        },
+      });
+      expect(requestHandler.mock.calls[0][0].requestConfiguration.cancelToken).toBeInstanceOf(axios.CancelToken);
+    });
+    it('builds a request handler with post request', () => {
+      const action = Endpoint.bindAction({
+        config: {
+          path: 'http://api.example.com/foos/:id',
+          method: 'post',
+          name: 'postFoo',
+        },
+        actionName: REDUX_HTTP_CLIENT_REQUEST,
+        axiosInstance: axios.create({}),
+        signature: REDUX_HTTP_ACTION_SIGNATURE
+      });
+
+      action({ urlParams: { id: 42 }, requestPayload: { foo: 'bar' } });
+      expect(requestHandler.mock.calls[0][0]).toMatchObject({
+        requestConfiguration: {
+          method: 'post',
+          url: 'http://api.example.com/foos/42',
+          data: { foo: 'bar' },
         },
       });
       expect(requestHandler.mock.calls[0][0].requestConfiguration.cancelToken).toBeInstanceOf(axios.CancelToken);
