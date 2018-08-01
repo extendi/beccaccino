@@ -52,7 +52,7 @@ describe('Endpoint.bindAction', () => {
         requestConfiguration: {
           method: 'get',
           url: 'http://api.example.com/foos/42',
-          data: { foo: 'bar' },
+          params: { foo: 'bar' },
         },
       });
       expect(requestHandler.mock.calls[0][0].requestConfiguration.cancelToken).toBeInstanceOf(axios.CancelToken);
