@@ -38,88 +38,102 @@ describe('Integration tests with redux', () => {
       [BECCACCINO_REDUCER_NAME]: {
         results: {},
         requestsMetadata: {},
+        requestsLog: {},
       },
     });
   });
 });
 
 describe('when http action is dispatched the middleware', () => {
+  const action1 = client.getRequest({ urlParams: { id: '5b589b113000002f27fe5005' } });
+  const action2 = client.getRequest({ urlParams: { id: '5b589ccf3000000923fe500c' } });
+
   it('store first request result', async (done) => {
     expect.assertions(1);
-    const action = client.getRequest({ urlParams: { id: '5b589b113000002f27fe5005' } });
-    store.dispatch(action);
-    await action.execAsync;
+    store.dispatch(action1);
+    await action1.execAsync;
     const state = store.getState();
     expect(state).toMatchObject({
       [BECCACCINO_REDUCER_NAME]: {
         results: {
-          getRequest: [
-            {
-              requestDetails: {
-                urlParams: { id: '5b589b113000002f27fe5005' },
-                requestPayload: {},
-                endpointName: 'getRequest',
-                requestId: action.requestDetails.requestId,
-                cancelRequest: action.requestDetails.cancelRequest,
-              },
-              response: {
-                id: 1,
-                test: true,
-              },
+          [action1.requestDetails.requestId]: {
+            requestDetails: {
+              urlParams: { id: '5b589b113000002f27fe5005' },
+              requestPayload: {},
+              endpointName: 'getRequest',
+              requestId: action1.requestDetails.requestId,
+              cancelRequest: action1.requestDetails.cancelRequest,
             },
-          ],
+            response: {
+              id: 1,
+              test: true,
+            },
+          },
         },
         requestsMetadata: {
-          [action.requestDetails.requestId]: {
+          [action1.requestDetails.requestId]: {
             isLoading: false,
             success: true,
           },
+        },
+        requestsLog: {
+          'getRequest': [action1.requestDetails.requestId],
         },
       },
     });
     done();
   });
+
   it('store the second request result', async (done) => {
     expect.assertions(1);
-    const action = client.getRequest({ urlParams: { id: '5b589ccf3000000923fe500c' } });
-    store.dispatch(action);
-    await action.execAsync;
+    store.dispatch(action2);
+    await action2.execAsync;
     const state = store.getState();
     expect(state).toMatchObject({
       [BECCACCINO_REDUCER_NAME]: {
         results: {
-          getRequest: [
-            {
-              requestDetails: {
-                urlParams: { id: '5b589b113000002f27fe5005' },
-                requestPayload: {},
-                endpointName: 'getRequest',
-              },
-              response: {
-                id: 1,
-                test: true,
-              },
+          [action1.requestDetails.requestId]: {
+            requestDetails: {
+              urlParams: { id: '5b589b113000002f27fe5005' },
+              requestPayload: {},
+              endpointName: 'getRequest',
+              requestId: action1.requestDetails.requestId,
+              cancelRequest: action1.requestDetails.cancelRequest,
             },
-            {
-              requestDetails: {
-                urlParams: { id: '5b589ccf3000000923fe500c' },
-                requestPayload: {},
-                endpointName: 'getRequest',
-                requestId: action.requestDetails.requestId,
-                cancelRequest: action.requestDetails.cancelRequest,
-              },
-              response: {
-                id: 2,
-                test: true,
-              },
+            response: {
+              id: 1,
+              test: true,
             },
-          ],
+          },
+          [action2.requestDetails.requestId]: {
+            requestDetails: {
+              urlParams: { id: '5b589ccf3000000923fe500c' },
+              requestPayload: {},
+              endpointName: 'getRequest',
+              requestId: action2.requestDetails.requestId,
+              cancelRequest: action2.requestDetails.cancelRequest,
+            },
+            response: {
+              id: 2,
+              test: true,
+            },
+          },
         },
         requestsMetadata: {
-          [action.requestDetails.requestId]: {
+          [action1.requestDetails.requestId]: {
+            isLoading: false,
+            success: true,
+          },
+          [action2.requestDetails.requestId]: {
             isLoading: false,
             success: false,
           },
+        },
+        requestsLog: {
+          'getRequest': [
+            action1.requestDetails.requestId,
+            action2.requestDetails.requestId,
+          ],
         },
       },
     });

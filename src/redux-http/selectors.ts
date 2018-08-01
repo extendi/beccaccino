@@ -20,16 +20,18 @@ export const beccaccinoSelector = (input: BaseSelectorInput): Array<SelectorOutp
   });
 
   const mapperToApply = input.responseMapper || defaultMapper;
-  const stateSlice = input.state[BECCACCINO_REDUCER_NAME].results[input.endpointName];
-  const responseSlice = stateSlice && stateSlice.slice(...(input.limit > 0 ? [0, input.limit] : [input.limit, undefined]));
 
-  if (!responseSlice) return null;
+  const beccaccinoState = input.state[BECCACCINO_REDUCER_NAME];
 
-  const metadataForEndpoint = input.state[BECCACCINO_REDUCER_NAME].requestsMetadata || {};
-  return responseSlice.map(
-    (r: any) => mapperToApply(metadataForEndpoint[r.requestDetails.requestId], r),
+  const allRequestIdsForEndpoint = beccaccinoState.requestsLog[input.endpointName];
+  const requestIdsForEndpoint = allRequestIdsForEndpoint &&
+    allRequestIdsForEndpoint.slice(...(input.limit > 0 ? [0, input.limit] : [input.limit, undefined]));
 
-  );
+  if (!requestIdsForEndpoint) return null;
+
+  const requestsMetadata = beccaccinoState.requestsMetadata || {};
+  const results = beccaccinoState.results || {};
+  return requestIdsForEndpoint.map((id: any) => mapperToApply(requestsMetadata[id], results[id]));
 };
 
 export const takeNext = (selector: Selector, conf: SelectorInputConf) => {
@@ -39,18 +41,16 @@ export const takeNext = (selector: Selector, conf: SelectorInputConf) => {
     select: (state: any) => {
       if (!lastRequestId) return requestsOrUndefined(selector, { ...conf, state });
 
-      const stateSlice = state[BECCACCINO_REDUCER_NAME].results[conf.endpointName];
-      const lastRequestIndex = stateSlice.findIndex(
-        (x: any) => x.requestDetails.requestId === lastRequestId,
-      );
-      const requests = stateSlice.slice(lastRequestIndex + 1);
+      const requestIdsForEndpoint = state[BECCACCINO_REDUCER_NAME].requestsLog[conf.endpointName];
+      const lastRequestIndex = requestIdsForEndpoint.findIndex((id: string) => id === lastRequestId);
+      const nextRequestIds = requestIdsForEndpoint.slice(lastRequestIndex + 1);
       const selectorStateInput = {
         ...state,
         [BECCACCINO_REDUCER_NAME]: {
           ...state[BECCACCINO_REDUCER_NAME],
-          results: {
-            ...state[BECCACCINO_REDUCER_NAME].results,
-            [conf.endpointName]: requests,
+          requestsLog: {
+            ...state[BECCACCINO_REDUCER_NAME].requestsLog,
+            [conf.endpointName]: nextRequestIds,
           },
         },
       };
@@ -61,12 +61,12 @@ export const takeNext = (selector: Selector, conf: SelectorInputConf) => {
 
 export const resultSelector = (input: SelectorInput): Array<any> => beccaccinoSelector({
   ...input,
-  responseMapper: (_, r: any) => r.response,
+  responseMapper: (_, r: any) => r ? r.response : undefined,
 });
 
 export const errorSelector = (input: SelectorInput): Array<any> => beccaccinoSelector({
   ...input,
-  responseMapper: (meta: any, r: any) => ({ error: !meta.success, response: r.response }),
+  responseMapper: (meta: any, r: any) => ({ error: !meta.success, response: r ? r.response : undefined }),
 });
 
 export const loadingSelector = (input: SelectorInput): Array<boolean> => beccaccinoSelector({
@@ -76,5 +76,5 @@ export const loadingSelector = (input: SelectorInput): Array<boolean> => beccacc
 
 export const cancelTokenSelector = (input: SelectorInput): Array<boolean> => beccaccinoSelector({
   ...input,
-  responseMapper: (_, r: any) => r.requestDetails.cancelRequest,
+  responseMapper: (_, r: any) => r ? r.requestDetails.cancelRequest : undefined,
 });

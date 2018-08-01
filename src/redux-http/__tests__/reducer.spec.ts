@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   results: {},
+  requestsLog: {},
   requestsMetadata: {},
 };
 
@@ -33,6 +34,9 @@ describe('Redux Http reducer', () => {
           success: undefined,
         },
       },
+      requestsLog: {
+        'getSomething': ['some kickass uuid'],
+      },
     });
   });
   it('handles REDUX_HTTP_CLIENT_RESPONSE', () => {
@@ -54,24 +58,25 @@ describe('Redux Http reducer', () => {
       },
     };
     const nextState = beccaccinoReducer(
-      { results: {}, requestsMetadata: {} },
+      { results: {}, requestsMetadata: {}, requestsLog: { 'getSomething': ['some kickass uuid'] } },
       action,
     );
     expect(nextState).toEqual({
       results: {
-        getSomething: [
-          {
-            requestDetails,
-            rawResponse: 'the raw result',
-            response: 'the response',
-          },
-        ],
+        'some kickass uuid': {
+          requestDetails,
+          rawResponse: 'the raw result',
+          response: 'the response',
+        },
       },
       requestsMetadata: {
         [requestDetails.requestId]: {
           isLoading: false,
           success: true,
         },
+      },
+      requestsLog: {
+        'getSomething': ['some kickass uuid'],
       },
     });
   });
@@ -99,13 +104,11 @@ describe('Redux Http reducer', () => {
     );
     expect(nextState).toEqual({
       results: {
-        getSomething: [
-          {
-            requestDetails,
-            rawResponse: 'the raw error',
-            response: 'the error',
-          },
-        ],
+        'some kickass uuid': {
+          requestDetails,
+          rawResponse: 'the raw error',
+          response: 'the error',
+        },
       },
       requestsMetadata: {
         [requestDetails.requestId]: {
@@ -113,7 +116,7 @@ describe('Redux Http reducer', () => {
           success: false,
         },
       },
-
+      requestsLog: {},
     });
   });
   it('returns the input state for other action types', () => {
