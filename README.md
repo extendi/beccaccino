@@ -10,7 +10,7 @@
   <img width="468px" src="https://s3.eu-west-2.amazonaws.com/npm-extendi/beccaccino_logo.svg" />
 </p>
 
-``Beccaccino`` is an easy, reliable, framework agnostic http client for redux that is ~~blazing~~ beccaccino fast!
+``Beccaccino`` is an easy, sexy, reliable, framework agnostic http client for redux that is ~~blazing~~ beccaccino fast!
 
 ``Beccaccino`` is meant to be used both with Node.js and web applications (React, Vue, ...) 
 
