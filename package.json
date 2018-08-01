@@ -9,7 +9,7 @@
   "private": false,
   "scripts": {
     "build:development": "NODE_ENV=development yarn run webpack --progress --mode development",
-    "build:production": "NODE_ENV=production yarn run webpack --progress --env.production",
+    "build:production": "rm -rf ./dist/ && NODE_ENV=production yarn run webpack --progress --env.production",
     "test": "yarn run jest --coverage --coverageReporters=text-lcov"
   },
   "files": [
