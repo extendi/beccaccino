@@ -22,8 +22,8 @@ export default function requestHandler({
       data: responseTransformer(response.data),
       success: true,
     })).catch(error => ({
-      rawResponse: error.response,
-      data: errorTransformer(error.response.data),
+      rawResponse: error.response || {},
+      data: error.response ? errorTransformer(error.response.data) : undefined,
       success: false,
     }));
 }

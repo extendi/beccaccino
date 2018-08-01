@@ -27,6 +27,15 @@ export default function beccaccinoReducer(
             success: undefined,
           },
         },
+        requests: {
+          ...state.requests,
+          [action.requestDetails.endpointName]: [
+            ...(state.requests[action.requestDetails.endpointName] || []),
+            {
+              requestDetails: action.requestDetails,
+            },
+          ],
+        },
       };
     case REDUX_HTTP_CLIENT_RESPONSE:
     case REDUX_HTTP_CLIENT_ERROR:
