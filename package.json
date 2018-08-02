@@ -1,6 +1,6 @@
 {
   "name": "beccaccino",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Easy, reliable and fast http client for redux, framework agnostic, :zap: like a beccaccino",
   "main": "dist/beccaccino-node.js",
   "browser": "dist/beccaccino.js",
