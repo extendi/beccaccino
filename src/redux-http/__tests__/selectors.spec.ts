@@ -2,10 +2,15 @@ import {
   BECCACCINO_REDUCER_NAME,
   beccaccinoSelector,
   takeNext,
+  takeLast,
   resultSelector,
   errorSelector,
   loadingSelector,
   cancelTokenSelector,
+  RESULT,
+  ERROR,
+  LOADING,
+  CANCEL_TOKEN,
 } from '@lib/redux-http';
 import Beccaccino from '@lib/Beccaccino';
 
@@ -27,9 +32,6 @@ const baseState = {
     },
   },
 };
-Beccaccino.getClientInstance().metadata['testEndpoint'] = {
-  lastDispatchedRequestId: 'request1',
-}
 
 describe('state selectors', () => {
   describe('beccaccinoSelector', () => {
@@ -183,9 +185,14 @@ describe('resultSelector', () => {
 });
 
 describe('takeNext decorator', () => {
+  beforeEach(() => {
+    Beccaccino.getClientInstance().metadata['testEndpoint'] = {
+      lastDispatchedRequestId: 'request1',
+    };
+  });
   it('Returns undefined if there are no requests made for the endpoint', () => {
     const configuredSelector = takeNext(
-      resultSelector, { limit: -1, endpointName: 'testEndpoint2' },
+      RESULT, { limit: -1, endpointName: 'testEndpoint2' },
     );
     const firstResult = configuredSelector.select(baseState);
 
@@ -193,7 +200,7 @@ describe('takeNext decorator', () => {
   })
   it('Returns undefined if the requests are the same across different calls of selector', () => {
     const configuredSelector = takeNext(
-      resultSelector, { limit: -1, endpointName: 'testEndpoint' },
+      RESULT, { limit: -1, endpointName: 'testEndpoint' },
     );
     const firstResult = configuredSelector.select(baseState);
     const secondResult = configuredSelector.select(baseState);
@@ -202,7 +209,7 @@ describe('takeNext decorator', () => {
 
   it('Returns the new request added after the firstr call of selector', () => {
     const configuredSelector = takeNext(
-      resultSelector, { limit: -1, endpointName: 'testEndpoint' },
+      RESULT, { limit: -1, endpointName: 'testEndpoint' },
     );
     const firstResult = configuredSelector.select(baseState);
     const enrichedState = {
@@ -238,6 +245,179 @@ describe('takeNext decorator', () => {
     const secondResult = configuredSelector.select(enrichedState);
     expect(firstResult).toBeUndefined();
     expect(secondResult).toEqual([{ data: ['test2'] }]);
+  });
+  it('Returns the new request added after the firstr call of selector', () => {
+    const configuredSelector = takeNext(
+      RESULT, { limit: -2, endpointName: 'testEndpoint' },
+    );
+    const firstResult = configuredSelector.select(baseState);
+    const stateAfterFirstNextRequest = {
+      ...baseState,
+      [BECCACCINO_REDUCER_NAME]: {
+        ...baseState[BECCACCINO_REDUCER_NAME],
+        results: {
+          ...baseState[BECCACCINO_REDUCER_NAME].results,
+          'request2': {
+            requestDetails: {
+              requestId: 'request2',
+            },
+            rawResponse: {},
+            response: { data: ['test2'] },
+          },
+        },
+        requestsMetadata: {
+          request1: {
+            isLoading: false,
+            success: true,
+          },
+          request2: {
+            isLoading: true,
+            success: false,
+          },
+        },
+        requestsLog: {
+          'testEndpoint': ['request1', 'request2'],
+        },
+      },
+    };
+    Beccaccino.getClientInstance().metadata['testEndpoint'].lastDispatchedRequestId = 'request2';
+    const secondResult = configuredSelector.select(stateAfterFirstNextRequest);
+    expect(firstResult).toBeUndefined();
+    expect(secondResult).toEqual([{ data: ['test2'] }]);
+    const stateAfterSecondNextRequest = {
+      ...stateAfterFirstNextRequest,
+      [BECCACCINO_REDUCER_NAME]: {
+        ...stateAfterFirstNextRequest[BECCACCINO_REDUCER_NAME],
+        results: {
+          ...stateAfterFirstNextRequest[BECCACCINO_REDUCER_NAME].results,
+          'request3': {
+            requestDetails: {
+              requestId: 'request3',
+            },
+            rawResponse: {},
+            response: { data: ['test3'] },
+          },
+        },
+        requestsMetadata: {
+          request1: {
+            isLoading: false,
+            success: true,
+          },
+          request2: {
+            isLoading: true,
+            success: false,
+          },
+          request3: {
+            isLoading: true,
+            success: false,
+          },
+        },
+        requestsLog: {
+          'testEndpoint': ['request1', 'request2', 'request3'],
+        },
+      },
+    };
+    Beccaccino.getClientInstance().metadata['testEndpoint'].lastDispatchedRequestId = 'request3';
+    const thirdResult = configuredSelector.select(stateAfterSecondNextRequest);
+    expect(thirdResult).toEqual([{ data: ['test2'] }, { data: ['test3'] }]);
+  });
+});
+
+describe('takeLast decorator', () => {
+  beforeEach(() => {
+    Beccaccino.getClientInstance().metadata['testEndpoint'] = {
+      lastDispatchedRequestId: 'request1',
+    };
+  });
+  it('Returns undefined if there are no requests made for the endpoint', () => {
+    const configuredSelector = takeLast(
+      RESULT, { limit: -1, endpointName: 'testEndpoint2' },
+    );
+    const firstResult = configuredSelector.select(baseState);
+
+    expect(firstResult).toBeNull();
+  })
+  it('Returns undefined if the requests are the same across different calls of selector', () => {
+    const configuredSelector = takeLast(
+      RESULT, { limit: -2, endpointName: 'testEndpoint' },
+    );
+    const firstResult = configuredSelector.select(baseState);
+    const secondResult = configuredSelector.select(baseState);
+    expect(firstResult).toEqual(secondResult);
+  });
+
+  it('Returns the new request added after the first call of selector with results', () => {
+    const configuredSelector = takeLast(
+      RESULT, { limit: -2, endpointName: 'testEndpoint' },
+    );
+    const stateAfterFirstNextRequest = {
+      ...baseState,
+      [BECCACCINO_REDUCER_NAME]: {
+        ...baseState[BECCACCINO_REDUCER_NAME],
+        results: {
+          ...baseState[BECCACCINO_REDUCER_NAME].results,
+          'request2': {
+            requestDetails: {
+              requestId: 'request2',
+            },
+            rawResponse: {},
+            response: { data: ['test2'] },
+          },
+        },
+        requestsMetadata: {
+          request1: {
+            isLoading: false,
+            success: true,
+          },
+          request2: {
+            isLoading: true,
+            success: false,
+          },
+        },
+        requestsLog: {
+          'testEndpoint': ['request1', 'request2'],
+        },
+      },
+    };
+    Beccaccino.getClientInstance().metadata['testEndpoint'].lastDispatchedRequestId = 'request2';
+    const firstResult = configuredSelector.select(stateAfterFirstNextRequest);
+    expect(firstResult).toEqual([{ data: ['test2'] }]);
+    const stateAfterSecondNextRequest = {
+      ...stateAfterFirstNextRequest,
+      [BECCACCINO_REDUCER_NAME]: {
+        ...stateAfterFirstNextRequest[BECCACCINO_REDUCER_NAME],
+        results: {
+          ...stateAfterFirstNextRequest[BECCACCINO_REDUCER_NAME].results,
+          'request3': {
+            requestDetails: {
+              requestId: 'request3',
+            },
+            rawResponse: {},
+            response: { data: ['test3'] },
+          },
+        },
+        requestsMetadata: {
+          request1: {
+            isLoading: false,
+            success: true,
+          },
+          request2: {
+            isLoading: true,
+            success: false,
+          },
+          request3: {
+            isLoading: true,
+            success: false,
+          },
+        },
+        requestsLog: {
+          'testEndpoint': ['request1', 'request2', 'request3'],
+        },
+      },
+    };
+    Beccaccino.getClientInstance().metadata['testEndpoint'].lastDispatchedRequestId = 'request3';
+    const secondResult = configuredSelector.select(stateAfterSecondNextRequest);
+    expect(secondResult).toEqual([{ data: ['test3'] }]);
   });
 });
 
