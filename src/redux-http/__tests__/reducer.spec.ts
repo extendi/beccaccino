@@ -4,10 +4,12 @@ import {
   REDUX_HTTP_CLIENT_REQUEST,
   beccaccinoReducer,
 } from '@lib/redux-http';
+import { defaultSession } from '@lib/Beccaccino';
 
 const initialState = {
   results: {},
   requestsMetadata: {},
+  requestsLog: { [defaultSession]: {} },
 };
 
 describe('Redux Http reducer', () => {
@@ -33,12 +35,19 @@ describe('Redux Http reducer', () => {
           success: undefined,
         },
       },
+      requestsLog: {
+        [defaultSession]: {
+          getSomething: {
+            requests: ['some kickass uuid'],
+          },
+        },
+      },
     });
   });
   it('handles REDUX_HTTP_CLIENT_RESPONSE', () => {
     const requestDetails = {
       urlParams: {
-        foo: 'bar'
+        foo: 'bar',
       },
       requestPayload: 'some payload here!',
       endpointName: 'getSomething',
@@ -54,7 +63,7 @@ describe('Redux Http reducer', () => {
       },
     };
     const nextState = beccaccinoReducer(
-      { results: {}, requestsMetadata: {} },
+      { results: {}, requestsMetadata: {}, requestsLog: { [defaultSession]: {} } },
       action,
     );
     expect(nextState).toEqual({
@@ -70,6 +79,9 @@ describe('Redux Http reducer', () => {
           isLoading: false,
           success: true,
         },
+      },
+      requestsLog: {
+        [defaultSession]: { },
       },
     });
   });
@@ -108,6 +120,9 @@ describe('Redux Http reducer', () => {
           isLoading: false,
           success: false,
         },
+      },
+      requestsLog: {
+        [defaultSession]: { },
       },
     });
   });

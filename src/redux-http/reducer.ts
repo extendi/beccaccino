@@ -20,8 +20,11 @@ export default function beccaccinoReducer(
 ): any {
   switch (action.type) {
     case REDUX_HTTP_CLIENT_REQUEST:
-      const endpointMetadata = (state.requestsLog[action.requestDetails.sessionId] || {})
-      [action.requestDetails.endpointName]  || { requests: [] };
+      const sessionId = action.requestDetails.sessionId || defaultSession;
+      const endpointMetadata =
+        (state.requestsLog[sessionId] || {})[action.requestDetails.endpointName]
+        || { requests: [] };
+
       return {
         ...state,
         requestsMetadata: {
@@ -33,8 +36,8 @@ export default function beccaccinoReducer(
         },
         requestsLog: {
           ...state.requestsLog,
-          [action.requestDetails.sessionId]: {
-            ...state.requestsLog[action.requestDetails.sessionId] || {},
+          [sessionId]: {
+            ...state.requestsLog[sessionId] || {},
             [action.requestDetails.endpointName]: {
               ...endpointMetadata,
               requests: [

@@ -18,7 +18,7 @@ export const beccaccinoSelector = (input: BaseSelectorInput): Array<SelectorOutp
   const beccaccinoState = input.state[BECCACCINO_REDUCER_NAME];
 
   const allRequestIdsForEndpoint =
-  beccaccinoState.requestsLog[sessionId][input.endpointName];
+    (beccaccinoState.requestsLog[sessionId] || {})[input.endpointName];
   const requestIdsForEndpoint = allRequestIdsForEndpoint &&
     allRequestIdsForEndpoint.requests.slice(
       ...(input.limit > 0 ? [0, input.limit] : [input.limit, undefined]),

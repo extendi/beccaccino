@@ -12,7 +12,7 @@ export default class Endpoint {
     return ({
       urlParams = {},
       requestPayload = {},
-       sessionId = defaultSession,
+      sessionId = defaultSession,
      }: { urlParams: any, requestPayload: any, sessionId?: string }) => {
       const cancelToken = axios.CancelToken.source();
       const method = bindRequest.config.method.toLowerCase();

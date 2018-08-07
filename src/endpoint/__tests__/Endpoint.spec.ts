@@ -5,6 +5,7 @@ import {
 } from '@lib/redux-http';
 import axios from 'axios';
 import requestHandler from '@lib/endpoint/requestHandler';
+import { defaultSession } from '@lib/Beccaccino';
 
 jest.mock(
   '@lib/endpoint/requestHandler',
@@ -44,7 +45,7 @@ describe('Endpoint.bindAction', () => {
         },
         actionName: REDUX_HTTP_CLIENT_REQUEST,
         axiosInstance: axios.create({}),
-        signature: REDUX_HTTP_ACTION_SIGNATURE
+        signature: REDUX_HTTP_ACTION_SIGNATURE,
       });
 
       action({ urlParams: { id: 42 }, requestPayload: { foo: 'bar' } });
@@ -55,7 +56,8 @@ describe('Endpoint.bindAction', () => {
           params: { foo: 'bar' },
         },
       });
-      expect(requestHandler.mock.calls[0][0].requestConfiguration.cancelToken).toBeInstanceOf(axios.CancelToken);
+      const cancelToken = requestHandler.mock.calls[0][0].requestConfiguration.cancelToken;
+      expect(cancelToken).toBeInstanceOf(axios.CancelToken);
     });
     it('builds a request handler with post request', () => {
       const action = Endpoint.bindAction({
@@ -66,7 +68,7 @@ describe('Endpoint.bindAction', () => {
         },
         actionName: REDUX_HTTP_CLIENT_REQUEST,
         axiosInstance: axios.create({}),
-        signature: REDUX_HTTP_ACTION_SIGNATURE
+        signature: REDUX_HTTP_ACTION_SIGNATURE,
       });
 
       action({
@@ -95,7 +97,7 @@ describe('Endpoint.bindAction', () => {
         },
         actionName: REDUX_HTTP_CLIENT_REQUEST,
         axiosInstance: axios.create({}),
-        signature: REDUX_HTTP_ACTION_SIGNATURE
+        signature: REDUX_HTTP_ACTION_SIGNATURE,
       });
       expect(action({ sessionId: 'some-session-id' })).toEqual({
         type: REDUX_HTTP_CLIENT_REQUEST,
@@ -120,7 +122,7 @@ describe('Endpoint.bindAction', () => {
         },
         actionName: REDUX_HTTP_CLIENT_REQUEST,
         axiosInstance: axios.create({}),
-        signature: REDUX_HTTP_ACTION_SIGNATURE
+        signature: REDUX_HTTP_ACTION_SIGNATURE,
       });
       const urlParams = { id: 42 };
       expect(action({ urlParams })).toEqual({
@@ -129,7 +131,7 @@ describe('Endpoint.bindAction', () => {
         requestDetails: {
           urlParams,
           requestPayload: {},
-          sessionId: undefined,
+          sessionId: defaultSession,
           endpointName: 'getFoo',
           requestId: expect.any(String),
           cancelRequest: expect.any(Function),
@@ -154,7 +156,7 @@ describe('Endpoint.bindAction', () => {
         signature: REDUX_HTTP_ACTION_SIGNATURE,
         requestDetails: {
           requestPayload,
-          sessionId: undefined,
+          sessionId: defaultSession,
           urlParams: {},
           endpointName: 'getFoo',
           requestId: expect.any(String),
