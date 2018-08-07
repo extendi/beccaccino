@@ -31,7 +31,7 @@ export type BindedActionResultPayload = {
 export type SelectorInputConf = {
   endpointName: string,
   limit?: number,
-}
+};
 
 export type SelectorInput = SelectorInputConf & {
   state: any,

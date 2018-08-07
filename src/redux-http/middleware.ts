@@ -29,6 +29,7 @@ const beccaccinoMiddleware: Middleware = _ => next => (action: BindedActionPaylo
   Beccaccino.setLastDispatchedRequestId({
     endpoint: action.requestDetails.endpointName,
     id: action.requestDetails.requestId,
+    sessionId: action.requestDetails.sessionId,
   });
 
   action.execAsync
