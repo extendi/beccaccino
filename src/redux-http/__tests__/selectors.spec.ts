@@ -13,9 +13,6 @@ Beccaccino.configure({}, []);
 
 const baseState = {
   [BECCACCINO_REDUCER_NAME]: {
-    requestsLog: {
-      testEndpoint: ['request1'],
-    },
     results: {
       request1: {
         requestDetails: {
@@ -50,6 +47,11 @@ describe('state selectors', () => {
     // });
   });
   it('Returns the request and metadata for an existing endpoint', () => {
+    Beccaccino.setLastDispatchedRequestId({
+      endpoint: 'testEndpoint',
+      id: 'request1',
+      sessionId: 'session1',
+    });
     const result = beccaccinoSelector({
       state: {
         ...baseState,
@@ -64,6 +66,7 @@ describe('state selectors', () => {
         },
       },
       endpointName: 'testEndpoint',
+      sessionId: 'session1',
     });
     expect(result).toEqual([{
       result: { data: ['test'] },
@@ -74,14 +77,26 @@ describe('state selectors', () => {
     }]);
   });
   it('Returns the request and metadata for an existing endpoint with limit of 2', () => {
+    Beccaccino.setLastDispatchedRequestId({
+      endpoint: 'testEndpoint',
+      id: 'request1',
+      sessionId: 'session2',
+    });
+    Beccaccino.setLastDispatchedRequestId({
+      endpoint: 'testEndpoint',
+      id: 'request2',
+      sessionId: 'session2',
+    });
+    Beccaccino.setLastDispatchedRequestId({
+      endpoint: 'testEndpoint',
+      id: 'request3',
+      sessionId: 'session2',
+    });
     const result = beccaccinoSelector({
       state: {
         ...baseState,
         [BECCACCINO_REDUCER_NAME]: {
           ...baseState[BECCACCINO_REDUCER_NAME],
-          requestsLog: {
-            testEndpoint: ['request1', 'request2'],
-          },
           results: {
             ...baseState[BECCACCINO_REDUCER_NAME].results,
             request2: {
@@ -117,6 +132,7 @@ describe('state selectors', () => {
       },
       endpointName: 'testEndpoint',
       limit: 2,
+      sessionId:'session2',
     });
     expect(result).toEqual([
       {
@@ -140,6 +156,7 @@ describe('state selectors', () => {
     const result = beccaccinoSelector({
       state: baseState,
       endpointName: 'testEndpoint',
+      limit: 1,
     });
     expect(result).toEqual([{
       result: { data: ['test'] },
@@ -188,7 +205,7 @@ describe('resultSelector', () => {
 describe('takeNext decorator', () => {
   it('Returns undefined if there are no requests made for the endpoint', () => {
     const configuredSelector = takeNext(
-      resultSelector, { limit: -1, endpointName: 'testEndpoint2' },
+      resultSelector, { limit: -1, endpointName: 'testEndpoint2', useDefaultSession: true },
     );
     const firstResult = configuredSelector.select(baseState);
 
@@ -207,7 +224,12 @@ describe('takeNext decorator', () => {
     const configuredSelector = takeNext(
       resultSelector, { limit: -1, endpointName: 'testEndpoint' },
     );
-    const firstResult = configuredSelector.select(baseState);
+    Beccaccino.setLastDispatchedRequestId({
+      endpoint: 'testEndpoint',
+      id: 'request2',
+      sessionId: 'session4',
+    });
+    const firstResult = configuredSelector.select(baseState, 'session4');
     const enrichedState = {
       ...baseState,
       [BECCACCINO_REDUCER_NAME]: {
@@ -232,17 +254,15 @@ describe('takeNext decorator', () => {
             success: false,
           },
         },
-        requestsLog: {
-          testEndpoint: ['request1', 'request2'],
-        },
       },
     };
     Beccaccino.setLastDispatchedRequestId({
       endpoint: 'testEndpoint',
       id: 'request2',
+      sessionId: 'session4',
     });
-    const secondResult = configuredSelector.select(enrichedState);
-    expect(firstResult).toBeUndefined();
+    const secondResult = configuredSelector.select(enrichedState, 'session4');
+    expect(firstResult).toEqual([undefined]);
     expect(secondResult).toEqual([{ data: ['test2'] }]);
   });
 });
@@ -272,6 +292,16 @@ describe('errorSelector', () => {
 
 describe('loadingSelector', () => {
   it('Returns all the loading endpoint calls', () => {
+    Beccaccino.setLastDispatchedRequestId({
+      endpoint: 'testEndpoint',
+      id: 'request1',
+      sessionId: 'session5',
+    });
+    Beccaccino.setLastDispatchedRequestId({
+      endpoint: 'testEndpoint',
+      id: 'request2',
+      sessionId: 'session5',
+    });
     const loading = loadingSelector({
       state: {
         ...baseState,
@@ -297,12 +327,10 @@ describe('loadingSelector', () => {
               success: true,
             },
           },
-          requestsLog: {
-            testEndpoint: ['request1', 'request2'],
-          },
         },
       },
       endpointName: 'testEndpoint',
+      sessionId: 'session5',
     });
     expect(loading).toEqual([true, false]);
   });

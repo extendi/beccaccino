@@ -23,12 +23,14 @@ export const beccaccinoSelector = (input: BaseSelectorInput): Array<SelectorOutp
 
   const beccaccinoState = input.state[BECCACCINO_REDUCER_NAME];
 
-  const allRequestIdsForEndpoint = beccaccinoState.requestsLog[input.endpointName];
+  const allRequestIdsForEndpoint = Beccaccino.getRequestsLog({
+    sessionId: input.sessionId,
+    endpoint: input.endpointName,
+  });
   const requestIdsForEndpoint = allRequestIdsForEndpoint &&
     allRequestIdsForEndpoint.slice(
       ...(input.limit > 0 ? [0, input.limit] : [input.limit, undefined]),
     );
-
   if (!requestIdsForEndpoint) return null;
 
   const requestsMetadata = beccaccinoState.requestsMetadata || {};
@@ -37,28 +39,17 @@ export const beccaccinoSelector = (input: BaseSelectorInput): Array<SelectorOutp
 };
 
 export const takeNext = (selector: Selector, conf: SelectorInputConf) => {
-  const lastRequestId = Beccaccino.getLastDispatchedRequestId({ endpoint: conf.endpointName });
+  // If the default session is specified, the selector will initialize the last request id now
+  const lastRequestId = conf.useDefaultSession ?
+  Beccaccino.getLastDispatchedRequestId({ endpoint: conf.endpointName })
+  : undefined;
 
   return {
-    select: (state: any) => {
-      if (!lastRequestId) return requestsOrUndefined(selector, { ...conf, state });
-
-      const requestIdsForEndpoint = state[BECCACCINO_REDUCER_NAME].requestsLog[conf.endpointName];
-      const lastRequestIndex = requestIdsForEndpoint.findIndex(
-        (id: string) => id === lastRequestId,
-      );
-      const nextRequestIds = requestIdsForEndpoint.slice(lastRequestIndex + 1);
-      const selectorStateInput = {
-        ...state,
-        [BECCACCINO_REDUCER_NAME]: {
-          ...state[BECCACCINO_REDUCER_NAME],
-          requestsLog: {
-            ...state[BECCACCINO_REDUCER_NAME].requestsLog,
-            [conf.endpointName]: nextRequestIds,
-          },
-        },
-      };
-      return requestsOrUndefined(selector, { ...conf, state: selectorStateInput });
+    select: (state: any, sessionId? : string) => {
+      // We wait for your sessionId
+      if (!conf.useDefaultSession && !sessionId) return undefined;
+      if (!lastRequestId) return requestsOrUndefined(selector, { ...conf, state, sessionId });
+      return requestsOrUndefined(selector, { ...conf, state, sessionId });
     },
   };
 };

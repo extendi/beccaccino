@@ -31,6 +31,8 @@ export type BindedActionResultPayload = {
 export type SelectorInputConf = {
   endpointName: string,
   limit?: number,
+  sessionId?: string,
+  useDefaultSession?: boolean,
 };
 
 export type SelectorInput = SelectorInputConf & {
