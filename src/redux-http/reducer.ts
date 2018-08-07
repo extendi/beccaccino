@@ -7,7 +7,6 @@ import {
 
 const initialState = {
   results: {},
-  requestsLog: {},
   requestsMetadata: {},
 };
 
@@ -27,13 +26,6 @@ export default function beccaccinoReducer(
             isLoading: true,
             success: undefined,
           },
-        },
-        requestsLog: {
-          ...state.requestsLog,
-          [action.requestDetails.endpointName]: [
-            ...(state.requestsLog[action.requestDetails.endpointName] || []),
-            action.requestDetails.requestId,
-          ],
         },
       };
     case REDUX_HTTP_CLIENT_RESPONSE:

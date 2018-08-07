@@ -38,7 +38,6 @@ describe('Integration tests with redux', () => {
       [BECCACCINO_REDUCER_NAME]: {
         results: {},
         requestsMetadata: {},
-        requestsLog: {},
       },
     });
   });
@@ -75,9 +74,6 @@ describe('when http action is dispatched the middleware', () => {
             isLoading: false,
             success: true,
           },
-        },
-        requestsLog: {
-          'getRequest': [action1.requestDetails.requestId],
         },
       },
     });
@@ -128,12 +124,6 @@ describe('when http action is dispatched the middleware', () => {
             isLoading: false,
             success: false,
           },
-        },
-        requestsLog: {
-          'getRequest': [
-            action1.requestDetails.requestId,
-            action2.requestDetails.requestId,
-          ],
         },
       },
     });
