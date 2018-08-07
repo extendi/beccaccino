@@ -1,19 +1,19 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { EndpointConfig, Endpoint, BindedAction } from '@lib/endpoint';
 import { REDUX_HTTP_ACTION_SIGNATURE, REDUX_HTTP_CLIENT_REQUEST } from '@lib/redux-http';
-import SessionManager from '@lib/SessionManager';
+import { v4 as uuid } from 'uuid';
 
 export type EndpointMap = {
   [key: string]: BindedAction,
 };
+
+export const defaultSession: string = uuid();
 
 class ReduxHttpClient {
   private readonly axiosInstance: AxiosInstance;
   private readonly axiosConfiguration: AxiosRequestConfig;
   private readonly endpoints: Array<EndpointConfig>;
   public readonly bindedEndpoints: EndpointMap = {};
-  // public metadata: MetadataMap = {};
-  public readonly sessionManager: SessionManager = new SessionManager();
 
   constructor(axiosConfiguration: AxiosRequestConfig, endpoints: Array<EndpointConfig>) {
     this.axiosConfiguration = axiosConfiguration;
@@ -52,21 +52,6 @@ const beccaccino = (() => {
     getClientInstance: () => {
       if (!clientInstance) throw Error('Redux http client instance not configured');
       return clientInstance;
-    },
-    getLastDispatchedRequestId: ({ endpoint }: { endpoint: string }) => {
-      if (!clientInstance) return undefined;
-
-      return clientInstance.sessionManager.getLastDispatchedRequestId({
-        endpointId : endpoint,
-      });
-    },
-    setLastDispatchedRequestId: ({ endpoint, id }: { endpoint: string, id: string }) => {
-      if (!clientInstance) throw Error('Redux http client instance not configured');
-
-      clientInstance.sessionManager.setLastDispatchedRequestId({
-        id,
-        endpointId: endpoint,
-      });
     },
   };
 })();

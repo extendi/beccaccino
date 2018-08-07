@@ -3,12 +3,17 @@ import requestHandler from '@lib/endpoint/requestHandler';
 import { compile as compilePath } from 'path-to-regexp';
 import { v4 as uuid } from 'uuid';
 import axios from 'axios';
+import { defaultSession } from '@lib/Beccaccino';
 
 const bindParamsToURL = (url: string, params: any) => compilePath(url)(params);
 
 export default class Endpoint {
   static bindAction(bindRequest: BindRequest): BindedAction {
-    return ({ urlParams = {}, requestPayload = {} }: { urlParams: any, requestPayload: any }) => {
+    return ({
+      urlParams = {},
+      requestPayload = {},
+      sessionId = defaultSession,
+     }: { urlParams: any, requestPayload: any, sessionId?: string }) => {
       const cancelToken = axios.CancelToken.source();
       const method = bindRequest.config.method.toLowerCase();
       return {
@@ -17,6 +22,7 @@ export default class Endpoint {
         requestDetails: {
           urlParams,
           requestPayload,
+          sessionId,
           endpointName: bindRequest.config.name,
           requestId: uuid(),
           cancelRequest: cancelToken.cancel,

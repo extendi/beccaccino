@@ -4,11 +4,12 @@ import {
   REDUX_HTTP_CLIENT_REQUEST,
   BindedActionResultPayload,
 } from '@lib/redux-http';
+import { defaultSession } from '@lib/Beccaccino';
 
 const initialState = {
   results: {},
-  requestsLog: {},
   requestsMetadata: {},
+  requestsLog: { [defaultSession]: {} },
 };
 
 export const BECCACCINO_REDUCER_NAME = 'beccaccino_reducer';
@@ -19,6 +20,11 @@ export default function beccaccinoReducer(
 ): any {
   switch (action.type) {
     case REDUX_HTTP_CLIENT_REQUEST:
+      const sessionId = action.requestDetails.sessionId || defaultSession;
+      const endpointMetadata =
+        (state.requestsLog[sessionId] || {})[action.requestDetails.endpointName]
+        || { requests: [] };
+
       return {
         ...state,
         requestsMetadata: {
@@ -30,10 +36,16 @@ export default function beccaccinoReducer(
         },
         requestsLog: {
           ...state.requestsLog,
-          [action.requestDetails.endpointName]: [
-            ...(state.requestsLog[action.requestDetails.endpointName] || []),
-            action.requestDetails.requestId,
-          ],
+          [sessionId]: {
+            ...state.requestsLog[sessionId] || {},
+            [action.requestDetails.endpointName]: {
+              ...endpointMetadata,
+              requests: [
+                ...endpointMetadata.requests,
+                action.requestDetails.requestId,
+              ],
+            },
+          },
         },
       };
     case REDUX_HTTP_CLIENT_RESPONSE:

@@ -11,6 +11,8 @@ import {
   applyMiddleware,
 } from 'redux';
 
+import { defaultSession } from '@lib/Beccaccino';
+
 const store = createStore(
   combineReducers({
     [BECCACCINO_REDUCER_NAME]: beccaccinoReducer,
@@ -38,7 +40,9 @@ describe('Integration tests with redux', () => {
       [BECCACCINO_REDUCER_NAME]: {
         results: {},
         requestsMetadata: {},
-        requestsLog: {},
+        requestsLog: {
+          [defaultSession]: {},
+        },
       },
     });
   });
@@ -77,7 +81,11 @@ describe('when http action is dispatched the middleware', () => {
           },
         },
         requestsLog: {
-          'getRequest': [action1.requestDetails.requestId],
+          [defaultSession]: {
+            getRequest: {
+              requests: [action1.requestDetails.requestId],
+            },
+          },
         },
       },
     });
@@ -130,10 +138,11 @@ describe('when http action is dispatched the middleware', () => {
           },
         },
         requestsLog: {
-          'getRequest': [
-            action1.requestDetails.requestId,
-            action2.requestDetails.requestId,
-          ],
+          [defaultSession]: {
+            getRequest: {
+              requests: [action1.requestDetails.requestId, action2.requestDetails.requestId],
+            },
+          },
         },
       },
     });

@@ -20,7 +20,7 @@ describe('Http Client Middleware', () => {
     const action = {
       type: REDUX_HTTP_CLIENT_REQUEST,
       payload: 'not interesting',
-      execAsync: new Promise((resolve, reject) => resolve('asd')),
+      execAsync: new Promise(resolve => resolve('asd')),
     };
 
     const result = beccaccinoMiddleware(null)(nextSpyMock)(action);
@@ -78,7 +78,7 @@ describe('Http Client Middleware', () => {
       requestDetails,
       type: REDUX_HTTP_CLIENT_REQUEST,
       signature: REDUX_HTTP_ACTION_SIGNATURE,
-      execAsync: new Promise((resolve, reject) => resolve('asd')),
+      execAsync: new Promise(resolve => resolve('asd')),
     };
 
     beccaccinoMiddleware(null)(nextSpyMock)(action);
@@ -138,25 +138,5 @@ describe('Http Client Middleware', () => {
         response: errors,
       });
     });
-  });
-  it('stores the last request id into metadata of beccaccino instance', () => {
-    const requestDetails = {
-      urlParmas: {
-        foo: 'bar',
-      },
-      requestPayload: 'some payload here!',
-      endpointName: 'getSomething',
-      requestId: 'last',
-    };
-    const action = {
-      requestDetails,
-      type: REDUX_HTTP_CLIENT_REQUEST,
-      signature: REDUX_HTTP_ACTION_SIGNATURE,
-      execAsync: Promise.resolve('the payload'),
-    };
-    beccaccinoMiddleware(null)(nextSpyMock)(action);
-    const id = Beccaccino.getClientInstance().sessionManager
-      .getLastDispatchedRequestId({ endpointId: 'getSomething' });
-    expect(id).toEqual('last');
   });
 });

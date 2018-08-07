@@ -12,6 +12,7 @@ export type BindedRequestDetails = {
   endpointName: string,
   requestId: string,
   cancelRequest: Function,
+  sessionId?: string,
 };
 
 export type BindedActionPayload = {
@@ -30,7 +31,9 @@ export type BindedActionResultPayload = {
 export type SelectorInputConf = {
   endpointName: string,
   limit?: number,
-}
+  sessionId?: string,
+  useDefaultSession?: boolean,
+};
 
 export type SelectorInput = SelectorInputConf & {
   state: any,
