@@ -3,6 +3,7 @@ import requestHandler from '@lib/endpoint/requestHandler';
 import { compile as compilePath } from 'path-to-regexp';
 import { v4 as uuid } from 'uuid';
 import axios from 'axios';
+import { defaultSession } from '@lib/Beccaccino';
 
 const bindParamsToURL = (url: string, params: any) => compilePath(url)(params);
 
@@ -11,7 +12,7 @@ export default class Endpoint {
     return ({
       urlParams = {},
       requestPayload = {},
-       sessionId,
+       sessionId = defaultSession,
      }: { urlParams: any, requestPayload: any, sessionId?: string }) => {
       const cancelToken = axios.CancelToken.source();
       const method = bindRequest.config.method.toLowerCase();

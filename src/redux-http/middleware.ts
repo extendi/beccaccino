@@ -6,8 +6,6 @@ import {
   REDUX_HTTP_CLIENT_RESPONSE,
   BindedActionResultPayload,
 } from '@lib/redux-http';
-import Beccaccino from '@lib/Beccaccino';
-
 import { Middleware } from 'redux';
 
 const shouldHandleAction = (action: BindedActionPayload): Boolean => {
@@ -24,12 +22,6 @@ const beccaccinoMiddleware: Middleware = _ => next => (action: BindedActionPaylo
   next({
     type: REDUX_HTTP_CLIENT_REQUEST,
     requestDetails: action.requestDetails,
-  });
-
-  Beccaccino.setLastDispatchedRequestId({
-    endpoint: action.requestDetails.endpointName,
-    id: action.requestDetails.requestId,
-    sessionId: action.requestDetails.sessionId,
   });
 
   action.execAsync
