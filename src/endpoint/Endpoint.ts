@@ -8,7 +8,11 @@ const bindParamsToURL = (url: string, params: any) => compilePath(url)(params);
 
 export default class Endpoint {
   static bindAction(bindRequest: BindRequest): BindedAction {
-    return ({ urlParams = {}, requestPayload = {} }: { urlParams: any, requestPayload: any }) => {
+    return ({
+      urlParams = {},
+      requestPayload = {},
+       sessionId,
+     }: { urlParams: any, requestPayload: any, sessionId?: string }) => {
       const cancelToken = axios.CancelToken.source();
       const method = bindRequest.config.method.toLowerCase();
       return {
@@ -17,6 +21,7 @@ export default class Endpoint {
         requestDetails: {
           urlParams,
           requestPayload,
+          sessionId,
           endpointName: bindRequest.config.name,
           requestId: uuid(),
           cancelRequest: cancelToken.cancel,
