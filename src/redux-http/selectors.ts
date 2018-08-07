@@ -4,7 +4,7 @@ import {
   SelectorOutput,
   SelectorInputConf,
   Selector,
-  BECCACCINO_REDUCER_NAME
+  BECCACCINO_REDUCER_NAME,
 } from '@lib/redux-http';
 import Beccaccino from '@lib/Beccaccino';
 
@@ -25,7 +25,9 @@ export const beccaccinoSelector = (input: BaseSelectorInput): Array<SelectorOutp
 
   const allRequestIdsForEndpoint = beccaccinoState.requestsLog[input.endpointName];
   const requestIdsForEndpoint = allRequestIdsForEndpoint &&
-    allRequestIdsForEndpoint.slice(...(input.limit > 0 ? [0, input.limit] : [input.limit, undefined]));
+    allRequestIdsForEndpoint.slice(
+      ...(input.limit > 0 ? [0, input.limit] : [input.limit, undefined]),
+    );
 
   if (!requestIdsForEndpoint) return null;
 
@@ -42,7 +44,9 @@ export const takeNext = (selector: Selector, conf: SelectorInputConf) => {
       if (!lastRequestId) return requestsOrUndefined(selector, { ...conf, state });
 
       const requestIdsForEndpoint = state[BECCACCINO_REDUCER_NAME].requestsLog[conf.endpointName];
-      const lastRequestIndex = requestIdsForEndpoint.findIndex((id: string) => id === lastRequestId);
+      const lastRequestIndex = requestIdsForEndpoint.findIndex(
+        (id: string) => id === lastRequestId,
+      );
       const nextRequestIds = requestIdsForEndpoint.slice(lastRequestIndex + 1);
       const selectorStateInput = {
         ...state,
@@ -66,7 +70,9 @@ export const resultSelector = (input: SelectorInput): Array<any> => beccaccinoSe
 
 export const errorSelector = (input: SelectorInput): Array<any> => beccaccinoSelector({
   ...input,
-  responseMapper: (meta: any, r: any) => ({ error: !meta.success, response: r ? r.response : undefined }),
+  responseMapper: (meta: any, r: any) => (
+    { error: !meta.success, response: r ? r.response : undefined }
+  ),
 });
 
 export const loadingSelector = (input: SelectorInput): Array<boolean> => beccaccinoSelector({

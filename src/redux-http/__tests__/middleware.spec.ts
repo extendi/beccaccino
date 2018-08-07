@@ -34,7 +34,7 @@ describe('Http Client Middleware', () => {
       payload: 'some stuff here',
       signature: REDUX_HTTP_ACTION_SIGNATURE,
       execAsync: new Promise((resolve, reject) => resolve('asd') || reject('foo')),
-    }
+    };
 
     const result = beccaccinoMiddleware(null)(nextSpyMock)(action);
     expect(result).toBeUndefined();
@@ -46,7 +46,7 @@ describe('Http Client Middleware', () => {
       type: REDUX_HTTP_CLIENT_REQUEST,
       payload: 'some stuff here',
       signature: REDUX_HTTP_ACTION_SIGNATURE,
-    }
+    };
 
     const result = beccaccinoMiddleware(null)(nextSpyMock)(action);
     expect(result).toBeUndefined();
@@ -59,7 +59,7 @@ describe('Http Client Middleware', () => {
       payload: 'some stuff here',
       signature: REDUX_HTTP_ACTION_SIGNATURE,
       execAsync: 'asd asd',
-    }
+    };
 
     const result = beccaccinoMiddleware(null)(nextSpyMock)(action);
     expect(result).toBeUndefined();
@@ -69,38 +69,38 @@ describe('Http Client Middleware', () => {
   it('dispatches a REDUX_HTTP_CLIENT_REQUEST with binded request details payload', () => {
     const requestDetails = {
       urlParmas: {
-        foo: 'bar'
+        foo: 'bar',
       },
       requestPayload: 'some payload here!',
-      endpointName: 'getSomething'
-    }
+      endpointName: 'getSomething',
+    };
     const action = {
+      requestDetails,
       type: REDUX_HTTP_CLIENT_REQUEST,
       signature: REDUX_HTTP_ACTION_SIGNATURE,
-      requestDetails,
       execAsync: new Promise((resolve, reject) => resolve('asd')),
     };
 
     beccaccinoMiddleware(null)(nextSpyMock)(action);
     expect(nextSpyMock).toHaveReturnedTimes(1);
     expect(nextSpyMock).toHaveBeenCalledWith({
+      requestDetails,
       type: REDUX_HTTP_CLIENT_REQUEST,
-      requestDetails
     });
   });
   it('dispatches a REDUX_HTTP_CLIENT_RESPONSE when execAsync promise resolves', () => {
     expect.assertions(2);
     const requestDetails = {
       urlParmas: {
-        foo: 'bar'
+        foo: 'bar',
       },
       requestPayload: 'some payload here!',
-      endpointName: 'getSomething'
-    }
+      endpointName: 'getSomething',
+    };
     const action = {
+      requestDetails,
       type: REDUX_HTTP_CLIENT_REQUEST,
       signature: REDUX_HTTP_ACTION_SIGNATURE,
-      requestDetails,
       execAsync: Promise.resolve('the result'),
     };
 
@@ -108,8 +108,8 @@ describe('Http Client Middleware', () => {
     action.execAsync.then((result) => {
       expect(nextSpyMock).toHaveBeenCalledTimes(2);
       expect(nextSpyMock).lastCalledWith({
-        type: REDUX_HTTP_CLIENT_RESPONSE,
         requestDetails,
+        type: REDUX_HTTP_CLIENT_RESPONSE,
         response: result,
       });
     }).catch(errors => errors);
@@ -117,15 +117,15 @@ describe('Http Client Middleware', () => {
   it('dispatches a REDUX_HTTP_CLIENT_ERROR when execAsync promise fails', () => {
     const requestDetails = {
       urlParmas: {
-        foo: 'bar'
+        foo: 'bar',
       },
       requestPayload: 'some payload here!',
-      endpointName: 'getSomething'
-    }
+      endpointName: 'getSomething',
+    };
     const action = {
+      requestDetails,
       type: REDUX_HTTP_CLIENT_REQUEST,
       signature: REDUX_HTTP_ACTION_SIGNATURE,
-      requestDetails,
       execAsync: Promise.reject('the error'),
     };
 
@@ -133,8 +133,8 @@ describe('Http Client Middleware', () => {
     action.execAsync.then(response => response).catch((errors) => {
       expect(nextSpyMock).toHaveBeenCalledTimes(2);
       expect(nextSpyMock).lastCalledWith({
-        type: REDUX_HTTP_CLIENT_ERROR,
         requestDetails,
+        type: REDUX_HTTP_CLIENT_ERROR,
         response: errors,
       });
     });
@@ -142,19 +142,21 @@ describe('Http Client Middleware', () => {
   it('stores the last request id into metadata of beccaccino instance', () => {
     const requestDetails = {
       urlParmas: {
-        foo: 'bar'
+        foo: 'bar',
       },
       requestPayload: 'some payload here!',
       endpointName: 'getSomething',
       requestId: 'last',
-    }
+    };
     const action = {
+      requestDetails,
       type: REDUX_HTTP_CLIENT_REQUEST,
       signature: REDUX_HTTP_ACTION_SIGNATURE,
-      requestDetails,
       execAsync: Promise.resolve('the payload'),
     };
     beccaccinoMiddleware(null)(nextSpyMock)(action);
-    expect(Beccaccino.getClientInstance().metadata['getSomething'].lastDispatchedRequestId).toEqual('last');
-  })
+    const id = Beccaccino.getClientInstance().sessionManager
+      .getLastDispatchedRequestId({ endpointId: 'getSomething' });
+    expect(id).toEqual('last');
+  });
 });

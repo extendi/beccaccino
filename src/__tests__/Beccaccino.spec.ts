@@ -23,18 +23,23 @@ describe('Beccaccino', () => {
     it('set lastDispatchedRequestId', () => {
       Beccaccino.setLastDispatchedRequestId({
         endpoint: 'getSomething',
-        id: 'some-request-id'
+        id: 'some-request-id',
       });
-      const metadata = Beccaccino.getClientInstance().metadata['getSomething'];
+      const id = Beccaccino.getClientInstance()
+        .sessionManager.getLastDispatchedRequestId({
+          endpointId: 'getSomething',
+        });
 
-      expect(metadata).toEqual({ lastDispatchedRequestId: 'some-request-id' });
+      expect(id).toEqual('some-request-id');
     });
     it('get lastDispatchedRequestId', () => {
-      const client = Beccaccino.getClientInstance();
-      client.metadata['getSomethingElse'] = { lastDispatchedRequestId: 'some-other-id' };
-
+      Beccaccino.getClientInstance()
+        .sessionManager.setLastDispatchedRequestId({
+          endpointId: 'getSomethingElse',
+          id: 'some-other-id',
+        });
       const lastReqId = Beccaccino.getLastDispatchedRequestId({
-        endpoint: 'getSomethingElse'
+        endpoint: 'getSomethingElse',
       });
 
       expect(lastReqId).toEqual('some-other-id');

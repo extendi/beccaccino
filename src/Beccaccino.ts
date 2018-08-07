@@ -1,15 +1,10 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { EndpointConfig, Endpoint, BindedAction } from '@lib/endpoint';
 import { REDUX_HTTP_ACTION_SIGNATURE, REDUX_HTTP_CLIENT_REQUEST } from '@lib/redux-http';
+import SessionManager from '@lib/SessionManager';
 
 export type EndpointMap = {
   [key: string]: BindedAction,
-};
-
-export type MetadataMap = {
-  [key: string]: {
-    lastDispatchedRequestId: string,
-  },
 };
 
 class ReduxHttpClient {
@@ -17,7 +12,8 @@ class ReduxHttpClient {
   private readonly axiosConfiguration: AxiosRequestConfig;
   private readonly endpoints: Array<EndpointConfig>;
   public readonly bindedEndpoints: EndpointMap = {};
-  public metadata: MetadataMap = {};
+  // public metadata: MetadataMap = {};
+  public readonly sessionManager: SessionManager = new SessionManager();
 
   constructor(axiosConfiguration: AxiosRequestConfig, endpoints: Array<EndpointConfig>) {
     this.axiosConfiguration = axiosConfiguration;
@@ -60,21 +56,17 @@ const beccaccino = (() => {
     getLastDispatchedRequestId: ({ endpoint }: { endpoint: string }) => {
       if (!clientInstance) return undefined;
 
-      const metadata = clientInstance.metadata;
-      if (!metadata || !metadata[endpoint]) return undefined;
-
-      return metadata[endpoint].lastDispatchedRequestId;
+      return clientInstance.sessionManager.getLastDispatchedRequestId({
+        endpointId : endpoint,
+      });
     },
     setLastDispatchedRequestId: ({ endpoint, id }: { endpoint: string, id: string }) => {
       if (!clientInstance) throw Error('Redux http client instance not configured');
 
-      clientInstance.metadata = {
-        ...clientInstance.metadata,
-        [endpoint]: {
-          ...clientInstance.metadata[endpoint],
-          lastDispatchedRequestId: id,
-        },
-      };
+      clientInstance.sessionManager.setLastDispatchedRequestId({
+        id,
+        endpointId: endpoint,
+      });
     },
   };
 })();

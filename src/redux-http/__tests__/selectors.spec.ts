@@ -14,10 +14,10 @@ Beccaccino.configure({}, []);
 const baseState = {
   [BECCACCINO_REDUCER_NAME]: {
     requestsLog: {
-      'testEndpoint': ['request1']
+      testEndpoint: ['request1'],
     },
     results: {
-      'request1': {
+      request1: {
         requestDetails: {
           requestId: 'request1',
         },
@@ -27,9 +27,10 @@ const baseState = {
     },
   },
 };
-Beccaccino.getClientInstance().metadata['testEndpoint'] = {
-  lastDispatchedRequestId: 'request1',
-}
+Beccaccino.setLastDispatchedRequestId({
+  endpoint: 'testEndpoint',
+  id: 'request1',
+});
 
 describe('state selectors', () => {
   describe('beccaccinoSelector', () => {
@@ -79,18 +80,18 @@ describe('state selectors', () => {
         [BECCACCINO_REDUCER_NAME]: {
           ...baseState[BECCACCINO_REDUCER_NAME],
           requestsLog: {
-            'testEndpoint': ['request1', 'request2'],
+            testEndpoint: ['request1', 'request2'],
           },
           results: {
             ...baseState[BECCACCINO_REDUCER_NAME].results,
-            'request2': {
+            request2: {
               requestDetails: {
                 requestId: 'request2',
               },
               rawResponse: {},
               response: { data: ['test2'] },
             },
-            'request3': {
+            request3: {
               requestDetails: {
                 requestId: 'request3',
               },
@@ -161,7 +162,9 @@ describe('state selectors', () => {
         },
       },
       endpointName: 'testEndpoint',
-      responseMapper: (meta: any, result: any) => ({ foo: result.response.data, bar: meta.isLoading }),
+      responseMapper: (meta: any, result: any) => (
+        { foo: result.response.data, bar: meta.isLoading }
+      ),
     });
     expect(result).toEqual([{
       foo: ['test'],
@@ -190,7 +193,7 @@ describe('takeNext decorator', () => {
     const firstResult = configuredSelector.select(baseState);
 
     expect(firstResult).toBeNull();
-  })
+  });
   it('Returns undefined if the requests are the same across different calls of selector', () => {
     const configuredSelector = takeNext(
       resultSelector, { limit: -1, endpointName: 'testEndpoint' },
@@ -211,7 +214,7 @@ describe('takeNext decorator', () => {
         ...baseState[BECCACCINO_REDUCER_NAME],
         results: {
           ...baseState[BECCACCINO_REDUCER_NAME].results,
-          'request2': {
+          request2: {
             requestDetails: {
               requestId: 'request2',
             },
@@ -230,11 +233,14 @@ describe('takeNext decorator', () => {
           },
         },
         requestsLog: {
-          'testEndpoint': ['request1', 'request2'],
+          testEndpoint: ['request1', 'request2'],
         },
       },
     };
-    Beccaccino.getClientInstance().metadata['testEndpoint'].lastDispatchedRequestId = 'request2';
+    Beccaccino.setLastDispatchedRequestId({
+      endpoint: 'testEndpoint',
+      id: 'request2',
+    });
     const secondResult = configuredSelector.select(enrichedState);
     expect(firstResult).toBeUndefined();
     expect(secondResult).toEqual([{ data: ['test2'] }]);
@@ -273,7 +279,7 @@ describe('loadingSelector', () => {
           ...baseState[BECCACCINO_REDUCER_NAME],
           results: {
             ...baseState[BECCACCINO_REDUCER_NAME].results,
-            'request2': {
+            request2: {
               requestDetails: {
                 requestId: 'request2',
               },
@@ -288,11 +294,11 @@ describe('loadingSelector', () => {
             },
             request2: {
               isLoading: false,
-              success: true
-            }
+              success: true,
+            },
           },
           requestsLog: {
-            'testEndpoint': ['request1', 'request2'],
+            testEndpoint: ['request1', 'request2'],
           },
         },
       },
@@ -312,14 +318,14 @@ describe('cancelTokenSelector', () => {
           ...baseState[BECCACCINO_REDUCER_NAME],
           results: {
             ...baseState[BECCACCINO_REDUCER_NAME].results,
-            'request1': {
+            request1: {
               ...baseState[BECCACCINO_REDUCER_NAME].results['request1'],
               requestDetails: {
                 cancelRequest: cancelCallback,
               },
             },
           },
-        }
+        },
       },
       limit: 1,
       endpointName: 'testEndpoint',
