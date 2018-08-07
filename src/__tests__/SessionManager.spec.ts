@@ -53,4 +53,28 @@ describe('SessionManager', () => {
       expect(lastDispatchedRequestId).toEqual('some-other-request-id');
     });
   });
+  describe('getRequestsLog', () => {
+    beforeEach(() => {
+      sessionManager.setLastDispatchedRequestId({
+        id: 'some-request-id',
+        endpointId: 'getSomething',
+        sessionId: 'some-session-id',
+      });
+      sessionManager.setLastDispatchedRequestId({
+        id: 'some-other-request-id',
+        endpointId: 'getSomething',
+        sessionId: 'some-session-id',
+      });
+    });
+    it('should return the requests log', () => {
+      const log = sessionManager.getRequestsLog({
+        endpointId: 'getSomething',
+        sessionId: 'some-session-id',
+      });
+      expect(log).toEqual([
+        'some-request-id',
+        'some-other-request-id',
+      ]);
+    });
+  });
 });

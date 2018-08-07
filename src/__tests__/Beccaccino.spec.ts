@@ -45,4 +45,19 @@ describe('Beccaccino', () => {
       expect(lastReqId).toEqual('some-other-id');
     });
   });
+  describe('getRequestsLog', () => {
+    it('get requests log', () => {
+      Beccaccino.getClientInstance()
+        .sessionManager.setLastDispatchedRequestId({
+          endpointId: 'logEndpoint',
+          id: 'some-other-id',
+          sessionId: 'test-session',
+        });
+      const log = Beccaccino.getRequestsLog({
+        endpoint: 'logEndpoint',
+        sessionId: 'test-session',
+      });
+      expect(log).toEqual(['some-other-id']);
+    });
+  });
 });

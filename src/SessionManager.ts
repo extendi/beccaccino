@@ -9,13 +9,11 @@ type Sessions = {
   },
 };
 
-type DispatchedRequestIdSetterInput = {
-  endpointId: string,
+type RequestIdDescriptor = SessionEndpointDescriptor  & {
   id: string,
-  sessionId?: string,
 };
 
-type DispatchedRequestIdGetterInput = {
+type SessionEndpointDescriptor = {
   endpointId: string,
   sessionId?: string,
 };
@@ -28,7 +26,7 @@ export default class SessionManager {
   };
 
   public getLastDispatchedRequestId(
-    { endpointId, sessionId = defaultSession }: DispatchedRequestIdGetterInput,
+    { endpointId, sessionId = defaultSession }: SessionEndpointDescriptor,
   ): string {
     const session = this.metadata[sessionId];
     if (!session) throw Error(`Invalid session identifier ${sessionId}`);
@@ -39,12 +37,23 @@ export default class SessionManager {
     return endpoint.lastDispatchedRequestId;
   }
 
+  public getRequestsLog(
+    { endpointId, sessionId = defaultSession } : SessionEndpointDescriptor,
+  ) : Array<string> {
+    const session = this.metadata[sessionId];
+    if (!session) throw Error(`Invalid session identifier ${sessionId}`);
+    const endpoint = session[endpointId];
+    if (!endpoint) return undefined;
+
+    return endpoint.requestsLog;
+  }
+
   public setLastDispatchedRequestId(
     {
       id,
       endpointId,
       sessionId = defaultSession,
-    }: DispatchedRequestIdSetterInput) {
+    }: RequestIdDescriptor) {
     const endpointMetadata: any =
       (this.metadata[sessionId] || {})[endpointId] || { requestsLog: [] };
     this.metadata = {

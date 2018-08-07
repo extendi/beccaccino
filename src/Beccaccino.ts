@@ -53,6 +53,16 @@ const beccaccino = (() => {
       if (!clientInstance) throw Error('Redux http client instance not configured');
       return clientInstance;
     },
+    getRequestsLog({
+      endpoint,
+      sessionId,
+    }: { endpoint: string, sessionId?: string}) {
+      if (!clientInstance) return undefined;
+      return clientInstance.sessionManager.getRequestsLog({
+        sessionId,
+        endpointId: endpoint,
+      });
+    },
     getLastDispatchedRequestId: ({
       endpoint,
       sessionId,
