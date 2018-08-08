@@ -36,10 +36,14 @@ describe('state selectors', () => {
     it('Returns undefined if endpoint is not defined or without requests', () => {
       const result = beccaccinoSelector({
         state: {
-          ...baseState, requestsMetadata: {
-            missingEndpoint: {
-              isLoading: false,
-              success: true,
+          ...baseState,
+          [BECCACCINO_REDUCER_NAME]: {
+            ...baseState[BECCACCINO_REDUCER_NAME],
+            requestsMetadata: {
+              missingEndpoint: {
+                isLoading: false,
+                success: true,
+              },
             },
           },
         },
