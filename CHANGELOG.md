@@ -1,5 +1,8 @@
 # Change Log
 
+* v1.0.0
+  - Session based requestsLog
+
 * v0.1.4
   - Add requestsLog section in the store state
     * requestsLog is an array of requests ids
