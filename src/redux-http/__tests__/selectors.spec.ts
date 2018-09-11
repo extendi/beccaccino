@@ -254,6 +254,46 @@ describe('state selectors', () => {
         { error: false, response: { data: ['test'] } },
       ]);
     });
+    it('Does not return errors when meta.success is undefined (i.e. request is in progress)', () => {
+      baseState[BECCACCINO_REDUCER_NAME].requestsLog['session5'] = {
+        testEndpoint: {
+          requests: ['request1', 'request2'],
+        },
+      };
+      const errors = errorSelector({
+        state: {
+          ...baseState,
+          [BECCACCINO_REDUCER_NAME]: {
+            ...baseState[BECCACCINO_REDUCER_NAME],
+            results: {
+              ...baseState[BECCACCINO_REDUCER_NAME].results,
+              request1: {
+                requestDetails: {
+                  requestId: 'request1',
+                },
+                rawResponse: {},
+                response: { data: ['test1'] },
+              },
+            },
+            requestsMetadata: {
+              request1: {
+                isLoading: false,
+                success: true,
+              },
+              request2: {
+                isLoading: true,
+              },
+            },
+          },
+        },
+        endpointName: 'testEndpoint',
+        sessionId: 'session5',
+        limit: -1,
+      });
+      expect(errors).toEqual([
+        { error: false, response: undefined },
+      ]);
+    });
   });
 
   describe('loadingSelector', () => {
