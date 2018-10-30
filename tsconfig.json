@@ -13,7 +13,8 @@
     "jsx": "react",
     "rootDir": "./",
     "baseUrl": "./src",
-    "allowJs": true,
+    "declaration" : true,
+    "declarationDir": "./dist/",
     "paths": {
       "@lib/*": [
         "*"

@@ -3,8 +3,8 @@ import {
   REDUX_HTTP_CLIENT_RESPONSE,
   REDUX_HTTP_CLIENT_REQUEST,
   BindedActionResultPayload,
-} from '@lib/redux-http';
-import { defaultSession } from '@lib/Beccaccino';
+} from './actions';
+import { defaultSession } from '../Beccaccino';
 
 const initialState = {
   results: {},

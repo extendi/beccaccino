@@ -4,10 +4,7 @@ import {
   REDUX_HTTP_CLIENT_REQUEST,
   REDUX_HTTP_CLIENT_RESPONSE,
   REDUX_HTTP_CLIENT_ERROR,
-} from '@lib/redux-http';
-import Beccaccino from '@lib/Beccaccino';
-
-Beccaccino.configure({}, []);
+} from '../';
 
 const nextSpyMock = jest.fn();
 

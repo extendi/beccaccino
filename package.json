@@ -62,6 +62,13 @@
     "moduleNameMapper": {
       "^@lib/(.*)$": "<rootDir>/src/$1"
     },
+    "globals": {
+      "ts-jest": {
+        "diagnostics": {
+          "warnOnly": true
+        }
+      }
+    },
     "testEnvironment": "node",
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [

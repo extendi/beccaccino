@@ -5,7 +5,7 @@ import {
   REDUX_HTTP_CLIENT_ERROR,
   REDUX_HTTP_CLIENT_RESPONSE,
   BindedActionResultPayload,
-} from '@lib/redux-http';
+} from './actions';
 import { Middleware } from 'redux';
 
 const shouldHandleAction = (action: BindedActionPayload): Boolean => {

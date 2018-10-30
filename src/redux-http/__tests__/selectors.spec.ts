@@ -5,10 +5,10 @@ import {
   errorSelector,
   loadingSelector,
   cancelTokenSelector,
-} from '@lib/redux-http';
-import Beccaccino, { defaultSession } from '@lib/Beccaccino';
+} from '../';
+import Beccaccino, { defaultSession } from '../../Beccaccino';
 
-Beccaccino.configure({}, []);
+// Beccaccino.configure({}, []);
 
 const baseState = {
   [BECCACCINO_REDUCER_NAME]: {
