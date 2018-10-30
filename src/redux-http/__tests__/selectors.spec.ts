@@ -6,9 +6,7 @@ import {
   loadingSelector,
   cancelTokenSelector,
 } from '../';
-import Beccaccino, { defaultSession } from '../../Beccaccino';
-
-// Beccaccino.configure({}, []);
+import { defaultSession } from '../../Beccaccino';
 
 const baseState = {
   [BECCACCINO_REDUCER_NAME]: {

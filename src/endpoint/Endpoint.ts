@@ -1,13 +1,39 @@
-import { BindRequest, BindedAction } from '@lib/endpoint';
-import requestHandler from '@lib/endpoint/requestHandler';
+import { BindedActionPayload } from '../redux-http';
 import { compile as compilePath } from 'path-to-regexp';
 import { v4 as uuid } from 'uuid';
-import axios from 'axios';
+import { default as axios, AxiosInstance } from 'axios';
 import { defaultSession } from '@lib/Beccaccino';
+import { ErrorTransform, ResponseTransform, requestHandler } from './requestHandler';
+
+export type Method =
+  | 'get'
+  | 'delete'
+  | 'head'
+  | 'options'
+  | 'post'
+  | 'put'
+  | 'patch';
+
+export type EndpointConfig = {
+  path: string,
+  method: Method,
+  name: string,
+  errorTransformer?: ErrorTransform;
+  responseTransformer?: ResponseTransform,
+};
+
+export type BindRequest = {
+  config: EndpointConfig,
+  actionName: string,
+  axiosInstance: AxiosInstance,
+  signature: Symbol,
+};
+
+export type BindedAction = (params: any) => BindedActionPayload;
 
 const bindParamsToURL = (url: string, params: any) => compilePath(url)(params);
 
-export default class Endpoint {
+export class Endpoint {
   static bindAction(bindRequest: BindRequest): BindedAction {
     return ({
       urlParams = {},

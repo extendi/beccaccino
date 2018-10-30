@@ -1,17 +1,17 @@
-import { Endpoint } from '@lib/endpoint';
 import {
   REDUX_HTTP_CLIENT_REQUEST,
   REDUX_HTTP_ACTION_SIGNATURE,
 } from '@lib/redux-http';
 import axios from 'axios';
-import requestHandler from '@lib/endpoint/requestHandler';
-import { defaultSession } from '@lib/Beccaccino';
+import { Endpoint } from '../';
+import { defaultSession } from '../../Beccaccino';
+import { requestHandler } from '../requestHandler';
 
 jest.mock(
-  '@lib/endpoint/requestHandler',
+  '../requestHandler',
   () => {
     return {
-      default: jest.fn(() => ({})),
+      requestHandler: jest.fn(() => ({})),
     };
   },
 );
