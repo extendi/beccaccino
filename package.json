@@ -31,14 +31,16 @@
     "url": "https://github.com/extendi/beccaccino"
   },
   "typings": "./dist/index.d.ts",
+  "peerDependencies": {
+    "axios": "^0.18.0",
+    "redux": "^4.0.1"
+  },
   "devDependencies": {
     "@types/jest": "^23.3.8",
     "@types/uuid": "^3.4.4",
     "awesome-typescript-loader": "^5.2.1",
     "coveralls": "^3.0.2",
     "jest": "^23.6.0",
-    "redux": "^4.0.1",
-    "source-map-loader": "^0.2.4",
     "terser-webpack-plugin": "^1.1.0",
     "ts-jest": "^23.10.4",
     "ts-loader": "^5.2.2",
@@ -52,7 +54,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "path-to-regexp": "^2.4.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "redux": "^4.0.1"
   },
   "jest": {
     "transform": {
