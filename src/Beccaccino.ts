@@ -34,7 +34,7 @@ class ReduxHttpClient {
   }
 }
 
-const beccaccino = (() => {
+export const beccaccino = (() => {
   let clientInstance: ReduxHttpClient = null;
   return {
     configure: (
@@ -55,5 +55,3 @@ const beccaccino = (() => {
     },
   };
 })();
-
-export default beccaccino;
