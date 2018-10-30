@@ -3,8 +3,8 @@ import {
   REDUX_HTTP_CLIENT_ERROR,
   REDUX_HTTP_CLIENT_REQUEST,
   beccaccinoReducer,
-} from '@lib/redux-http';
-import { defaultSession } from '@lib/Beccaccino';
+} from '../';
+import { defaultSession } from '../../Beccaccino';
 
 const initialState = {
   results: {},

@@ -3,8 +3,8 @@ import {
   REDUX_HTTP_CLIENT_RESPONSE,
   REDUX_HTTP_CLIENT_REQUEST,
   BindedActionResultPayload,
-} from '@lib/redux-http';
-import { defaultSession } from '@lib/Beccaccino';
+} from './actions';
+import { defaultSession } from '../Beccaccino';
 
 const initialState = {
   results: {},
@@ -14,7 +14,7 @@ const initialState = {
 
 export const BECCACCINO_REDUCER_NAME = 'beccaccino_reducer';
 
-export default function beccaccinoReducer(
+export function beccaccinoReducer(
   state: any = initialState,
   action: BindedActionResultPayload,
 ): any {

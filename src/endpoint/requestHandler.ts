@@ -1,5 +1,13 @@
-import { AxiosRequestConfig, AxiosInstance } from 'axios';
-import { ErrorTransform, ResponseTransform, EndpointResponse } from '@lib/endpoint';
+import { AxiosRequestConfig, AxiosInstance, AxiosResponse, AxiosError } from 'axios';
+
+export type EndpointResponse = {
+  rawResponse: AxiosResponse | AxiosError,
+  data: any,
+  success: boolean,
+};
+
+export type ResponseTransform = (input: AxiosResponse) => any;
+export type ErrorTransform = (input: AxiosError) => any;
 
 const defaulTransformFunction = (x: any): any => x;
 const defaultErrorTransformFunction = (x: any): any => x;
@@ -10,7 +18,8 @@ type RequestHandlerParams = {
   responseTransformer?: ResponseTransform,
   axiosInstance: AxiosInstance,
 };
-export default function requestHandler({
+
+export function requestHandler({
   requestConfiguration,
   errorTransformer = defaultErrorTransformFunction,
   axiosInstance,

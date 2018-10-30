@@ -1,10 +1,27 @@
-import {
-  SelectorInput,
-  BaseSelectorInput,
-  SelectorOutput,
-  BECCACCINO_REDUCER_NAME,
-} from '@lib/redux-http';
-import  { defaultSession } from '@lib/Beccaccino';
+import { BECCACCINO_REDUCER_NAME } from './reducer';
+import  { defaultSession } from '../Beccaccino';
+
+export type SelectorInputConf = {
+  endpointName: string,
+  limit?: number,
+  sessionId?: string,
+  useDefaultSession?: boolean,
+};
+
+export type SelectorInput = SelectorInputConf & {
+  state: any,
+};
+
+export type BaseSelectorInput = SelectorInput & {
+  responseMapper?: (meta: any, response: any) => any,
+};
+
+export type SelectorOutput = {
+  result: any,
+  metadata: any,
+};
+
+export type Selector = (input: SelectorInput) => Array<SelectorOutput | any>;
 
 export const beccaccinoSelector = (input: BaseSelectorInput): Array<SelectorOutput | any> => {
   const sessionId = input.sessionId || defaultSession;

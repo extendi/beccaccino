@@ -1,7 +1,8 @@
-export * from '@lib/redux-http';
-import { default as InternalBeccaccino } from '@lib/Beccaccino';
+export * from './redux-http';
+export * from './endpoint';
+import { beccaccino } from './Beccaccino';
 
 export const Beccaccino = {
-  configure: InternalBeccaccino.configure,
-  getClient: InternalBeccaccino.getClient,
+  configure: beccaccino.configure,
+  getClient: beccaccino.getClient,
 };

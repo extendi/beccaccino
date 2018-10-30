@@ -1,5 +1,5 @@
 import axios from 'axios';
-import requestHandler from '@lib/endpoint/requestHandler';
+import { requestHandler } from '../requestHandler';
 
 const axiosInstance = axios.create();
 
@@ -73,13 +73,13 @@ describe('requestHandler', () => {
         expect(responseTransformer).toHaveBeenCalledTimes(1);
         expect(responseTransformer).toHaveBeenCalledWith('asd');
       }).catch(errors => errors);
-    })
+    });
   });
   describe('fails', () => {
     it('with rawResponse and data', () => {
       axiosInstance.request = jest.fn()
         .mockImplementation((conf) => Promise.reject({
-          response: { data: 'error' }
+          response: { data: 'error' },
         }));
       const res = requestHandler({
         requestConfiguration: {
@@ -99,7 +99,7 @@ describe('requestHandler', () => {
     });
     it('and calls errorTransformer', () => {
       const stubbedPromise = Promise.reject({
-        response: { data: 'error' }
+        response: { data: 'error' },
       });
       const errorTransformer = jest.fn();
       axiosInstance.request = jest.fn()
@@ -119,6 +119,6 @@ describe('requestHandler', () => {
           'error',
         );
       });
-    })
+    });
   });
 });

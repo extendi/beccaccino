@@ -3,7 +3,7 @@ import {
   beccaccinoMiddleware,
   beccaccinoReducer,
   BECCACCINO_REDUCER_NAME,
-} from '@lib/index';
+} from '../';
 
 import {
   createStore,

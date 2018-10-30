@@ -1,4 +1,4 @@
-import Beccaccino from '@lib/Beccaccino';
+import { Beccaccino } from '../';
 
 const clientInstance = Beccaccino.configure({}, [
   { name: 'getPippo', path: 'https://google.com', method: 'get' },
