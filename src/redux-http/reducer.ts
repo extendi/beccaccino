@@ -14,7 +14,7 @@ const initialState = {
 
 export const BECCACCINO_REDUCER_NAME = 'beccaccino_reducer';
 
-export default function beccaccinoReducer(
+export function beccaccinoReducer(
   state: any = initialState,
   action: BindedActionResultPayload,
 ): any {

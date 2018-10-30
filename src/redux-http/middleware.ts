@@ -14,7 +14,7 @@ const shouldHandleAction = (action: BindedActionPayload): Boolean => {
     action.execAsync instanceof Promise;
 };
 
-const beccaccinoMiddleware: Middleware = _ => next => (action: BindedActionPayload) => {
+export const beccaccinoMiddleware: Middleware = _ => next => (action: BindedActionPayload) => {
   if (!shouldHandleAction(action)) {
     next(action);
     return;
@@ -44,5 +44,3 @@ const beccaccinoMiddleware: Middleware = _ => next => (action: BindedActionPaylo
       Promise.resolve(errors);
     });
 };
-
-export default beccaccinoMiddleware;
