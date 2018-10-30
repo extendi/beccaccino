@@ -41,6 +41,7 @@
     "awesome-typescript-loader": "^5.2.1",
     "coveralls": "^3.0.2",
     "jest": "^23.6.0",
+    "source-map-loader": "^0.2.4",
     "terser-webpack-plugin": "^1.1.0",
     "ts-jest": "^23.10.4",
     "ts-loader": "^5.2.2",
@@ -54,8 +55,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "path-to-regexp": "^2.4.0",
-    "uuid": "^3.3.2",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "uuid": "^3.3.2"
   },
   "jest": {
     "transform": {
