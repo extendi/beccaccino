@@ -2,7 +2,7 @@ import { BindedActionPayload } from '../redux-http';
 import { compile as compilePath } from 'path-to-regexp';
 import { v4 as uuid } from 'uuid';
 import { default as axios, AxiosInstance } from 'axios';
-import { defaultSession } from '@lib/Beccaccino';
+import { defaultSession } from '../Beccaccino';
 import { ErrorTransform, ResponseTransform, requestHandler } from './requestHandler';
 
 export type Method =
