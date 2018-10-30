@@ -14,8 +14,7 @@
     "test": "yarn run jest --coverage --coverageReporters=text-lcov"
   },
   "files": [
-    "dist",
-    "index.d.ts"
+    "dist"
   ],
   "keywords": [
     "redux",
@@ -31,7 +30,7 @@
     "type": "git",
     "url": "https://github.com/extendi/beccaccino"
   },
-  "typings": "./index.d.ts",
+  "typings": "./dist/index.d.ts",
   "devDependencies": {
     "@types/jest": "^23.3.8",
     "@types/uuid": "^3.4.4",
