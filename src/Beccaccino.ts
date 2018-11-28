@@ -9,8 +9,8 @@ export type EndpointMap = {
 
 export const defaultSession: string = uuid();
 
-class ReduxHttpClient {
-  private readonly axiosInstance: AxiosInstance;
+export class ReduxHttpClient {
+  public readonly axiosInstance: AxiosInstance;
   private readonly axiosConfiguration: AxiosRequestConfig;
   private readonly endpoints: Array<EndpointConfig>;
   public readonly bindedEndpoints: EndpointMap = {};
