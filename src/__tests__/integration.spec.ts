@@ -169,7 +169,7 @@ describe('when http action is dispatched the middleware', () => {
       endpointName: 'getRequest',
     });
     expect(resultSelectorResponse).toEqual(
-      [{ id: 1, test: true }],
+      [{ id: 1, test: true }, undefined],
     );
     const errorSelectorResponse = errorSelector({
       state,
