@@ -223,7 +223,18 @@ describe('state selectors', () => {
     it('Returns all the results of endpoint', () => {
       const result = resultSelector({
         endpointName: 'testEndpoint',
-        state: baseState,
+        state: {
+          ...baseState,
+          [BECCACCINO_REDUCER_NAME]: {
+            ...baseState[BECCACCINO_REDUCER_NAME],
+            requestsMetadata: {
+              request1: {
+                isLoading: false,
+                success: true,
+              },
+            },
+          },
+        },
       });
       expect(result).toEqual([
         { data: ['test'] },
@@ -235,11 +246,11 @@ describe('state selectors', () => {
         ...baseState,
         [BECCACCINO_REDUCER_NAME]: {
           ...baseState[BECCACCINO_REDUCER_NAME],
-        },
-        requestsMetadata: {
-          request1: {
-            isLoading: false,
-            success: false,
+          requestsMetadata: {
+            request1: {
+              isLoading: false,
+              success: false,
+            },
           },
         },
       };
@@ -247,7 +258,7 @@ describe('state selectors', () => {
         endpointName: 'testEndpoint',
         state: testState,
       });
-      expect(result).toBeUndefined();
+      expect(result).toEqual([undefined]);
     });
 
     it('Does not return a result of endpoint if the endpoint is loading', () => {
@@ -255,10 +266,10 @@ describe('state selectors', () => {
         ...baseState,
         [BECCACCINO_REDUCER_NAME]: {
           ...baseState[BECCACCINO_REDUCER_NAME],
-        },
-        requestsMetadata: {
-          request1: {
-            isLoading: true,
+          requestsMetadata: {
+            request1: {
+              isLoading: true,
+            },
           },
         },
       };
@@ -266,7 +277,7 @@ describe('state selectors', () => {
         endpointName: 'testEndpoint',
         state: testState,
       });
-      expect(result).toBeUndefined();
+      expect(result).toEqual([undefined]);
     });
   });
 
