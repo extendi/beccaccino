@@ -2,6 +2,8 @@ import {
   Beccaccino,
   beccaccinoMiddleware,
   beccaccinoReducer,
+  resultSelector,
+  errorSelector,
   BECCACCINO_REDUCER_NAME,
 } from '../';
 
@@ -53,7 +55,7 @@ describe('when http action is dispatched the middleware', () => {
   const action2 = client.getRequest({ urlParams: { id: '5b589ccf3000000923fe500c' } });
 
   it('store first request result', async (done) => {
-    expect.assertions(1);
+    expect.assertions(3);
     store.dispatch(action1);
     await action1.execAsync;
     const state = store.getState();
@@ -89,11 +91,27 @@ describe('when http action is dispatched the middleware', () => {
         },
       },
     });
+    const resultSelectorResponse = resultSelector({
+      state,
+      endpointName: 'getRequest',
+      limit: -1,
+    });
+    const errorSelectorResponse = errorSelector({
+      state,
+      endpointName: 'getRequest',
+      limit: -1,
+    });
+    expect(resultSelectorResponse).toEqual(
+      [{ id: 1, test: true }],
+    );
+    expect(errorSelectorResponse).toEqual(
+      [{ error: false, response: { id: 1, test: true } }],
+    );
     done();
   });
 
   it('store the second request result', async (done) => {
-    expect.assertions(1);
+    expect.assertions(3);
     store.dispatch(action2);
     await action2.execAsync;
     const state = store.getState();
@@ -146,6 +164,23 @@ describe('when http action is dispatched the middleware', () => {
         },
       },
     });
+    const resultSelectorResponse = resultSelector({
+      state,
+      endpointName: 'getRequest',
+    });
+    expect(resultSelectorResponse).toEqual(
+      [{ id: 1, test: true }, undefined],
+    );
+    const errorSelectorResponse = errorSelector({
+      state,
+      endpointName: 'getRequest',
+    });
+    expect(errorSelectorResponse).toEqual(
+      [
+        { error: false, response: { id: 1, test: true } },
+         { error: true, response: { id: 2, test: true } },
+      ],
+    );
     done();
   });
 });

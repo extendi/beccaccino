@@ -49,7 +49,9 @@ export const beccaccinoSelector = (input: BaseSelectorInput): Array<SelectorOutp
 
 export const resultSelector = (input: SelectorInput): Array<any> => beccaccinoSelector({
   ...input,
-  responseMapper: (_, r: any) => r ? r.response : undefined,
+  responseMapper: (meta: any, r: any) => r
+    && !meta.isLoading
+    && meta.success ? r.response : undefined,
 });
 
 export const errorSelector = (input: SelectorInput): Array<any> => beccaccinoSelector({
