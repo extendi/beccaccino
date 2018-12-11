@@ -229,6 +229,45 @@ describe('state selectors', () => {
         { data: ['test'] },
       ]);
     });
+
+    it('Does not return a result of endpoint if the endpoint has an error', () => {
+      const testState = {
+        ...baseState,
+        [BECCACCINO_REDUCER_NAME]: {
+          ...baseState[BECCACCINO_REDUCER_NAME],
+        },
+        requestsMetadata: {
+          request1: {
+            isLoading: false,
+            success: false,
+          },
+        },
+      };
+      const result = resultSelector({
+        endpointName: 'testEndpoint',
+        state: testState,
+      });
+      expect(result).toBeUndefined();
+    });
+
+    it('Does not return a result of endpoint if the endpoint is loading', () => {
+      const testState = {
+        ...baseState,
+        [BECCACCINO_REDUCER_NAME]: {
+          ...baseState[BECCACCINO_REDUCER_NAME],
+        },
+        requestsMetadata: {
+          request1: {
+            isLoading: true,
+          },
+        },
+      };
+      const result = resultSelector({
+        endpointName: 'testEndpoint',
+        state: testState,
+      });
+      expect(result).toBeUndefined();
+    });
   });
 
   describe('errorSelector', () => {
