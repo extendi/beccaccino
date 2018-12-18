@@ -1,0 +1,7 @@
+image: node:11-alpine
+
+tests:
+  before_script:
+    - yarn install
+  script:
+    - yarn test
