@@ -11,7 +11,7 @@ describe('Beccaccino', () => {
   });
   it('Does not allow reconfiguration of library', () => {
     expect(() => Beccaccino.configure({}, []))
-      .toThrowError('Redux http client instance already configured');
+      .toThrowError('Redux http client defaultClient already configured');
   });
   it('Does configure the endpoints functions', () => {
     const endpoints = Beccaccino.getClient();
