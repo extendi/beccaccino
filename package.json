@@ -11,7 +11,7 @@
     "prepublish": "yarn build:production",
     "build:development": "NODE_ENV=development yarn run webpack --progress --mode development",
     "build:production": "rm -rf ./dist/ && NODE_ENV=production yarn run webpack --progress --env.production",
-    "test": "yarn run jest --coverage --coverageReporters=text-lcov"
+    "test": "yarn run jest --coverage --coverageReporters=text-lcov | coveralls"
   },
   "files": [
     "dist"
