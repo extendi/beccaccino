@@ -9,6 +9,7 @@ export type BindedRequestDetails = {
   requestPayload: any,
   endpointName: string,
   requestId: string,
+  clientName: string,
   cancelRequest: Function,
   sessionId?: string,
 };

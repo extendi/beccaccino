@@ -27,6 +27,7 @@ export type BindRequest = {
   actionName: string,
   axiosInstance: AxiosInstance,
   signature: Symbol,
+  clientName: string,
 };
 
 export type BindedAction = (params: any) => BindedActionPayload;
@@ -48,6 +49,7 @@ export class Endpoint {
         requestDetails: {
           urlParams,
           requestPayload,
+          clientName: bindRequest.clientName,
           sessionId,
           endpointName: bindRequest.config.name,
           requestId: uuid(),
