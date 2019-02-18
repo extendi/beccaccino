@@ -18,4 +18,20 @@ describe('Beccaccino', () => {
     expect(typeof endpoints.getPippo).toEqual('function');
     expect(typeof endpoints.getPluto).toEqual('function');
   });
+  it('Configure and returns a named client', () => {
+    const namedClientInstance = Beccaccino.configure({}, [
+      { name: 'testPippo', path: 'https://google.test', method: 'get' },
+      { name: 'testPluto', path: 'https://google.lol', method: 'post' },
+    ], 'testClient');
+    expect(Beccaccino.getClient('testClient')).toBe(namedClientInstance);
+  });
+  it('Configure endpoints functions for a named client', () => {
+    const endpoints = Beccaccino.getClient('testClient');
+    expect(typeof endpoints.testPippo).toEqual('function');
+    expect(typeof endpoints.testPluto).toEqual('function');
+  });
+  it('Does not allow a reconfiguration of a named client', () => {
+    expect(() => Beccaccino.configure({}, [], 'testClient'))
+    .toThrowError('Redux http client testClient already configured');
+  });
 });
