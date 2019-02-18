@@ -16,17 +16,24 @@ export class ReduxHttpClient {
   private readonly axiosConfiguration: AxiosRequestConfig;
   private readonly endpoints: Array<EndpointConfig>;
   public readonly bindedEndpoints: EndpointMap = {};
+  private readonly clientName: string;
 
-  constructor(axiosConfiguration: AxiosRequestConfig, endpoints: Array<EndpointConfig>) {
+  constructor(
+    axiosConfiguration: AxiosRequestConfig,
+    endpoints: Array<EndpointConfig>,
+    clientName: string,
+    ) {
     this.axiosConfiguration = axiosConfiguration;
     this.axiosInstance = axios.create(this.axiosConfiguration);
     this.endpoints = endpoints;
+    this.clientName = clientName;
     this.bindEndpoints();
   }
 
   private bindEndpoints(): void {
     this.endpoints.forEach((endpoint) => {
       this.bindedEndpoints[endpoint.name] = Endpoint.bindAction({
+        clientName: this.clientName,
         config: endpoint,
         actionName: REDUX_HTTP_CLIENT_REQUEST,
         axiosInstance: this.axiosInstance,
@@ -45,7 +52,7 @@ export const beccaccino = (() => {
       clientName: string = BECCACCINO_DEFAULT_CLIENT_NAME,
     ): EndpointMap => {
       if (configuredClients[clientName]) throw Error(`Redux http client ${clientName} already configured`);
-      configuredClients[clientName] = new ReduxHttpClient(configuration, endpoints);
+      configuredClients[clientName] = new ReduxHttpClient(configuration, endpoints, clientName);
       return configuredClients[clientName].bindedEndpoints;
     },
     getClient: (clientName: string = BECCACCINO_DEFAULT_CLIENT_NAME): EndpointMap => {
