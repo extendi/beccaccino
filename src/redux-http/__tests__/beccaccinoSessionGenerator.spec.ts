@@ -30,7 +30,13 @@ describe("beccaccinoSessionGenerator", () => {
       new Date(mockSessionManager.get()).getMilliseconds()
     );
   });
-  it("tests sessionManager refresh function", () => {
-    expect(sessionManager.refresh()).toBe(undefined);
+  it("tests sessionManager refresh function value", () => {
+    expect(sessionManager.refresh()).toBeUndefined;
+  });
+  it("tests sessionManager refresh function with mock", () => {
+    const myMockSideEffect = jest.fn(() => sessionManager.refresh());
+    const mockRefresh = () => myMockSideEffect();
+    mockRefresh();
+    expect(myMockSideEffect).toHaveBeenCalledTimes(1);
   });
 });

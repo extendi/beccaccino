@@ -9,8 +9,8 @@ type GeneratorEndpoints = {
   }>;
 };
 
-const beccaccinoPropsGenerator = ({ endpoints }: GeneratorEndpoints) => {
-  const beccaccinoResults = endpoints.reduce(
+export const returnBeccaccinoResults = ({ endpoints }: GeneratorEndpoints) =>
+  endpoints.reduce(
     (acc, curr) => ({
       ...acc,
       resultFunctions: [
@@ -65,6 +65,9 @@ const beccaccinoPropsGenerator = ({ endpoints }: GeneratorEndpoints) => {
       errorFunctions: [],
     }
   );
+
+const beccaccinoPropsGenerator = ({ endpoints }: GeneratorEndpoints) => {
+  const beccaccinoResults = returnBeccaccinoResults({ endpoints });
   return (state: any, sessionId: string) => {
     const allSelectors = [
       ...beccaccinoResults.errorFunctions,
