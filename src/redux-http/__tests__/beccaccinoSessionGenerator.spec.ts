@@ -1,4 +1,4 @@
-import beccaccinoSessionGenerator from "../beccaccinoSessionGenerator";
+import { beccaccinoSessionGenerator } from "../beccaccinoSessionGenerator";
 
 let currentSession = new Date().toISOString();
 

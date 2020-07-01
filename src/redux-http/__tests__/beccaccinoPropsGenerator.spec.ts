@@ -1,5 +1,6 @@
-import beccaccinoPropsGenerator, {
+import {
   returnBeccaccinoResults,
+  beccaccinoPropsGenerator,
 } from "../beccaccinoPropsGenerator";
 import { BECCACCINO_REDUCER_NAME } from "../";
 import { defaultSession } from "../../Beccaccino";

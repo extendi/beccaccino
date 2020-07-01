@@ -66,7 +66,7 @@ export const returnBeccaccinoResults = ({ endpoints }: GeneratorEndpoints) =>
     }
   );
 
-const beccaccinoPropsGenerator = ({ endpoints }: GeneratorEndpoints) => {
+export const beccaccinoPropsGenerator = ({ endpoints }: GeneratorEndpoints) => {
   const beccaccinoResults = returnBeccaccinoResults({ endpoints });
   return (state: any, sessionId: string) => {
     const allSelectors = [
@@ -83,5 +83,3 @@ const beccaccinoPropsGenerator = ({ endpoints }: GeneratorEndpoints) => {
     );
   };
 };
-
-export default beccaccinoPropsGenerator;
