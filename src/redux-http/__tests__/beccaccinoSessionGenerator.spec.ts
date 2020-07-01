@@ -9,6 +9,9 @@ const mockSessionManager = {
   },
 };
 
+const sleep = (timeout: number) =>
+  new Promise((res) => setTimeout(res, timeout));
+
 describe("beccaccinoSessionGenerator", () => {
   const sessionManager = beccaccinoSessionGenerator();
   it("tests type of sessionManager", () => {
@@ -33,10 +36,11 @@ describe("beccaccinoSessionGenerator", () => {
   it("tests sessionManager refresh function value", () => {
     expect(sessionManager.refresh()).toBeUndefined;
   });
-  it("tests sessionManager refresh function with mock", () => {
+  it("tests sessionManager refresh function with mock", async () => {
     const oldSessionManagerTime = new Date(
       sessionManager.get()
     ).getMilliseconds();
+    await sleep(2000);
     sessionManager.refresh();
     const newSessionManagerTime = new Date(
       sessionManager.get()

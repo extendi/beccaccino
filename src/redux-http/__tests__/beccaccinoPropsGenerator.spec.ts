@@ -84,7 +84,7 @@ describe("beccaccinoPropsGenerator", () => {
     const beccaccinoSelectors = beccaccinoPropsGenerator({ endpoints: [] });
     expect(beccaccinoSelectors({}, new Date().toISOString())).toEqual({});
   });
-  it("test beccaccinoSelectors with endpoints", () => {
+  it("test beccaccinoSelectors with endpoints and baseTest to return undefined", () => {
     const beccaccinoSelectors = beccaccinoPropsGenerator({
       endpoints: [
         {
