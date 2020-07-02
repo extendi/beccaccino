@@ -35,7 +35,7 @@ const baseState = {
 const realCaseState = {
   [BECCACCINO_REDUCER_NAME]: {
     results: {
-      "my-awesome-session-id": {
+      "my-awesome-request-id": {
         requestDetails: {
           urlParams: {},
           requestPayload: {
@@ -44,7 +44,7 @@ const realCaseState = {
           clientName: "defaultClient",
           sessionId: "2020-07-02T13:51:47.900Z",
           endpointName: "applyFilter",
-          requestId: "my-awesome-session-id",
+          requestId: "my-awesome-request-id",
         },
         rawResponse: {
           data: {
@@ -64,16 +64,16 @@ const realCaseState = {
       },
     },
     requestsMetadata: {
-      "my-awesome-session-id": {
+      "my-awesome-request-id": {
         isLoading: false,
         success: true,
       },
     },
     requestsLog: {
-      "my-awesome-session-id": {},
+      "my-default-session-id": {},
       "2020-07-02T13:51:47.900Z": {
         applyFilter: {
-          requests: ["my-awesome-session-id"],
+          requests: ["my-awesome-request-id"],
         },
       },
     },
