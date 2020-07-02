@@ -32,6 +32,54 @@ const baseState = {
   },
 };
 
+const realCaseState = {
+  [BECCACCINO_REDUCER_NAME]: {
+    results: {
+      "my-awesome-session-id": {
+        requestDetails: {
+          urlParams: {},
+          requestPayload: {
+            body: "My super test",
+          },
+          clientName: "defaultClient",
+          sessionId: "2020-07-02T13:51:47.900Z",
+          endpointName: "applyFilter",
+          requestId: "my-awesome-session-id",
+        },
+        rawResponse: {
+          data: {
+            id: 69,
+            private: true,
+          },
+          status: 200,
+          statusText: "OK",
+          headers: {},
+          config: {},
+          request: {},
+        },
+        response: {
+          id: 69,
+          private: true,
+        },
+      },
+    },
+    requestsMetadata: {
+      "my-awesome-session-id": {
+        isLoading: false,
+        success: true,
+      },
+    },
+    requestsLog: {
+      "my-awesome-session-id": {},
+      "2020-07-02T13:51:47.900Z": {
+        applyFilter: {
+          requests: ["my-awesome-session-id"],
+        },
+      },
+    },
+  },
+};
+
 describe("beccaccinoPropsGenerator", () => {
   const beccaccinoSelectors = beccaccinoPropsGenerator({ endpoints: [] });
   it("tests type of beccaccinoSelectors", () => {
@@ -99,6 +147,28 @@ describe("beccaccinoPropsGenerator", () => {
       testFunctionDone: undefined,
       testFunctionError: null,
       testFunctionloadingResult: null,
+    });
+  });
+  it("test beccaccinoSelectors with endpoints", () => {
+    const beccaccinoSelectors = beccaccinoPropsGenerator({
+      endpoints: [
+        {
+          name: "applyFilter",
+          resultPropAlias: "applyFilterDone",
+          errorPropAlias: "applyFilterError",
+          loadingPropAlias: "applyFilterloadingResult",
+        },
+      ],
+    });
+    expect(
+      beccaccinoSelectors(realCaseState, "2020-07-02T13:51:47.900Z")
+    ).toEqual({
+      applyFilterDone: {
+        id: 69,
+        private: true,
+      },
+      applyFilterError: false,
+      applyFilterloadingResult: false,
     });
   });
 });
