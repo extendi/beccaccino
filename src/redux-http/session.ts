@@ -3,7 +3,7 @@ export interface SessionManager {
   refresh: () => void;
 }
 
-export const beccaccinoSessionGenerator = () =>
+export const beccaccinoSession = () =>
   (function sessionStore() {
     let currentSession = new Date().toISOString();
     return {

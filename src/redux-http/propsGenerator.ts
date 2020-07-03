@@ -1,4 +1,4 @@
-import { resultSelector, errorSelector, loadingSelector } from "./index";
+import { resultSelector, errorSelector, loadingSelector } from './index';
 
 type GeneratorEndpoints = {
   endpoints: Array<{
@@ -38,8 +38,7 @@ export const returnBeccaccinoResults = ({ endpoints }: GeneratorEndpoints) =>
             endpointName: curr.name,
           });
           return {
-            [curr.errorPropAlias || `${curr.name}errorResult`]:
-              httpResult && httpResult[0].error && httpResult[0],
+            [curr.errorPropAlias || `${curr.name}errorResult`]: httpResult && httpResult[0].error && httpResult[0],
           };
         },
       ],
@@ -53,8 +52,7 @@ export const returnBeccaccinoResults = ({ endpoints }: GeneratorEndpoints) =>
             endpointName: curr.name,
           });
           return {
-            [curr.loadingPropAlias || `${curr.name}loadingResult`]:
-              httpResult && httpResult[0],
+            [curr.loadingPropAlias || `${curr.name}loadingResult`]: httpResult && httpResult[0],
           };
         },
       ],
@@ -63,7 +61,7 @@ export const returnBeccaccinoResults = ({ endpoints }: GeneratorEndpoints) =>
       resultFunctions: [],
       loadingFunctions: [],
       errorFunctions: [],
-    }
+    },
   );
 
 export const beccaccinoPropsGenerator = ({ endpoints }: GeneratorEndpoints) => {
@@ -79,7 +77,7 @@ export const beccaccinoPropsGenerator = ({ endpoints }: GeneratorEndpoints) => {
         ...acc,
         ...curr(state, sessionId),
       }),
-      {}
+      {},
     );
   };
 };
