@@ -5,53 +5,45 @@ import {
   resultSelector,
   errorSelector,
   BECCACCINO_REDUCER_NAME,
-} from '../';
+} from "../";
 
-import {
-  createStore,
-  combineReducers,
-  applyMiddleware,
-} from 'redux';
+import { createStore, combineReducers, applyMiddleware } from "redux";
 
-import { defaultSession } from '@lib/Beccaccino';
+import { defaultSession } from "@lib/Beccaccino";
 
 const store = createStore(
   combineReducers({
     [BECCACCINO_REDUCER_NAME]: beccaccinoReducer,
   }),
   {},
-  applyMiddleware(beccaccinoMiddleware),
+  applyMiddleware(beccaccinoMiddleware)
 );
 
 const client = Beccaccino.configure(
   {
-    baseURL: 'http://www.mocky.io/v2',
+    baseURL: "http://www.mocky.io/v2",
     headers: {
-      'Content-type': 'application/json',
-      Accept: 'application/json',
+      "Content-type": "application/json",
+      Accept: "application/json",
     },
   },
-  [
-    { name: 'getRequest', path: '/:id', method: 'get' },
-  ],
+  [{ name: "getRequest", path: "/:id", method: "get" }]
 );
 
 const secondClient = Beccaccino.configure(
   {
-    baseURL: 'http://www.mocky.io/v2',
+    baseURL: "http://www.mocky.io/v2",
     headers: {
-      'Content-type': 'application/json',
-      Accept: 'application/json',
+      "Content-type": "application/json",
+      Accept: "application/json",
     },
   },
-  [
-    { name: 'getRequest', path: '/:id', method: 'get' },
-  ],
-  'secondClient',
+  [{ name: "getRequest", path: "/:id", method: "get" }],
+  "secondClient"
 );
 
-describe('Integration tests with redux', () => {
-  it('store default state in redux http reducer', () => {
+describe("Integration tests with redux", () => {
+  it("store default state in redux http reducer", () => {
     expect(store.getState()).toEqual({
       [BECCACCINO_REDUCER_NAME]: {
         results: {},
@@ -64,14 +56,22 @@ describe('Integration tests with redux', () => {
   });
 });
 
-describe('when http action is dispatched the middleware', () => {
-  const action1 = client.getRequest({ urlParams: { id: '5b589b113000002f27fe5005' } });
-  const action2 = client.getRequest({ urlParams: { id: '5b589ccf3000000923fe500c' } });
+describe("when http action is dispatched the middleware", () => {
+  const action1 = client.getRequest({
+    urlParams: { id: "5b589b113000002f27fe5005" },
+  });
+  const action2 = client.getRequest({
+    urlParams: { id: "5b589ccf3000000923fe500c" },
+  });
 
-  const secondCLientaction1 = secondClient.getRequest({ urlParams: { id: '5b589b113000002f27fe5005' } });
-  const secondClientaction2 = secondClient.getRequest({ urlParams: { id: '5b589ccf3000000923fe500c' } });
+  const secondCLientaction1 = secondClient.getRequest({
+    urlParams: { id: "5b589b113000002f27fe5005" },
+  });
+  const secondClientaction2 = secondClient.getRequest({
+    urlParams: { id: "5b589ccf3000000923fe500c" },
+  });
 
-  it('store first request result', async (done) => {
+  it("store first request result", async () => {
     expect.assertions(3);
     store.dispatch(action1);
     await action1.execAsync;
@@ -80,11 +80,10 @@ describe('when http action is dispatched the middleware', () => {
       [BECCACCINO_REDUCER_NAME]: {
         results: {
           [action1.requestDetails.requestId]: {
-
             requestDetails: {
-              urlParams: { id: '5b589b113000002f27fe5005' },
+              urlParams: { id: "5b589b113000002f27fe5005" },
               requestPayload: {},
-              endpointName: 'getRequest',
+              endpointName: "getRequest",
               requestId: action1.requestDetails.requestId,
               cancelRequest: action1.requestDetails.cancelRequest,
             },
@@ -111,24 +110,21 @@ describe('when http action is dispatched the middleware', () => {
     });
     const resultSelectorResponse = resultSelector({
       state,
-      endpointName: 'getRequest',
+      endpointName: "getRequest",
       limit: -1,
     });
     const errorSelectorResponse = errorSelector({
       state,
-      endpointName: 'getRequest',
+      endpointName: "getRequest",
       limit: -1,
     });
-    expect(resultSelectorResponse).toEqual(
-      [{ id: 1, test: true }],
-    );
-    expect(errorSelectorResponse).toEqual(
-      [{ error: false, response: { id: 1, test: true } }],
-    );
-    done();
+    expect(resultSelectorResponse).toEqual([{ id: 1, test: true }]);
+    expect(errorSelectorResponse).toEqual([
+      { error: false, response: { id: 1, test: true } },
+    ]);
   });
 
-  it('store the second request result', async (done) => {
+  it("store the second request result", async () => {
     expect.assertions(3);
     store.dispatch(action2);
     await action2.execAsync;
@@ -138,9 +134,9 @@ describe('when http action is dispatched the middleware', () => {
         results: {
           [action1.requestDetails.requestId]: {
             requestDetails: {
-              urlParams: { id: '5b589b113000002f27fe5005' },
+              urlParams: { id: "5b589b113000002f27fe5005" },
               requestPayload: {},
-              endpointName: 'getRequest',
+              endpointName: "getRequest",
               requestId: action1.requestDetails.requestId,
               cancelRequest: action1.requestDetails.cancelRequest,
             },
@@ -151,9 +147,9 @@ describe('when http action is dispatched the middleware', () => {
           },
           [action2.requestDetails.requestId]: {
             requestDetails: {
-              urlParams: { id: '5b589ccf3000000923fe500c' },
+              urlParams: { id: "5b589ccf3000000923fe500c" },
               requestPayload: {},
-              endpointName: 'getRequest',
+              endpointName: "getRequest",
               requestId: action2.requestDetails.requestId,
               cancelRequest: action2.requestDetails.cancelRequest,
             },
@@ -176,7 +172,10 @@ describe('when http action is dispatched the middleware', () => {
         requestsLog: {
           [defaultSession]: {
             getRequest: {
-              requests: [action1.requestDetails.requestId, action2.requestDetails.requestId],
+              requests: [
+                action1.requestDetails.requestId,
+                action2.requestDetails.requestId,
+              ],
             },
           },
         },
@@ -184,26 +183,20 @@ describe('when http action is dispatched the middleware', () => {
     });
     const resultSelectorResponse = resultSelector({
       state,
-      endpointName: 'getRequest',
+      endpointName: "getRequest",
     });
-    expect(resultSelectorResponse).toEqual(
-      [{ id: 1, test: true }, undefined],
-    );
+    expect(resultSelectorResponse).toEqual([{ id: 1, test: true }, undefined]);
     const errorSelectorResponse = errorSelector({
       state,
-      endpointName: 'getRequest',
+      endpointName: "getRequest",
     });
-    expect(errorSelectorResponse).toEqual(
-      [
-        { error: false, response: { id: 1, test: true } },
-         { error: true, response: { id: 2, test: true } },
-      ],
-    );
-    done();
+    expect(errorSelectorResponse).toEqual([
+      { error: false, response: { id: 1, test: true } },
+      { error: true, response: { id: 2, test: true } },
+    ]);
   });
 
-
-  it('store the first request result from second client', async (done) => {
+  it("store the first request result from second client", async () => {
     expect.assertions(3);
     store.dispatch(secondCLientaction1);
     await secondCLientaction1.execAsync;
@@ -213,9 +206,9 @@ describe('when http action is dispatched the middleware', () => {
         results: {
           [action1.requestDetails.requestId]: {
             requestDetails: {
-              urlParams: { id: '5b589b113000002f27fe5005' },
+              urlParams: { id: "5b589b113000002f27fe5005" },
               requestPayload: {},
-              endpointName: 'getRequest',
+              endpointName: "getRequest",
               requestId: action1.requestDetails.requestId,
               cancelRequest: action1.requestDetails.cancelRequest,
             },
@@ -226,9 +219,9 @@ describe('when http action is dispatched the middleware', () => {
           },
           [action2.requestDetails.requestId]: {
             requestDetails: {
-              urlParams: { id: '5b589ccf3000000923fe500c' },
+              urlParams: { id: "5b589ccf3000000923fe500c" },
               requestPayload: {},
-              endpointName: 'getRequest',
+              endpointName: "getRequest",
               requestId: action2.requestDetails.requestId,
               cancelRequest: action2.requestDetails.cancelRequest,
             },
@@ -239,9 +232,9 @@ describe('when http action is dispatched the middleware', () => {
           },
           [secondCLientaction1.requestDetails.requestId]: {
             requestDetails: {
-              urlParams: { id: '5b589b113000002f27fe5005' },
+              urlParams: { id: "5b589b113000002f27fe5005" },
               requestPayload: {},
-              endpointName: 'getRequest',
+              endpointName: "getRequest",
               requestId: secondCLientaction1.requestDetails.requestId,
               cancelRequest: secondCLientaction1.requestDetails.cancelRequest,
             },
@@ -280,27 +273,25 @@ describe('when http action is dispatched the middleware', () => {
     });
     const resultSelectorResponse = resultSelector({
       state,
-      endpointName: 'getRequest',
+      endpointName: "getRequest",
     });
-    expect(resultSelectorResponse).toEqual(
-      [{ id: 1, test: true }, undefined, { id: 1, test: true }],
-    );
+    expect(resultSelectorResponse).toEqual([
+      { id: 1, test: true },
+      undefined,
+      { id: 1, test: true },
+    ]);
     const errorSelectorResponse = errorSelector({
       state,
-      endpointName: 'getRequest',
+      endpointName: "getRequest",
     });
-    expect(errorSelectorResponse).toEqual(
-      [
-        { error: false, response: { id: 1, test: true } },
-         { error: true, response: { id: 2, test: true } },
-         { error: false, response: { id: 1, test: true } },
-      ],
-    );
-    done();
+    expect(errorSelectorResponse).toEqual([
+      { error: false, response: { id: 1, test: true } },
+      { error: true, response: { id: 2, test: true } },
+      { error: false, response: { id: 1, test: true } },
+    ]);
   });
 
-
-  it('store the second request result from second client', async (done) => {
+  it("store the second request result from second client", async () => {
     expect.assertions(3);
     store.dispatch(secondClientaction2);
     await secondClientaction2.execAsync;
@@ -310,9 +301,9 @@ describe('when http action is dispatched the middleware', () => {
         results: {
           [action1.requestDetails.requestId]: {
             requestDetails: {
-              urlParams: { id: '5b589b113000002f27fe5005' },
+              urlParams: { id: "5b589b113000002f27fe5005" },
               requestPayload: {},
-              endpointName: 'getRequest',
+              endpointName: "getRequest",
               requestId: action1.requestDetails.requestId,
               cancelRequest: action1.requestDetails.cancelRequest,
             },
@@ -323,9 +314,9 @@ describe('when http action is dispatched the middleware', () => {
           },
           [action2.requestDetails.requestId]: {
             requestDetails: {
-              urlParams: { id: '5b589ccf3000000923fe500c' },
+              urlParams: { id: "5b589ccf3000000923fe500c" },
               requestPayload: {},
-              endpointName: 'getRequest',
+              endpointName: "getRequest",
               requestId: action2.requestDetails.requestId,
               cancelRequest: action2.requestDetails.cancelRequest,
             },
@@ -336,9 +327,9 @@ describe('when http action is dispatched the middleware', () => {
           },
           [secondCLientaction1.requestDetails.requestId]: {
             requestDetails: {
-              urlParams: { id: '5b589b113000002f27fe5005' },
+              urlParams: { id: "5b589b113000002f27fe5005" },
               requestPayload: {},
-              endpointName: 'getRequest',
+              endpointName: "getRequest",
               requestId: secondCLientaction1.requestDetails.requestId,
               cancelRequest: secondCLientaction1.requestDetails.cancelRequest,
             },
@@ -349,9 +340,9 @@ describe('when http action is dispatched the middleware', () => {
           },
           [secondClientaction2.requestDetails.requestId]: {
             requestDetails: {
-              urlParams: { id: '5b589ccf3000000923fe500c' },
+              urlParams: { id: "5b589ccf3000000923fe500c" },
               requestPayload: {},
-              endpointName: 'getRequest',
+              endpointName: "getRequest",
               requestId: secondClientaction2.requestDetails.requestId,
               cancelRequest: secondClientaction2.requestDetails.cancelRequest,
             },
@@ -395,23 +386,23 @@ describe('when http action is dispatched the middleware', () => {
     });
     const resultSelectorResponse = resultSelector({
       state,
-      endpointName: 'getRequest',
+      endpointName: "getRequest",
     });
-    expect(resultSelectorResponse).toEqual(
-      [{ id: 1, test: true }, undefined, { id: 1, test: true }, undefined],
-    );
+    expect(resultSelectorResponse).toEqual([
+      { id: 1, test: true },
+      undefined,
+      { id: 1, test: true },
+      undefined,
+    ]);
     const errorSelectorResponse = errorSelector({
       state,
-      endpointName: 'getRequest',
+      endpointName: "getRequest",
     });
-    expect(errorSelectorResponse).toEqual(
-      [
-        { error: false, response: { id: 1, test: true } },
-         { error: true, response: { id: 2, test: true } },
-         { error: false, response: { id: 1, test: true } },
-         { error: true, response: { id: 2, test: true } },
-      ],
-    );
-    done();
+    expect(errorSelectorResponse).toEqual([
+      { error: false, response: { id: 1, test: true } },
+      { error: true, response: { id: 2, test: true } },
+      { error: false, response: { id: 1, test: true } },
+      { error: true, response: { id: 2, test: true } },
+    ]);
   });
 });

@@ -1,33 +1,37 @@
-import { BindedActionPayload } from '../redux-http';
-import { compile as compilePath } from 'path-to-regexp';
-import { v4 as uuid } from 'uuid';
-import { default as axios, AxiosInstance } from 'axios';
-import { defaultSession } from '../Beccaccino';
-import { ErrorTransform, ResponseTransform, requestHandler } from './requestHandler';
+import { BindedActionPayload } from "../redux-http";
+import { compile as compilePath } from "path-to-regexp";
+import { v4 as uuid } from "uuid";
+import { default as axios, AxiosInstance } from "axios";
+import { defaultSession } from "../Beccaccino";
+import {
+  ErrorTransform,
+  ResponseTransform,
+  requestHandler,
+} from "./requestHandler";
 
 export type Method =
-  | 'get'
-  | 'delete'
-  | 'head'
-  | 'options'
-  | 'post'
-  | 'put'
-  | 'patch';
+  | "get"
+  | "delete"
+  | "head"
+  | "options"
+  | "post"
+  | "put"
+  | "patch";
 
 export type EndpointConfig = {
-  path: string,
-  method: Method,
-  name: string,
+  path: string;
+  method: Method;
+  name: string;
   errorTransformer?: ErrorTransform;
-  responseTransformer?: ResponseTransform,
+  responseTransformer?: ResponseTransform;
 };
 
 export type BindRequest = {
-  config: EndpointConfig,
-  actionName: string,
-  axiosInstance: AxiosInstance,
-  signature: Symbol,
-  clientName: string,
+  config: EndpointConfig;
+  actionName: string;
+  axiosInstance: AxiosInstance;
+  signature: Symbol;
+  clientName: string;
 };
 
 export type BindedAction = (params: any) => BindedActionPayload;
@@ -40,9 +44,13 @@ export class Endpoint {
       urlParams = {},
       requestPayload = {},
       sessionId = defaultSession,
-     }: { urlParams: any, requestPayload: any, sessionId?: string }) => {
+    }: {
+      urlParams: any;
+      requestPayload: any;
+      sessionId?: string;
+    }) => {
       const cancelToken = axios.CancelToken.source();
-      const method = bindRequest.config.method.toLowerCase();
+      const method = bindRequest.config.method.toLowerCase() as Method;
       return {
         type: bindRequest.actionName,
         signature: bindRequest.signature,
@@ -59,8 +67,8 @@ export class Endpoint {
           requestConfiguration: {
             method,
             url: bindParamsToURL(bindRequest.config.path, urlParams),
-            data: method !== 'get' && requestPayload,
-            params: method === 'get' && requestPayload,
+            data: method !== "get" && requestPayload,
+            params: method === "get" && requestPayload,
             cancelToken: cancelToken.token,
           },
           errorTransformer: bindRequest.config.errorTransformer,
