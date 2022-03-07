@@ -1,6 +1,6 @@
 {
   "name": "beccaccino",
-  "version": "2.1.0-upgrade-dephs.0",
+  "version": "2.1.1",
   "description": "Easy, reliable and fast http client for redux, framework agnostic, :zap: like a beccaccino",
   "main": "dist/beccaccino-node.js",
   "browser": "dist/beccaccino.js",
@@ -8,9 +8,8 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "prepublish": "yarn build:production",
-    "build:development": "yarn run webpack --env ${NODE_ENV:-development}",
-    "build:production": "rm -rf ./dist/ && yarn run webpack --env ${NODE_ENV:-production}",
+    "prepublish": "yarn build",
+    "build": "rm -rf ./dist/ && yarn run webpack --env ${NODE_ENV:-production}",
     "test": "yarn run jest --coverage --coverageReporters=text-lcov | coveralls",
     "test-local": "yarn run jest --coverage"
   },
